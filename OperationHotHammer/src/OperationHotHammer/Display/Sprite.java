@@ -9,12 +9,18 @@ package OperationHotHammer.Display;
  * @author Kaitlyn
  */
 
-public abstract class Displayable {
+public abstract class Sprite {
     public final static int LAYER_BACK    = 1;
     public final static int LAYER_MIDDLE  = 2;
     public final static int LAYER_FRONT   = 3;
     
     public int x, y, layer;
+    
+    private Sprite() {
+        
+    }
+    
+    //static Sprite create(int type, String texture)(
     
     public int getX() { return x; }
     public int getY() { return y; }

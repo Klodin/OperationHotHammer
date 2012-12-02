@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+        
 package OperationHotHammer.Display;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -10,6 +13,17 @@ package OperationHotHammer.Display;
  */
 public enum Display {
   INSTANCE;
+  ArrayList<RenderingListener> listeners;
   
-  // other useful methods here
+  public void addListener(RenderingListener rl) {
+      listeners.add(rl);
+  }
+  
+  public void render(){
+      
+      for(RenderingListener listener : listeners){
+        listener.update();
+      }
+      
+  }
 } 
