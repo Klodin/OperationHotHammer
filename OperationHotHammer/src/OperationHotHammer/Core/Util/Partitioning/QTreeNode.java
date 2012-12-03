@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OperationHotHammer.Core.Objects.Partitioning;
+package OperationHotHammer.Core.Util.Partitioning;
 
-import OperationHotHammer.Core.Collision.Shapes.Circle;
-import OperationHotHammer.Core.Collision.Shapes.CollisionShape;
-import OperationHotHammer.Core.Objects.GameObject;
-import OperationHotHammer.Util.Vector;
+import OperationHotHammer.Core.GameObjects.Collision.Circle;
+import OperationHotHammer.Core.GameObjects.Collision.CollisionShape;
+import OperationHotHammer.Core.GameObjects.GameObject;
+import OperationHotHammer.Core.Util.Vector;
 import java.util.ArrayList;
 
 

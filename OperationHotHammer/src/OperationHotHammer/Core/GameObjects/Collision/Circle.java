@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OperationHotHammer.Core.Collision.Shapes;
+package OperationHotHammer.Core.GameObjects.Collision;
 
-import OperationHotHammer.Util.Vector;
+import OperationHotHammer.Core.Util.Vector;
 
 
 public class Circle implements CollisionShape {

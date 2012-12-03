@@ -2,10 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OperationHotHammer.Core.Collision;
-
-import OperationHotHammer.Core.Collision.Shapes.CollisionShape;
-import OperationHotHammer.Core.Collision.Shapes.Circle;
+package OperationHotHammer.Core.GameObjects.Collision;
 
 
 public enum CollisionFactory {

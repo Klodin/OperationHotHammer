@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OperationHotHammer.Core.Objects;
+package OperationHotHammer.Core.GameObjects;
 
-import OperationHotHammer.Core.Collision.Shapes.CollisionShape;
-import OperationHotHammer.Core.Collision.CollisionFactory;
+import OperationHotHammer.Core.GameObjects.Collision.CollisionShape;
+import OperationHotHammer.Core.GameObjects.Collision.CollisionFactory;
 
 
 public class GameObject {
