@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package OperationHotHammer.Core.GameObjects.Collision;
+package OperationHotHammer.Core.GameObjects.Boundary;
 
 import OperationHotHammer.Core.Util.Vector;
 
 
-public class Circle implements CollisionShape {
+public class Circle implements BoundaryShape {
    public float radius;
    public final Vector center;
    
@@ -22,6 +18,6 @@ public class Circle implements CollisionShape {
    
    @Override
    public int getShape() {
-       return CollisionShape.CIRCLE;
+       return BoundaryShape.CIRCLE;
    }
 }

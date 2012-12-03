@@ -1,11 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package OperationHotHammer.Core.Util.Partitioning;
 
-import OperationHotHammer.Core.GameObjects.Collision.Circle;
-import OperationHotHammer.Core.GameObjects.Collision.CollisionShape;
+import OperationHotHammer.Core.GameObjects.Boundary.Circle;
+import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
 import OperationHotHammer.Core.GameObjects.GameObject;
 import OperationHotHammer.Core.Util.Vector;
 import java.util.ArrayList;
@@ -51,14 +47,14 @@ public class QTreeNode {
       }
    }
    
-   public void insertObject(final GameObject obj, final CollisionShape collider) {
+   public void insertObject(final GameObject obj, final BoundaryShape collider) {
       int index = 0; // get child node index as 0 initially
       boolean straddle = false; // set straddling to false
       float delta;
       
       switch(collider.getShape()){
           
-          case CollisionShape.CIRCLE:
+          case BoundaryShape.CIRCLE:
               
             // get the raw arrays, makes it easier to run these in a loop
             final float[] objPos = ((Circle)collider).center.vec;
