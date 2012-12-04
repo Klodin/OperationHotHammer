@@ -19,6 +19,4 @@ public abstract class Character extends GameObject {
         super(x, y, colliderShape);
     }
     
-    public abstract void update();
-    
 }

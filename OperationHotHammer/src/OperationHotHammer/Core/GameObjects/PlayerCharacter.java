@@ -14,7 +14,9 @@ public class PlayerCharacter extends Character {
         super(x, y, new Circle(Settings.GRID_SPACE_SIZE/2));
     }
     
-    public void update() {
+    @Override
+    public void update(float delta) {
+        super.update(delta);
         
         //get / handle user inputs.. update position and movement as needed.
         

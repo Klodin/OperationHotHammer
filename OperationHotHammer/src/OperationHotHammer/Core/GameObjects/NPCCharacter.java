@@ -13,7 +13,9 @@ public abstract class NPCCharacter extends Character {
         super(x, y, colliderShape);
     }
     
+    @Override
     public void update(float delta) {
+        super.update(delta);
         
         //let's assume default npc does nothing in particular on update.. override this as needed in other ones
         

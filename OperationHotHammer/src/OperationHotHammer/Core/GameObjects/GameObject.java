@@ -19,4 +19,8 @@ public abstract class GameObject {
       x = xx;
       y = yy;
    }
+   
+   public void update(float delta) {
+       statusEffects.update(delta);
+   }
 }

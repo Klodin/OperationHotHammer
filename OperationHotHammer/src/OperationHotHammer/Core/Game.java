@@ -8,4 +8,13 @@ package OperationHotHammer.Core;
 
 public class Game {
 
+    Scene scene;
+    
+    public Game() {
+     
+        scene = new Scene("Green Valley");
+        
+        
+    }
+    
 }
