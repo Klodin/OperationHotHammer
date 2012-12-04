@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package OperationHotHammer.Core.GameObjects;
+package OperationHotHammer.Core.GameObjects.StatusEffects;
 
 import java.util.List;
 import java.util.ArrayList;

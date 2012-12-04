@@ -1,6 +1,6 @@
 package OperationHotHammer.Core.Util.Partitioning;
 
-import OperationHotHammer.Core.GameObjects.GameObject;
+import OperationHotHammer.Core.GameObjects.Entity;
 
 
 public class QTree {
@@ -12,7 +12,7 @@ public class QTree {
    }
 
    // insert a GameObject at the quadtree
-   public void insertObject(final GameObject obj) {
+   public void insertObject(final Entity obj) {
       node.insertObject(obj, obj.collider);
    }
    

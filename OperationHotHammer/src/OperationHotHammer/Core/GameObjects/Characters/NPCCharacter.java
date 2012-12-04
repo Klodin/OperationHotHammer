@@ -3,11 +3,12 @@
  * and open the template in the editor.
  */
 
-package OperationHotHammer.Core.GameObjects;
+package OperationHotHammer.Core.GameObjects.Characters;
 
 import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
+import OperationHotHammer.Core.GameObjects.LivingEntity;
 
-public abstract class NPCCharacter extends Character {
+public abstract class NPCCharacter extends LivingEntity {
     
     public NPCCharacter(float x, float y, BoundaryShape colliderShape) { 
         super(x, y, colliderShape);

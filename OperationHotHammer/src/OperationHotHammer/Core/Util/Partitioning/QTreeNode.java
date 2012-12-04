@@ -2,7 +2,7 @@ package OperationHotHammer.Core.Util.Partitioning;
 
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
-import OperationHotHammer.Core.GameObjects.GameObject;
+import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Vector;
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class QTreeNode {
    private final Vector center; // the center of this node
    private final QTreeNode[] nodes; // the child nodes
    
-   private final ArrayList<GameObject> objects; // the objects stored at this node
+   private final ArrayList<Entity> objects; // the objects stored at this node
    
    public QTreeNode(float centerX, float centerY, float halfWidth, int stopDepth) {
       this.currDepth = stopDepth;
@@ -47,7 +47,7 @@ public class QTreeNode {
       }
    }
    
-   public void insertObject(final GameObject obj, final BoundaryShape collider) {
+   public void insertObject(final Entity obj, final BoundaryShape collider) {
       int index = 0; // get child node index as 0 initially
       boolean straddle = false; // set straddling to false
       float delta;
