@@ -11,12 +11,12 @@ import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
  *
  * @author Kaitlyn
  */
-public abstract class DestructableEntity extends Entity {
+public abstract class DestructibleEntity extends Entity {
 
     public float health = 100;
     public final StatusEffects statusEffects = new StatusEffects();
     
-    public DestructableEntity(float x, float y, BoundaryShape colliderShape) {
+    public DestructibleEntity(float x, float y, BoundaryShape colliderShape) {
         super(x, y, colliderShape);
     }
     

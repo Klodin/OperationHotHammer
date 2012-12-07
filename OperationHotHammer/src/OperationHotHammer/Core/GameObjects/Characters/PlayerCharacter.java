@@ -7,13 +7,13 @@ package OperationHotHammer.Core.GameObjects.Characters;
 
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.Util.Settings;
-import OperationHotHammer.Core.GameObjects.DestructableEntity;
-import OperationHotHammer.Core.GameObjects.DestructableEntity;
+import OperationHotHammer.Core.GameObjects.DestructibleEntity;
+import OperationHotHammer.Core.GameObjects.DestructibleEntity;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.GameObjects.Entity;
-import OperationHotHammer.Core.GameObjects.LivingEntity;
+import OperationHotHammer.Core.GameObjects.AnimatedEntity;
 
-public class PlayerCharacter extends LivingEntity {
+public class PlayerCharacter extends AnimatedEntity {
     
     public PlayerCharacter(float x, float y) { 
         super(x, y, new Circle(Settings.GRID_SPACE_SIZE/2));
@@ -24,7 +24,7 @@ public class PlayerCharacter extends LivingEntity {
     }
     
     public float getMovementSpeed() { 
-        return Settings.GRID_SPACE_SIZE/4;
+        return Settings.GRID_SPACE_SIZE/2;
     }
     
     @Override
@@ -37,8 +37,8 @@ public class PlayerCharacter extends LivingEntity {
     
     @Override
     public void attack(Entity e) {
-        if(e instanceof DestructableEntity) {
-            ((DestructableEntity)e).damage(getAttackDamage());
+        if(e instanceof DestructibleEntity) {
+            ((DestructibleEntity)e).damage(getAttackDamage());
         }
     }
     

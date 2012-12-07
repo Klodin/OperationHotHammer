@@ -8,7 +8,7 @@ package OperationHotHammer.Core.GameObjects;
 import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
 
 
-public abstract class LivingEntity extends DestructableEntity {
+public abstract class AnimatedEntity extends DestructibleEntity {
     
     public float strength;
     public float dexterity;
@@ -17,7 +17,7 @@ public abstract class LivingEntity extends DestructableEntity {
     
     public boolean dead = false;
     
-    public LivingEntity (float x, float y, BoundaryShape colliderShape) {
+    public AnimatedEntity (float x, float y, BoundaryShape colliderShape) {
         super(x, y, colliderShape);
     }
     
@@ -36,6 +36,7 @@ public abstract class LivingEntity extends DestructableEntity {
     public void moveRight(float amount){
         this.x += amount;
     }
+
     
     public abstract void attack(Entity e);
     
