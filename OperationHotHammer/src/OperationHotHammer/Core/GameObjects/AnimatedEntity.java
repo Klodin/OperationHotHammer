@@ -5,7 +5,7 @@
 
 package OperationHotHammer.Core.GameObjects;
 
-import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
+import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 
 
 public abstract class AnimatedEntity extends DestructibleEntity {
@@ -17,8 +17,8 @@ public abstract class AnimatedEntity extends DestructibleEntity {
     
     public boolean dead = false;
     
-    public AnimatedEntity (float x, float y, BoundaryShape colliderShape) {
-        super(x, y, colliderShape);
+    public AnimatedEntity (float x, float y,float z, IBoundaryShape colliderShape) {
+        super(x, y, z, colliderShape);
     }
     
     public void moveUp(float amount) {

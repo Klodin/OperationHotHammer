@@ -1,7 +1,7 @@
 package OperationHotHammer.Core.Util.Partitioning;
 
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
-import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
+import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Vector;
 import java.util.ArrayList;
@@ -47,14 +47,14 @@ public class QTreeNode {
       }
    }
    
-   public void insertObject(final Entity obj, final BoundaryShape collider) {
+   public void insertObject(final Entity obj, final IBoundaryShape collider) {
       int index = 0; // get child node index as 0 initially
       boolean straddle = false; // set straddling to false
       float delta;
       
       switch(collider.getShape()){
           
-          case BoundaryShape.CIRCLE:
+          case IBoundaryShape.CIRCLE:
               
             // get the raw arrays, makes it easier to run these in a loop
             final float[] objPos = ((Circle)collider).center.vec;

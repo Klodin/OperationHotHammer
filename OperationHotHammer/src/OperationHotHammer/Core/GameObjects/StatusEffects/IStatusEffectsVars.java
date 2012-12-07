@@ -6,6 +6,6 @@
 package OperationHotHammer.Core.GameObjects.StatusEffects;
 
 
-public interface StatusEffectsVars {
+public interface IStatusEffectsVars {
 
 }

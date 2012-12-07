@@ -8,15 +8,13 @@ package OperationHotHammer.Core.GameObjects.Characters;
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Core.GameObjects.DestructibleEntity;
-import OperationHotHammer.Core.GameObjects.DestructibleEntity;
-import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.GameObjects.AnimatedEntity;
 
 public class PlayerCharacter extends AnimatedEntity {
     
     public PlayerCharacter(float x, float y) { 
-        super(x, y, new Circle(Settings.GRID_SPACE_SIZE/2));
+        super(x, y, Entity.LAYER_MIDDLE, new Circle(Settings.PLAYER_SIZE));
     }
     
     public float getAttackDamage() { 

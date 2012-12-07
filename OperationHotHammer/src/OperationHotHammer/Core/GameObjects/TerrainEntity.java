@@ -4,7 +4,7 @@
  */
 package OperationHotHammer.Core.GameObjects;
 
-import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
+import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 
 /**
  *

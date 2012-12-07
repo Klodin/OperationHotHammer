@@ -5,13 +5,13 @@
 
 package OperationHotHammer.Core.GameObjects.Characters;
 
-import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
+import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.AnimatedEntity;
 
 public abstract class NPCCharacter extends AnimatedEntity {
     
-    public NPCCharacter(float x, float y, BoundaryShape colliderShape) { 
-        super(x, y, colliderShape);
+    public NPCCharacter(float x, float y, float z, IBoundaryShape colliderShape) { 
+        super(x, y, z, colliderShape);
     }
     
     @Override

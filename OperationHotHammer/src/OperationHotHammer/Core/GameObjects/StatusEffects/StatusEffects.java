@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class StatusEffects {
 
     private final float[] effectTimes = new float[10];
-    private final StatusEffectsVars[] effectVars = new StatusEffectsVars[10];
+    private final IStatusEffectsVars[] effectVars = new IStatusEffectsVars[10];
     
     public final static int INVINCIBLE     = 0;
     public final static int SLEEP          = 1;
@@ -34,7 +34,7 @@ public class StatusEffects {
         effectTimes[effectType] = Math.max(effectTimes[effectType], time);
     }
     
-    public void add(int effectType, float time, StatusEffectsVars vars) {
+    public void add(int effectType, float time, IStatusEffectsVars vars) {
         effectVars[effectType] = vars;
     }
     
@@ -47,7 +47,7 @@ public class StatusEffects {
         return effectTimes[effectType] != 0;
     }
     
-    public StatusEffectsVars getVars(int effectType){
+    public IStatusEffectsVars getVars(int effectType){
         return effectVars[effectType];
     }
     

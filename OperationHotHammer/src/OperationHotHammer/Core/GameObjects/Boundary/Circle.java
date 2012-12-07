@@ -3,7 +3,7 @@ package OperationHotHammer.Core.GameObjects.Boundary;
 import OperationHotHammer.Core.Util.Vector;
 
 
-public class Circle implements BoundaryShape {
+public class Circle implements IBoundaryShape {
    public float radius;
    public final Vector center;
    
@@ -18,6 +18,6 @@ public class Circle implements BoundaryShape {
    
    @Override
    public int getShape() {
-       return BoundaryShape.CIRCLE;
+       return IBoundaryShape.CIRCLE;
    }
 }

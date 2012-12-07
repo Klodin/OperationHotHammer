@@ -1,16 +1,13 @@
 package OperationHotHammer.Display;
 
-public class Sprite {
+public class Sprite implements ISprite {
     
-    private final GameObject object;
-    
-    private Sprite() {
+    public Sprite() {
         
     }
     
-    //static Sprite create(int type, String texture)(
-    
-
-    
-    abstract void draw();
+    @Override
+    public void draw(float x, float y, float z) {
+        
+    }
 }

@@ -5,7 +5,7 @@
 package OperationHotHammer.Core.GameObjects;
 
 import OperationHotHammer.Core.GameObjects.StatusEffects.StatusEffects;
-import OperationHotHammer.Core.GameObjects.Boundary.BoundaryShape;
+import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 
 /**
  *
@@ -16,8 +16,8 @@ public abstract class DestructibleEntity extends Entity {
     public float health = 100;
     public final StatusEffects statusEffects = new StatusEffects();
     
-    public DestructibleEntity(float x, float y, BoundaryShape colliderShape) {
-        super(x, y, colliderShape);
+    public DestructibleEntity(float x, float y, float z, IBoundaryShape colliderShape) {
+        super(x, y, z, colliderShape);
     }
     
     @Override

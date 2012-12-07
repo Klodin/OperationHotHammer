@@ -26,7 +26,7 @@ public class Scene {
         
     }
     
-    public void addObject(Entity object) {
+    public void addEntiity(Entity object) {
         
         if(object.x > width) {
             object.x = width;
