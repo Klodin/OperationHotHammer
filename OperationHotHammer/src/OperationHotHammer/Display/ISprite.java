@@ -1,6 +1,8 @@
 
 package OperationHotHammer.Display;
 
+import org.lwjgl.util.vector.Vector3f;
+
 public interface ISprite {
-    public void draw(float x, float y, float z);
+    public void draw(Vector3f position);
 }

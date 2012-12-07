@@ -1,5 +1,7 @@
 package OperationHotHammer.Display;
 
+import org.lwjgl.util.vector.Vector3f;
+
 public class Sprite implements ISprite {
     
     public Sprite() {
@@ -7,7 +9,7 @@ public class Sprite implements ISprite {
     }
     
     @Override
-    public void draw(float x, float y, float z) {
+    public void draw(Vector3f position) {
         
     }
 }

@@ -7,11 +7,12 @@ package OperationHotHammer.Core.GameObjects.Characters;
 
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.AnimatedEntity;
+import org.lwjgl.util.vector.Vector3f;
 
 public abstract class NPCCharacter extends AnimatedEntity {
     
-    public NPCCharacter(float x, float y, float z, IBoundaryShape colliderShape) { 
-        super(x, y, z, colliderShape);
+    public NPCCharacter(Vector3f p, IBoundaryShape colliderShape) { 
+        super(p, colliderShape);
     }
     
     @Override

@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package OperationHotHammer.Core.GameObjects;
 
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
+import org.lwjgl.util.vector.Vector3f;
 
 
 public abstract class AnimatedEntity extends DestructibleEntity {
@@ -17,24 +14,24 @@ public abstract class AnimatedEntity extends DestructibleEntity {
     
     public boolean dead = false;
     
-    public AnimatedEntity (float x, float y,float z, IBoundaryShape colliderShape) {
-        super(x, y, z, colliderShape);
+    public AnimatedEntity (Vector3f p, IBoundaryShape colliderShape) {
+        super(p, colliderShape);
     }
     
     public void moveUp(float amount) {
-        this.y -= amount;
+        position.y -= amount;
     }
     
     public void moveDown(float amount){ 
-        this.y += amount;
+        position.y += amount;
     }
     
     public void moveLeft(float amount){
-        this.x -= amount;
+        position.x -= amount;
     }
     
     public void moveRight(float amount){
-        this.x += amount;
+        position.x += amount;
     }
 
     

@@ -3,6 +3,7 @@ package OperationHotHammer.Core.GameObjects;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Display.IDisplayable;
 import OperationHotHammer.Display.ISprite;
+import org.lwjgl.util.vector.Vector3f;
 
 public abstract class Entity implements IDisplayable {
    public final static int LAYER_MIDDLE = 0;
@@ -12,15 +13,11 @@ public abstract class Entity implements IDisplayable {
    
    public float weight = 999999999;
    
-   public float x;
-   public float y;
-   public float z;
+   public final Vector3f position;
    
-   public Entity(float xx, float yy, float zz, IBoundaryShape colliderShape) {
+   public Entity(Vector3f p, IBoundaryShape colliderShape) {
       collider = colliderShape;
-      x = xx;
-      y = yy;
-      z = zz;
+      position = p;
    }
    
    public abstract void update(float delta);
@@ -28,7 +25,7 @@ public abstract class Entity implements IDisplayable {
    @Override
    public void draw() {
        if(sprite != null) {
-           sprite.draw(x,y,z);
+           sprite.draw(position);
        }
    }
    

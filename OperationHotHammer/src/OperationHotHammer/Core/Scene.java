@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package OperationHotHammer.Core;
 
@@ -28,16 +24,16 @@ public class Scene {
     
     public void addEntiity(Entity object) {
         
-        if(object.x > width) {
-            object.x = width;
-        } else if(object.x < 0) {
-            object.x = 0;
+        if(object.position.x > width) {
+            object.position.x = width;
+        } else if(object.position.x < 0) {
+            object.position.x = 0;
         }
         
-        if(object.y > height) {
-            object.y = height;
-        } else if(object.y < 0) {
-            object.y = 0;
+        if(object.position.y > height) {
+            object.position.y = height;
+        } else if(object.position.y < 0) {
+            object.position.y = 0;
         }
         
         objects.add(object);

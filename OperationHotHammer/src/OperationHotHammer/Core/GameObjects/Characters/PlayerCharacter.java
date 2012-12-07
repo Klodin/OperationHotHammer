@@ -10,11 +10,12 @@ import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Core.GameObjects.DestructibleEntity;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.GameObjects.AnimatedEntity;
+import org.lwjgl.util.vector.Vector3f;
 
 public class PlayerCharacter extends AnimatedEntity {
     
     public PlayerCharacter(float x, float y) { 
-        super(x, y, Entity.LAYER_MIDDLE, new Circle(Settings.PLAYER_SIZE));
+        super(new Vector3f(x, y, Entity.LAYER_MIDDLE), new Circle(Settings.PLAYER_SIZE));
     }
     
     public float getAttackDamage() { 
