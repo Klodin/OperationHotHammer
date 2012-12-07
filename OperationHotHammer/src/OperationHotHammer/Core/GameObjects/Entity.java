@@ -1,9 +1,11 @@
 package OperationHotHammer.Core.GameObjects;
 
+import OperationHotHammer.Core.Debugging.Debugging;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Display.IDisplayable;
 import OperationHotHammer.Display.ISprite;
 import org.lwjgl.util.vector.Vector3f;
+import OperationHotHammer.Core.Debugging.GameDisplayWarning;
 
 public abstract class Entity implements IDisplayable {
    public final static int LAYER_MIDDLE = 0;
@@ -24,13 +26,20 @@ public abstract class Entity implements IDisplayable {
    
    @Override
    public void draw() {
-       if(sprite != null) {
-           sprite.draw(position);
+       if(sprite == null) {
+           Debugging.INSTANCE.showWarning("Attempted to draw an entity when no sprite has been attached!");
+           return;
        }
+       
+       sprite.draw(position);
    }
    
    @Override
    public void attach(ISprite s) {
+       if(sprite != null) {
+           Debugging.INSTANCE.showWarning("Attached a sprite to an entity which already had a sprite!");
+       }
+              
        sprite = s;
    }
 }
