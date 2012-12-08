@@ -5,7 +5,6 @@ import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Display.IDisplayable;
 import OperationHotHammer.Display.ISprite;
 import org.lwjgl.util.vector.Vector3f;
-import OperationHotHammer.Core.Debugging.GameDisplayWarning;
 
 public abstract class Entity implements IDisplayable {
    public final static int LAYER_MIDDLE = 0;
@@ -20,6 +19,11 @@ public abstract class Entity implements IDisplayable {
    public Entity(Vector3f p, IBoundaryShape colliderShape) {
       collider = colliderShape;
       position = p;
+   }
+   
+   public Entity(Vector3f p) {
+       collider = null;
+       position = p;
    }
    
    public abstract void update(float delta);

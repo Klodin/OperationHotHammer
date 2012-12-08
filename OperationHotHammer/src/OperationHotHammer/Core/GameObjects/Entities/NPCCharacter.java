@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package OperationHotHammer.Core.GameObjects.Characters;
+package OperationHotHammer.Core.GameObjects.Entities;
 
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.AnimatedEntity;
