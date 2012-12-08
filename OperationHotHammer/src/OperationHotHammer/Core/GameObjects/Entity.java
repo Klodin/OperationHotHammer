@@ -12,8 +12,6 @@ public abstract class Entity implements IDisplayable {
    public ISprite sprite = null;
    public final IBoundaryShape collider;
    
-   public float weight = 999999999;
-   
    public final Vector3f position;
    
    public Entity(Vector3f p, IBoundaryShape colliderShape) {
