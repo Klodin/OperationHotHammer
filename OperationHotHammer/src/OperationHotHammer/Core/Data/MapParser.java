@@ -22,11 +22,14 @@ public class MapParser {
             
             ArrayList<String> queue = new ArrayList<>();
             while (scan.hasNext()){
-                queue.add(scan.nextLine());
+                queue.add(scan.nextLine().trim());
                 int i = 0;
                 while (queue.size() > i){
                     switch(queue.get(0)){
-                        case "Grid":
+                        case "setSize":
+                            
+                            break;
+                        case "setBedrock":
                             String[] sizes = scan.nextLine().split(" ");
                             
                             break;

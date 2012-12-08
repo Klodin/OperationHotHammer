@@ -1,4 +1,5 @@
-grid
-10 10
+setSize
+10
+10
+setBedrock
 grass
-derp
