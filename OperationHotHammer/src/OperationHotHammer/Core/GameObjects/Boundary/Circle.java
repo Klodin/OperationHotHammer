@@ -1,18 +1,18 @@
 package OperationHotHammer.Core.GameObjects.Boundary;
 
-import OperationHotHammer.Core.Util.Vector;
+import org.lwjgl.util.vector.Vector3f;
 
 
 public class Circle implements IBoundaryShape {
    public float radius;
-   public final Vector center;
+   public final Vector3f center;
    
    public Circle(final float radius) {
       this.radius = radius;
-      this.center = new Vector();
+      this.center = new Vector3f();
    }
    
-   public void update(final Vector position) {
+   public void update(final Vector3f position) {
       center.set(position);
    }
    

@@ -3,13 +3,13 @@ package OperationHotHammer.Core.Util.Partitioning;
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.Entity;
-import OperationHotHammer.Core.Util.Vector;
 import java.util.ArrayList;
+import org.lwjgl.util.vector.Vector3f;
 
 
 public class QTreeNode {
    private final int currDepth; // the current depth of this node
-   private final Vector center; // the center of this node
+   private final Vector3f center; // the center of this node
    private final QTreeNode[] nodes; // the child nodes
    
    private final ArrayList<Entity> objects; // the objects stored at this node
@@ -18,7 +18,7 @@ public class QTreeNode {
       this.currDepth = stopDepth;
       
       // set Vector to current x-y-z values
-      this.center = new Vector(centerX, centerY, 0.0f);
+      this.center = new Vector3f(centerX, centerY, 0.0f);
       
       this.objects = new ArrayList<>();
       
@@ -57,8 +57,8 @@ public class QTreeNode {
           case IBoundaryShape.CIRCLE:
               
             // get the raw arrays, makes it easier to run these in a loop
-            final float[] objPos = ((Circle)collider).center.vec;
-            final float[] nodePos = center.vec;
+            final float[] objPos    = {((Circle)collider).center.x,((Circle)collider).center.y,((Circle)collider).center.z};
+            final float[] nodePos   = {center.x,center.y,center.z};
 
             for (int i = 0; i < 2; i++) {
                // compute the delta, nodePos Vector index - objPos Vector
