@@ -18,4 +18,5 @@ public interface iDestructible {
         public abstract void setHealth(float hp);
         public abstract void modifyHealth(float hp);
         public abstract float setMaxHealth(float hp);
+        public abstract boolean isDestructable();
 }

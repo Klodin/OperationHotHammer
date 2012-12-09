@@ -1,16 +1,18 @@
 
 package OperationHotHammer.Core.GameObjects;
 
-import OperationHotHammer.Core.GameObjects.StatusEffects.StatusEffects;
+
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
+import OperationHotHammer.Core.GameObjects.StatusEffects.StatusEffects;
 import org.lwjgl.util.vector.Vector3f;
 
 
 public abstract class AdvancedEntity extends Entity implements iDestructible, iPhysics {
 
-    public float health = 100;
-    public float maxHealth = 100;
-    private boolean destroyed = false;
+    private  float health;
+    private float maxHealth;
+    private boolean destroyed;
+    protected boolean destructable;
     
     public float weight = 999999999;
     
@@ -18,6 +20,11 @@ public abstract class AdvancedEntity extends Entity implements iDestructible, iP
     
     public AdvancedEntity(Vector3f p, IBoundaryShape colliderShape) {
         super(p, colliderShape);
+        
+        health          = 100;
+        maxHealth       = 100;
+        destroyed       = false;
+        destructable    = false;
     }
     
     @Override
@@ -25,11 +32,7 @@ public abstract class AdvancedEntity extends Entity implements iDestructible, iP
         statusEffects.update(delta);
     }
     
-    @Override
-    public void addDamage(float amount, int element) {
-        health-=amount;
-    }
-    
+    //implementation of iPhysics
     @Override
     public void setHeading(Vector3f vec) {
         //stuff
@@ -41,20 +44,43 @@ public abstract class AdvancedEntity extends Entity implements iDestructible, iP
     }
     
     //implementation of iDestructible
+    @Override
+    public void addDamage(float amount, int element) { 
+        health -= amount; 
+    }
+    
     @Override 
-    public boolean isDestroyed()          { return destroyed; }
+    public boolean isDestroyed() { 
+        return destroyed; 
+    }
+    
     @Override 
-    public void    destroy()              { destroyed = true; }
+    public void destroy() { 
+        destroyed = true; 
+    }
+    
     @Override 
-    public void    undestroy()            { destroyed = false; }
+    public void undestroy() { 
+        destroyed = false; 
+    }
+    
     @Override 
-    public float   getHealth()            { return health; }
+    public float getHealth() { 
+        return health; 
+    }
+    
     @Override 
-    public float   getMaxHealth()         { return maxHealth; }
+    public float getMaxHealth() { 
+        return maxHealth; 
+    }
+    
     @Override 
-    public void    setHealth(float hp)    { health = hp; }
+    public void setHealth(float hp) { 
+        health = hp; 
+    }
+    
     @Override 
-    public void    modifyHealth(float hp) {
+    public void modifyHealth(float hp) {
         if(health+hp < 0){
             health = 0;
         }else if(health+hp > maxHealth){ 
@@ -62,6 +88,11 @@ public abstract class AdvancedEntity extends Entity implements iDestructible, iP
         }else{
             health+=hp;
         }
+    }
+    
+    @Override
+    public boolean isDestructable() {
+        return destructable;
     }
     
 }
