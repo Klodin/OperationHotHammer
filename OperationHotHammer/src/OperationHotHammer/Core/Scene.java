@@ -3,9 +3,11 @@ package OperationHotHammer.Core;
 
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Partitioning.QTree;
+import OperationHotHammer.Display.Display;
+import OperationHotHammer.Display.IListener;
 import java.util.ArrayList;
 
-public class Scene {
+public class Scene implements IListener {
 
     public final ArrayList<Entity> objects = new ArrayList<>();
     public final String name;
@@ -40,6 +42,7 @@ public class Scene {
         
     }
     
+    @Override
     public void update(float delta) {
         
         quadTree.clean();
@@ -51,8 +54,12 @@ public class Scene {
         
     }
     
-    public void draw(){
-        
+    @Override
+    public void render(){
+        ArrayList<Entity> entities = quadTree.retrieveObjects(Display.INSTANCE.getX(), Display.INSTANCE.getY(), Math.max(Display.INSTANCE.getScreenWidth(), Display.INSTANCE.getScreenHeight()));
+        for(Entity e : entities) {
+            e.draw();
+        }
     }
     
 }
