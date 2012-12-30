@@ -5,11 +5,14 @@
 package OperationHotHammer.Core.GameObjects.Entities;
 
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
+import OperationHotHammer.Core.GameObjects.Entity;
 
 /**
- *
  * @author Raymond
  */
-public class Terrain {
-    
+public class Terrain extends Entity{
+    public float speedModifier = 0;
+    public void setSpeedModifier(float newSpeedModifier){
+        speedModifier = newSpeedModifier;
+    }
 }
