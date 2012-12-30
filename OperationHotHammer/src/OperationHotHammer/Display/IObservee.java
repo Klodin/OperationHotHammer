@@ -1,6 +1,6 @@
 package OperationHotHammer.Display;
 
-public interface IListener {
+public interface IObservee {
     
     public void update(float delta);
     public void render();

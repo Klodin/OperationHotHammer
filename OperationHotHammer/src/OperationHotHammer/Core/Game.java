@@ -4,10 +4,10 @@ package OperationHotHammer.Core;
 
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Display.IDisplayable;
-import OperationHotHammer.Display.IListener;
+import OperationHotHammer.Display.IObservee;
 import OperationHotHammer.Display.IObserver;
 
-public class Game implements IListener{
+public class Game implements IObservee{
 
     Scene scene;
     private float x;

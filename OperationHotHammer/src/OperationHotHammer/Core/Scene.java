@@ -4,10 +4,10 @@ package OperationHotHammer.Core;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Partitioning.QTree;
 import OperationHotHammer.Display.Display;
-import OperationHotHammer.Display.IListener;
+import OperationHotHammer.Display.IObservee;
 import java.util.ArrayList;
 
-public class Scene implements IListener {
+public class Scene implements IObservee {
 
     public final ArrayList<Entity> objects = new ArrayList<>();
     public final String name;

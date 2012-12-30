@@ -7,19 +7,19 @@ import java.util.ArrayList;
 public enum Display implements IObserver{
     INSTANCE;
     
-    ArrayList<IListener> listeners;
+    ArrayList<IObservee> observees;
     private Game game;
     
     private long lastLoopTime = System.nanoTime();
     
     private Display() {
         game = new Game();
-        addListener(game);
+        addObservee(game);
     }    
   
     @Override
-    public void addListener(IListener rl) {
-        listeners.add(rl);
+    public void addObservee(IObservee rl) {
+        observees.add(rl);
     }
   
     public void run(){
@@ -39,11 +39,11 @@ public enum Display implements IObserver{
 
             lastLoopTime = time;
 
-            for(IListener listener : listeners){
-                listener.update(delta);
+            for(IObservee o : observees){
+                o.update(delta);
             }
-            for(IListener listener : listeners){
-                listener.render();
+            for(IObservee o : observees){
+                o.render();
             }
         }
     }
