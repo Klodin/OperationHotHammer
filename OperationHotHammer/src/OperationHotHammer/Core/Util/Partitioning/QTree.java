@@ -9,7 +9,7 @@ public class QTree {
    
    // define a quadtree extends as width and height, define quadtree depth.
    public QTree(final float worldExtends, int worldDepth) {
-      node = new QTreeNode(0,0,worldExtends, worldDepth);
+      node = new QTreeNode(0,0,worldExtends/2, worldDepth);
    }
 
    // insert a GameObject at the quadtree
@@ -18,10 +18,10 @@ public class QTree {
    }
    
    // insert a GameObject at the quadtree
-   public ArrayList<Entity> retreiveObjects(float centerX, float centerY, float range) {
+   public ArrayList<Entity> retrieveObjects(float centerX, float centerY, float halfWidth) {
       
       ArrayList<Entity> objects = new ArrayList<>();
-      node.retreievObjects(objects, centerX - range/2, centerY - range/2, centerX + range/2, centerY + range/2);
+      node.retrieveObjects(objects, centerX, centerY, halfWidth);
       return objects;
    }
    

@@ -11,11 +11,12 @@ public class QTreeNode {
    private final int currDepth; // the current depth of this node
    private final Vector3f center; // the center of this node
    private final QTreeNode[] nodes; // the child nodes
-   
+   private final float halfWidth;
    private final ArrayList<Entity> objects; // the objects stored at this node
    
-   public QTreeNode(float centerX, float centerY, float halfWidth, int stopDepth) {
+   public QTreeNode(float centerX, float centerY, float halfW, int stopDepth) {
       this.currDepth = stopDepth;
+      this.halfWidth = halfW;
       
       // set Vector to current x-y-z values
       this.center = new Vector3f(centerX, centerY, 0.0f);
@@ -70,7 +71,7 @@ public class QTreeNode {
                   break;
                }
 
-               // compute the index to isnert to child node
+               // compute the index to insert to child node
                if (delta > 0.0f) {
                   index |= (1 << i);
                }
@@ -87,6 +88,27 @@ public class QTreeNode {
             
             break;
       }
+   }
+   
+   public void retrieveObjects(ArrayList objList, float centerX, float centerY, float halfW){
+       objList.addAll(objects);
+       
+       final float[] nodePos   = {centerX,centerY,0};
+       float[] subNodePos = new float[3];
+       float delta;
+       
+       for(int n = 0; n < 4; n++) {
+           subNodePos[0] = nodes[n].center.x;
+           subNodePos[1] = nodes[n].center.y;
+           
+           for (int i = 0; i < 2; i++) {
+                delta = nodePos[i] - subNodePos[i];
+
+                if (Math.abs(delta) <= (nodes[n].halfWidth + halfW)) {
+                    nodes[n].retrieveObjects(objList, centerX, centerY, halfW);
+                }
+           }
+       }
    }
    
    public void clean() {
