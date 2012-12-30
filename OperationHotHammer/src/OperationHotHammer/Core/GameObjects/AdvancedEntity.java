@@ -79,6 +79,11 @@ public abstract class AdvancedEntity extends Entity implements iDestructible, iP
         health = hp; 
     }
     
+    @Override
+    public void setMaxHealth(float hp) {
+        maxHealth = hp;
+    }
+    
     @Override 
     public void modifyHealth(float hp) {
         if(health+hp < 0){

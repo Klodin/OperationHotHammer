@@ -18,7 +18,7 @@ public class Scene {
         name = n;
         width = w;
         height = h;
-        quadTree = new QTree(Math.max(w,h), 4);
+        quadTree = new QTree(Math.max(w,h), 6);
         
     }
     
@@ -48,6 +48,10 @@ public class Scene {
             o.update(delta);
             quadTree.insertObject(o);
         }   
+        
+    }
+    
+    public void draw(){
         
     }
     

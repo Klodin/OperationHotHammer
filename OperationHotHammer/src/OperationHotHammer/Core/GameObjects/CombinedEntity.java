@@ -12,11 +12,13 @@ import org.lwjgl.util.vector.Vector3f;
  *
  * @author Kaitlyn
  */
-public class ComplexEntity extends Entity {
+public class CombinedEntity extends AdvancedEntity {
+
+
     private final ArrayList<Entity> entities = new ArrayList<>();
         
-    public ComplexEntity(Vector3f position){
-        super(position);
+    public CombinedEntity(Vector3f position){
+        super(position, null);
     }
     
     @Override
@@ -29,7 +31,7 @@ public class ComplexEntity extends Entity {
     @Override
     public void draw() {
         if(entities.isEmpty()) {
-            Debugging.INSTANCE.showWarning("Attempted to draw an empty complex entity!");
+            Debugging.INSTANCE.showWarning("Attempted to draw an empty entity group!");
             return;
         }
 
