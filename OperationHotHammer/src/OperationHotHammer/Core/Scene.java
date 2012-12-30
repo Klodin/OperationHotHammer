@@ -25,21 +25,7 @@ public class Scene implements IListener {
     }
     
     public void addEntiity(Entity object) {
-        
-        if(object.position.x > width) {
-            object.position.x = width;
-        } else if(object.position.x < 0) {
-            object.position.x = 0;
-        }
-        
-        if(object.position.y > height) {
-            object.position.y = height;
-        } else if(object.position.y < 0) {
-            object.position.y = 0;
-        }
-        
         objects.add(object);
-        
     }
     
     @Override
