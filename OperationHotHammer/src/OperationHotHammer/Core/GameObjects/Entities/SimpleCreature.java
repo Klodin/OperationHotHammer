@@ -7,7 +7,6 @@ package OperationHotHammer.Core.GameObjects.Entities;
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Settings;
-import OperationHotHammer.Display.GameWindow;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
@@ -18,17 +17,23 @@ public class SimpleCreature extends Entity{
     
     public SimpleCreature(float x, float y) {
         super(new Vector3f(x,y,0),new Circle(Settings.GRID_SPACE_SIZE/2));
+        
+        startx = position.x;
+        starty = position.y;
+        radius = 100;
     }
 
-    float direction = 1.5f;
+    float degree=0;
+    float speed=0.5f;
+    float radius;
+    float startx;
+    float starty;
     
     @Override
     public void update(float delta) {
-        if(position.y > 400 && direction > 0) 
-            direction *= -1f;
-        if(position.y < 200 && direction < 0) 
-            direction *= -1f;
-        position.y += direction;
+        degree+=(speed*delta)/radius;
+        position.x=(float)(startx+radius*Math.cos(degree));
+        position.y=(float)(starty+radius*Math.sin(degree));
     }
     
 }
