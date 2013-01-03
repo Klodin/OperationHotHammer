@@ -3,7 +3,7 @@ package OperationHotHammer.Core;
 
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Partitioning.QTree;
-import OperationHotHammer.Display.Display;
+import OperationHotHammer.Display.GameWindow;
 import OperationHotHammer.Display.IObservee;
 import java.util.ArrayList;
 
@@ -24,7 +24,7 @@ public class Scene implements IObservee {
         
     }
     
-    public void addEntiity(Entity object) {
+    public void addEntity(Entity object) {
         objects.add(object);
     }
     
@@ -42,7 +42,7 @@ public class Scene implements IObservee {
     
     @Override
     public void render(){
-        ArrayList<Entity> entities = quadTree.retrieveObjects(Display.INSTANCE.getX(), Display.INSTANCE.getY(), Math.max(Display.INSTANCE.getScreenWidth(), Display.INSTANCE.getScreenHeight()));
+        ArrayList<Entity> entities = quadTree.retrieveObjects(GameWindow.INSTANCE.getX(), GameWindow.INSTANCE.getY(), Math.max(GameWindow.INSTANCE.getScreenWidth(), GameWindow.INSTANCE.getScreenHeight()));
         for(Entity e : entities) {
             e.draw();
         }

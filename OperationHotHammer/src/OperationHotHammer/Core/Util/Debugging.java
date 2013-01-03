@@ -4,6 +4,7 @@
  */
 package OperationHotHammer.Core.Util;
 
+import OperationHotHammer.Core.Game;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public enum Debugging {
         
     public void showError(String message) {
         showMessage("Error:" + message);
-        
+        Game.INSTANCE.shutdown();
     }
     
     public void showMessage(String message) {

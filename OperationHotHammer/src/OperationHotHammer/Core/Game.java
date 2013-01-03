@@ -1,11 +1,13 @@
 
 package OperationHotHammer.Core;
 
+import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
+import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.Util.Settings;
-import OperationHotHammer.Display.IDisplayable;
+import OperationHotHammer.Display.GameWindow;
 import OperationHotHammer.Display.IObservee;
-import OperationHotHammer.Display.IObserver;
+import OperationHotHammer.Display.Sprite;
 
 public enum Game implements IObservee{
     INSTANCE;
@@ -18,10 +20,14 @@ public enum Game implements IObservee{
     public void initialize() {
         Debugging.INSTANCE.showMessage("Initializing the game...");
         
-        scene = new Scene("Green Valley", Settings.GRID_SPACE_SIZE * 50, Settings.GRID_SPACE_SIZE * 50);
+        scene = new Scene("Green Valley", GameWindow.INSTANCE.getScreenWidth(), GameWindow.INSTANCE.getScreenHeight());
         
         x = scene.width/2;
         y = scene.height/2;   
+        
+        Entity e = new SimpleCreature(x,y);
+        e.attach(new Sprite("OperationHotHammer/Assets/Terrain/grass.png"));
+        scene.addEntity(e);
         
         isRunning = true;
     }
@@ -48,6 +54,11 @@ public enum Game implements IObservee{
     
     public boolean isRunning() {
         return isRunning;
+    }
+    
+    public void shutdown() {
+        isRunning = false;
+        Debugging.INSTANCE.showMessage("Shutting down game...");
     }
     
 }

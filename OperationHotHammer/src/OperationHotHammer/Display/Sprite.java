@@ -30,7 +30,7 @@ public class Sprite implements ISprite {
 	texture.bind();
     
 	// translate to the right location and prepare to draw
-	GL11.glTranslatef(position.x, position.y, 0);		
+	GL11.glTranslatef(position.x-texture.getImageWidth()/2, position.y-texture.getImageHeight()/2, 0);		
     	GL11.glColor3f(1,1,1);
 		
 	// draw a quad textured to match the sprite

@@ -4,10 +4,24 @@
  */
 package OperationHotHammer.Core.GameObjects.Entities;
 
+import OperationHotHammer.Core.GameObjects.Boundary.Circle;
+import OperationHotHammer.Core.GameObjects.Entity;
+import OperationHotHammer.Core.Util.Settings;
+import org.lwjgl.util.vector.Vector3f;
+
 /**
  *
  * @author Kaitlyn
  */
-public class SimpleCreature  {
+public class SimpleCreature extends Entity{
+    
+    public SimpleCreature(float x, float y) {
+        super(new Vector3f(x,y,0),new Circle(Settings.GRID_SPACE_SIZE/2));
+    }
+
+    @Override
+    public void update(float delta) {
+        
+    }
     
 }
