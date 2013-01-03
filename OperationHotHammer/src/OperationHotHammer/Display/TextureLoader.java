@@ -92,7 +92,7 @@ public enum TextureLoader {
         Texture tex = (Texture) table.get(resourceName);
         
         if (tex != null) {
-            return tex;
+            return tex.clone();
         }
         
         tex = getTexture(resourceName,

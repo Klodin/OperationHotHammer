@@ -148,4 +148,16 @@ public class Texture {
             widthRatio = ((float) width)/texWidth;
         }
     }
+    
+    @Override
+    public Texture clone() {
+        Texture t = new Texture(target,textureID);
+        t.height = height;
+        t.width = width;
+        t.texWidth = texWidth;
+        t.texHeight = texHeight;
+        t.widthRatio = widthRatio;
+        t.heightRatio = heightRatio;
+        return t;
+    }
 }

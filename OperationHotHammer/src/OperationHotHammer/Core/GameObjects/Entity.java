@@ -15,6 +15,7 @@ public abstract class Entity implements IDisplayable {
    
    public final Vector3f position;
    
+   
    public Entity(Vector3f p, IBoundaryShape colliderShape) {
       collider = colliderShape;
       position = p;
