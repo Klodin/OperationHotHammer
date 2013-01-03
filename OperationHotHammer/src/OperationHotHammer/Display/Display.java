@@ -1,3 +1,4 @@
+
 package OperationHotHammer.Display;
 
 import OperationHotHammer.Core.Game;
@@ -7,53 +8,35 @@ import java.util.ArrayList;
 public enum Display implements IObserver{
     INSTANCE;
     
-    ArrayList<IObservee> observees;
-    private Game game;
-    
-    private long lastLoopTime = System.nanoTime();
-    
-    private Display() {
-        game = new Game();
-        addObservee(game);
-    }    
-  
+    ArrayList<IObservee> observees = new ArrayList<>();
+
     @Override
     public void addObservee(IObservee rl) {
         observees.add(rl);
     }
   
-    public void run(){
-       
-        while(game.isRunning()) {
-            long time = System.nanoTime();
-            float delta = ((time - lastLoopTime) / 1000000L);
-
-            if(delta < Settings.FRAME_RATE_MILLISECONDS) {
-                try{
-                    Thread.sleep(100);//sleep for 100 ms
-                }catch(InterruptedException e){
-                
-                }
-                continue;
-            }
-
-            lastLoopTime = time;
-
-            for(IObservee o : observees){
-                o.update(delta);
-            }
-            for(IObservee o : observees){
-                o.render();
-            }
+    public void initialize() {
+     
+        Game.INSTANCE.initialize();
+        addObservee(Game.INSTANCE);
+        
+    }
+    
+    public void render(float delta){
+        for(IObservee o : observees){
+            o.update(delta);
+        }
+        for(IObservee o : observees){
+            o.render();
         }
     }
     
     public float getX() {
-        return game.getX();
+        return Game.INSTANCE.getX();
     }
 
     public float getY() {
-        return game.getY();
+        return Game.INSTANCE.getY();
     }
 
     public int getScreenWidth() {
@@ -62,5 +45,9 @@ public enum Display implements IObserver{
 
     public int getScreenHeight() {
         return 300;
+    }
+    
+    public boolean isRunning() {
+        return Game.INSTANCE.isRunning();
     }
 } 

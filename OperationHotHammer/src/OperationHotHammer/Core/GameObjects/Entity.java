@@ -1,6 +1,6 @@
 package OperationHotHammer.Core.GameObjects;
 
-import OperationHotHammer.Core.Debugging.Debugging;
+import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Display.IDisplayable;
 import OperationHotHammer.Display.ISprite;

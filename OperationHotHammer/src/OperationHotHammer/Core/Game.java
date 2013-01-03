@@ -1,27 +1,29 @@
 
-
 package OperationHotHammer.Core;
 
+import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Display.IDisplayable;
 import OperationHotHammer.Display.IObservee;
 import OperationHotHammer.Display.IObserver;
 
-public class Game implements IObservee{
-
+public enum Game implements IObservee{
+    INSTANCE;
+    
     Scene scene;
     private float x;
     private float y;
-    private boolean on = true;
+    private boolean isRunning = false;
     
-    public Game() {
-        super();
+    public void initialize() {
+        Debugging.INSTANCE.showMessage("Initializing the game...");
         
         scene = new Scene("Green Valley", Settings.GRID_SPACE_SIZE * 50, Settings.GRID_SPACE_SIZE * 50);
         
         x = scene.width/2;
-        y = scene.height/2;
+        y = scene.height/2;   
         
+        isRunning = true;
     }
     
     public float getX() {
@@ -34,16 +36,18 @@ public class Game implements IObservee{
     
     @Override
     public void update(float delta) {
-        scene.update(delta);
+        if(isRunning)
+            scene.update(delta);
     }
     
     @Override
     public void render() {
-        scene.render();
+        if(isRunning)
+            scene.render();
     }
     
     public boolean isRunning() {
-        return on;
+        return isRunning;
     }
     
 }

@@ -1,6 +1,7 @@
 
 package OperationHotHammer.Display;
 
+import OperationHotHammer.Core.GameObjects.Entity;
 import org.lwjgl.util.vector.Vector3f;
 
 public interface ISprite {
