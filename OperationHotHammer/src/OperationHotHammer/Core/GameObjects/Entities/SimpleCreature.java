@@ -20,9 +20,15 @@ public class SimpleCreature extends Entity{
         super(new Vector3f(x,y,0),new Circle(Settings.GRID_SPACE_SIZE/2));
     }
 
+    float direction = 1.5f;
+    
     @Override
     public void update(float delta) {
-        position.y = GameWindow.INSTANCE.getFPS()+200;
+        if(position.y > 400 && direction > 0) 
+            direction *= -1f;
+        if(position.y < 200 && direction < 0) 
+            direction *= -1f;
+        position.y += direction;
     }
     
 }
