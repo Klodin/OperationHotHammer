@@ -3,6 +3,7 @@ package OperationHotHammer.Display;
 
 import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Settings;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import org.lwjgl.LWJGLException;
@@ -25,7 +26,7 @@ public enum GameWindow implements IObserver{
     
     public void initialize() {
      
-        setResolution(800,600);
+        setResolution(1366,768);
         startRendering();
         Game.INSTANCE.initialize();
         addObservee(Game.INSTANCE);
@@ -49,6 +50,7 @@ public enum GameWindow implements IObserver{
         
         // update window contents
 	Display.update();
+        Display.sync(Settings.FRAME_RATE_SECONDS); // cap fps to 60fps
         
     }
     
@@ -87,6 +89,7 @@ public enum GameWindow implements IObserver{
         try {
             Display.setFullscreen(fullscreen);
             Mouse.setGrabbed(fullscreen);
+            Display.setVSyncEnabled(fullscreen);
         }
         catch(Exception e) {
             
