@@ -15,22 +15,17 @@ import org.lwjgl.opengl.GL11;
 public enum GameWindow implements IObserver{
     INSTANCE;
     
-    ArrayList<IObservee> observees = new ArrayList<>();
-
-    @Override
-    public void addObservee(IObservee rl) {
-        observees.add(rl);
-    }
-  
+    ArrayList<IObservee> observees = new ArrayList<>();  
     private String title;
     private int width;
     private int height;
     private int FPS = 0;
-    
+    private int prevFPS = 0;
+    private boolean fullscreen = false;
     
     public void initialize() {
      
-        setResolution(1366,768);
+        setResolution(800,600);
         startRendering();
         Game.INSTANCE.initialize();
         addObservee(Game.INSTANCE);
@@ -38,6 +33,7 @@ public enum GameWindow implements IObserver{
     }
     
     public void draw(float delta){
+        
         // clear screen
 	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -54,11 +50,6 @@ public enum GameWindow implements IObserver{
         // update window contents
 	Display.update();
         
-        if(Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            Game.INSTANCE.shutdown();
-            Display.destroy();
-            //callback.windowClosed();
-	}
     }
     
     /**
@@ -76,7 +67,7 @@ public enum GameWindow implements IObserver{
 		"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel() 
             });
             
-            Display.setFullscreen(true);
+            
 
             return true;
 		
@@ -90,6 +81,21 @@ public enum GameWindow implements IObserver{
 	return false;
     }
         
+    
+    public void switchMode() {
+        fullscreen = !fullscreen;
+        try {
+            Display.setFullscreen(fullscreen);
+            Mouse.setGrabbed(fullscreen);
+        }
+        catch(Exception e) {
+            
+            e.printStackTrace();
+            Debugging.INSTANCE.showWarning("Unable to enter fullscreen, continuing in windowed mode.");
+            
+        }
+    }
+        
     public void setTitle(String title) {
 	this.title = title;
 	if(Display.isCreated()) {
@@ -98,7 +104,12 @@ public enum GameWindow implements IObserver{
     }
     
     public void setFPS(int val) {
+        prevFPS = FPS;
         FPS = val;
+    }
+    
+    public int getFPS() {
+        return (int)(((float)FPS)*0.9 + ((float)prevFPS)*0.1);
     }
     
     public void setResolution(int x, int y) {
@@ -126,6 +137,11 @@ public enum GameWindow implements IObserver{
         return Game.INSTANCE.isRunning();
     }
     
+    @Override
+    public void addObservee(IObservee rl) {
+        observees.add(rl);
+    }
+    
     /**
     * Start the rendering process. This method will cause the display to redraw
     * as fast as possible.
@@ -134,9 +150,11 @@ public enum GameWindow implements IObserver{
         try {                
             setDisplayMode();
             Display.create();
-			
+            setTitle("Awesome Secret Game");
+            
             // grab the mouse, dont want that hideous cursor when we're playing!
-            Mouse.setGrabbed(true);
+            Mouse.setGrabbed(fullscreen);
+            Display.setFullscreen(fullscreen);
   
             // enable textures since we're going to use these for our sprites
             GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -156,22 +174,4 @@ public enum GameWindow implements IObserver{
             //callback.windowClosed();
 	}
     }
-    
-    public boolean isKeyPressed(int keyCode) {
-        // apparently, someone at decided not to use standard 
-	// keycode, so we have to map them over:
-	switch(keyCode) {
-	case KeyEvent.VK_SPACE:
-		keyCode = Keyboard.KEY_SPACE;
-		break;
-	case KeyEvent.VK_LEFT:
-		keyCode = Keyboard.KEY_LEFT;
-		break;
-	case KeyEvent.VK_RIGHT:
-		keyCode = Keyboard.KEY_RIGHT;
-		break;
-	}    
-		
-	return org.lwjgl.input.Keyboard.isKeyDown(keyCode);
-}
 } 

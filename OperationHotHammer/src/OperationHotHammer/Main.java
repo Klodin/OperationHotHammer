@@ -5,6 +5,8 @@ import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Display.GameWindow;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 
 class Main {
@@ -17,8 +19,9 @@ class Main {
         
         Debugging.INSTANCE.showMessage("Beginning main game loop...");
         
-        long start = System.nanoTime();
+        long prevFpsTime = System.nanoTime();
         long count = 0;
+        boolean key_f1 = false;
         
         while(Game.INSTANCE.isRunning()) {
             long time = System.nanoTime();
@@ -32,10 +35,30 @@ class Main {
                 //}
                 continue;
             }
-            count++;
-            GameWindow.INSTANCE.setFPS((int)(count / (((time - start) / 1000000000L)+1)));
             
+            
+            count++;
+            if((time - prevFpsTime) / 1000000L >= 1000L) {
+                int fps = (int)(count / ((time - prevFpsTime) / 1000000L / 1000L));
+                count = 0;
+                prevFpsTime = time;
+                GameWindow.INSTANCE.setFPS(fps);
+            }
             lastLoopTime = time;
+            
+            if(Keyboard.isKeyDown(Keyboard.KEY_F1) && !key_f1) {    // Is F1 Being Pressed?
+                key_f1 = true;                                      // Tell Program F1 Is Being Held
+                GameWindow.INSTANCE.switchMode();                                       // Toggle Fullscreen / Windowed Mode
+            }
+            if(!Keyboard.isKeyDown(Keyboard.KEY_F1)) {              // Is F1 Being Pressed?
+                key_f1 = false;
+            }
+            
+            if(Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+                Game.INSTANCE.shutdown();
+                Display.destroy();
+                //callback.windowClosed();
+            }
             
             GameWindow.INSTANCE.draw(delta);
             

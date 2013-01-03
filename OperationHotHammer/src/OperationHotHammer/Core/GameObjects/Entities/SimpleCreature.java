@@ -7,6 +7,7 @@ package OperationHotHammer.Core.GameObjects.Entities;
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Settings;
+import OperationHotHammer.Display.GameWindow;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
@@ -21,7 +22,7 @@ public class SimpleCreature extends Entity{
 
     @Override
     public void update(float delta) {
-        
+        position.y = GameWindow.INSTANCE.getFPS()+200;
     }
     
 }

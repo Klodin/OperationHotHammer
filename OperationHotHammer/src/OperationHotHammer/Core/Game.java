@@ -26,7 +26,10 @@ public enum Game implements IObservee{
         y = scene.height/2;   
         
         Entity e = new SimpleCreature(x,y);
-        e.attach(new Sprite("OperationHotHammer/Assets/Terrain/grass.png"));
+        Sprite s = new Sprite("OperationHotHammer/Assets/Terrain/grass.png");
+        s.setWidth(200);
+        s.setHeight(200);
+        e.attach(s);
         scene.addEntity(e);
         
         isRunning = true;

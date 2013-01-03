@@ -20,6 +20,14 @@ public class Sprite implements ISprite {
         texture = temp;
     }
     
+    public void setWidth(int w) {
+        texture.setWidth(w);
+    }
+    
+    public void setHeight(int h) {
+        texture.setHeight(h);
+    }
+    
     @Override
     public void draw(Vector3f position) {
         
