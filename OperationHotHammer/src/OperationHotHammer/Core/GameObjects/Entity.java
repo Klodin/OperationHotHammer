@@ -1,6 +1,6 @@
 package OperationHotHammer.Core.GameObjects;
 
-import OperationHotHammer.Core.Debugging.Debugging;
+import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Display.IDisplayable;
 import OperationHotHammer.Display.ISprite;
@@ -14,6 +14,7 @@ public abstract class Entity implements IDisplayable {
    public final IBoundaryShape collider;
    
    public final Vector3f position;
+   
    
    public Entity(Vector3f p, IBoundaryShape colliderShape) {
       collider = colliderShape;

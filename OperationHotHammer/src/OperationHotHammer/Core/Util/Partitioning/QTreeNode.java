@@ -97,17 +97,19 @@ public class QTreeNode {
        float[] subNodePos = new float[3];
        float delta;
        
-       for(int n = 0; n < 4; n++) {
-           subNodePos[0] = nodes[n].center.x;
-           subNodePos[1] = nodes[n].center.y;
-           
-           for (int i = 0; i < 2; i++) {
-                delta = nodePos[i] - subNodePos[i];
+       if(nodes != null) {
+        for(int n = 0; n < 4; n++) {
+            subNodePos[0] = nodes[n].center.x;
+            subNodePos[1] = nodes[n].center.y;
 
-                if (Math.abs(delta) <= (nodes[n].halfWidth + halfW)) {
-                    nodes[n].retrieveObjects(objList, centerX, centerY, halfW);
-                }
-           }
+            for (int i = 0; i < 2; i++) {
+                 delta = nodePos[i] - subNodePos[i];
+
+                 if (Math.abs(delta) <= (nodes[n].halfWidth + halfW)) {
+                     nodes[n].retrieveObjects(objList, centerX, centerY, halfW);
+                 }
+            }
+        }
        }
    }
    

@@ -1,27 +1,45 @@
 
-
 package OperationHotHammer.Core;
 
+import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
+import OperationHotHammer.Core.GameObjects.Entity;
+import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.Util.Settings;
-import OperationHotHammer.Display.IDisplayable;
+import OperationHotHammer.Display.GameWindow;
 import OperationHotHammer.Display.IObservee;
-import OperationHotHammer.Display.IObserver;
+import OperationHotHammer.Display.Sprite;
 
-public class Game implements IObservee{
-
+public enum Game implements IObservee{
+    INSTANCE;
+    
     Scene scene;
     private float x;
     private float y;
-    private boolean on = true;
+    private boolean isRunning = false;
     
-    public Game() {
-        super();
+    public void initialize() {
+        Debugging.INSTANCE.showMessage("Initializing the game...");
         
-        scene = new Scene("Green Valley", Settings.GRID_SPACE_SIZE * 50, Settings.GRID_SPACE_SIZE * 50);
+        scene = new Scene("Green Valley", GameWindow.INSTANCE.getScreenWidth(), GameWindow.INSTANCE.getScreenHeight());
         
         x = scene.width/2;
-        y = scene.height/2;
+        y = scene.height/2;   
         
+        Entity e;
+        Sprite s;
+        
+        int num = 20;
+        for(int _x = 0; _x <= num; _x++)
+        for(int _y = 0; _y <= num*0.7f; _y++) {
+            
+            s = new Sprite("OperationHotHammer/Assets/Terrain/grass.png");
+            e = new SimpleCreature((scene.width/num)*_x,(scene.height/((int)num*0.7f))*_y);
+            e.attach(s);
+            scene.addEntity(e);
+            
+        }
+        
+        isRunning = true;
     }
     
     public float getX() {
@@ -34,16 +52,23 @@ public class Game implements IObservee{
     
     @Override
     public void update(float delta) {
-        scene.update(delta);
+        if(isRunning)
+            scene.update(delta);
     }
     
     @Override
     public void render() {
-        scene.render();
+        if(isRunning)
+            scene.render();
     }
     
     public boolean isRunning() {
-        return on;
+        return isRunning;
+    }
+    
+    public void shutdown() {
+        isRunning = false;
+        Debugging.INSTANCE.showMessage("Shutting down game...");
     }
     
 }
