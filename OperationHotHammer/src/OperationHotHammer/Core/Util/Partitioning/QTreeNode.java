@@ -3,7 +3,8 @@ package OperationHotHammer.Core.Util.Partitioning;
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.Entity;
-import java.util.ArrayList;
+import OperationHotHammer.Core.Util.EntityArrayList;
+import OperationHotHammer.Core.Util.EntityList;
 import org.lwjgl.util.vector.Vector3f;
 
 
@@ -12,7 +13,7 @@ public class QTreeNode {
    private final Vector3f center; // the center of this node
    private final QTreeNode[] nodes; // the child nodes
    private final float halfWidth;
-   private final ArrayList<Entity> objects; // the objects stored at this node
+   private final EntityList objects; // the objects stored at this node
    
    public QTreeNode(float centerX, float centerY, float halfW, int stopDepth) {
       this.currDepth = stopDepth;
@@ -21,7 +22,7 @@ public class QTreeNode {
       // set Vector to current x-y-z values
       this.center = new Vector3f(centerX, centerY, 0.0f);
       
-      this.objects = new ArrayList<>();
+      this.objects = new EntityArrayList();
       
       float offsetX = 0.0f;
       float offsetY = 0.0f;
@@ -90,8 +91,10 @@ public class QTreeNode {
       }
    }
    
-   public void retrieveObjects(ArrayList objList, float centerX, float centerY, float halfW){
-       objList.addAll(objects);
+   public void retrieveObjects(EntityList objList, float centerX, float centerY, float halfW){
+       for(Entity object : objects){
+           objList.add(object);
+       }
        
        final float[] nodePos   = {centerX,centerY,0};
        float[] subNodePos = new float[3];

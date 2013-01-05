@@ -17,7 +17,7 @@ import java.util.Random;
 public class SimpleCreature extends Entity{
     private static Random randomGenerator = new Random();
     public SimpleCreature(float x, float y) {
-        super(new Vector3f(x,y,0),new Circle(Settings.GRID_SPACE_SIZE/2));
+        super(new Vector3f(x,y,50),new Circle(Settings.GRID_SPACE_SIZE/2));
         
         startx = position.x;
         starty = position.y;
@@ -43,6 +43,7 @@ public class SimpleCreature extends Entity{
         degree+=(speed*delta)/radius;
         position.x=(float)(startx+radius*Math.cos(degree)*ranx);
         position.y=(float)(starty+radius*Math.sin(degree)*rany);
+        position.z=(position.x/20) + sizemod;
         sprite.setWidth((int)(position.x/20) + sizemod);
         sprite.setHeight((int)(position.x/20) + sizemod);
     }
