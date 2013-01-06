@@ -95,22 +95,20 @@ public class QTreeNode {
         Vector3f subNodePos = new Vector3f();
         Vector3f deltaV3f = new Vector3f();
         float delta;
+        float radius;
        
         for(Entity object : objects){
             if(object.collider.getShape() == IBoundaryShape.CIRCLE) {
                 subNodePos.x = object.position.x;
                 subNodePos.y = object.position.y;
-                float radius = ((Circle)object.collider).radius;
-                
-                //for (int i = 0; i < 2; i++) {
-                    deltaV3f.x = nodePos.x - subNodePos.x;
-                    deltaV3f.y = nodePos.y - subNodePos.y;
-                    delta = deltaV3f.x*deltaV3f.x + deltaV3f.y*deltaV3f.y;
-                    if(delta <= (radius + halfW)*(radius + halfW)){
-                        objList.add(object);
+                radius = ((Circle)object.collider).radius;
+                deltaV3f.x = nodePos.x - subNodePos.x;
+                deltaV3f.y = nodePos.y - subNodePos.y;
+                delta = deltaV3f.x*deltaV3f.x + deltaV3f.y*deltaV3f.y;
+                if(delta <= (radius + halfW)*(radius + halfW)){
+                    objList.add(object);
                         
-                    }
-                //}
+                }
             }
         }
        
@@ -118,16 +116,12 @@ public class QTreeNode {
             for(int n = 0; n < 4; n++) {
                 subNodePos.x = nodes[n].center.x;
                 subNodePos.y = nodes[n].center.y;
-
-                //for (int i = 0; i < 2; i++) {
-                    deltaV3f.x = nodePos.x - subNodePos.x;
-                    deltaV3f.y = nodePos.y - subNodePos.y;
-                    delta = deltaV3f.x*deltaV3f.x + deltaV3f.y*deltaV3f.y;
-                    if (delta <= (nodes[n].halfWidth + halfW)*(nodes[n].halfWidth + halfW)) {
-                        nodes[n].retrieveObjects(objList, centerX, centerY, halfW);
-                        
-                    }
-                //}
+                deltaV3f.x = nodePos.x - subNodePos.x;
+                deltaV3f.y = nodePos.y - subNodePos.y;
+                delta = deltaV3f.x*deltaV3f.x + deltaV3f.y*deltaV3f.y;
+                if (delta <= (nodes[n].halfWidth + halfW)*(nodes[n].halfWidth + halfW)) {
+                    nodes[n].retrieveObjects(objList, centerX, centerY, halfW);     
+                }
             }
         }
     }

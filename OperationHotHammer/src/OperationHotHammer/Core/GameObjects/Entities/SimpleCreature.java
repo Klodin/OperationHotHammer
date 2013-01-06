@@ -28,15 +28,13 @@ public class SimpleCreature extends Entity{
         rany = 1+randomGenerator.nextInt(1+(100 - sizemod)/40);
      
                 
-        startw = (int)(position.x/20) + sizemod;
         starth = (int)(position.x/20) + sizemod;
+        startw = (int)(((position.x/20) + sizemod) * 1.02f);
         
         //radius = (float)Math.sqrt(startw*startw + starth*starth);
         radius = startw;
         position.z = radius;
-        
 
-        
         ((Circle)this.collider).radius = radius;
     }
 
