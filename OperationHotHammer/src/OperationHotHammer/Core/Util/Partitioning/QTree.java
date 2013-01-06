@@ -1,7 +1,7 @@
 package OperationHotHammer.Core.Util.Partitioning;
 
 import OperationHotHammer.Core.GameObjects.Entity;
-import java.util.ArrayList;
+import OperationHotHammer.Core.Util.EntityList;
 
 
 public class QTree {
@@ -18,11 +18,8 @@ public class QTree {
    }
    
    // insert a GameObject at the quadtree
-   public ArrayList<Entity> retrieveObjects(float centerX, float centerY, float halfWidth) {
-      
-      ArrayList<Entity> objects = new ArrayList<>();
+   public void retrieveObjects(EntityList objects, float centerX, float centerY, float halfWidth) {
       node.retrieveObjects(objects, centerX, centerY, halfWidth);
-      return objects;
    }
    
    // clean the quadtree

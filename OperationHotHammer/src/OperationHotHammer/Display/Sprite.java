@@ -4,11 +4,13 @@ import OperationHotHammer.Core.Util.Debugging;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.spaceinvaders.lwjgl.Texture;
-import org.newdawn.spaceinvaders.lwjgl.TextureLoader;
 
 public class Sprite implements ISprite {
+    public final static int TILED = 1;
+    public final static int STRETCH = 2;
+    
     public final Texture texture;
+    private int drawStyle = STRETCH;
     
     public Sprite(String resource) {
         Texture temp = null;
@@ -44,14 +46,25 @@ public class Sprite implements ISprite {
 	// draw a quad textured to match the sprite
     	GL11.glBegin(GL11.GL_QUADS);
 	{
-            GL11.glTexCoord2f(0, 0);
-	    GL11.glVertex2f(0, 0);
-	    GL11.glTexCoord2f(0, texture.getHeight());
-	    GL11.glVertex2f(0, texture.getImageHeight());
-	    GL11.glTexCoord2f(texture.getWidth(), texture.getHeight());
-	    GL11.glVertex2f(texture.getImageWidth(),texture.getImageHeight());
-	    GL11.glTexCoord2f(texture.getWidth(), 0);
-	    GL11.glVertex2f(texture.getImageWidth(),0);
+            if(drawStyle == TILED) {
+                GL11.glTexCoord2f(0, 0);
+                GL11.glVertex2f(0, 0);
+                GL11.glTexCoord2f(0, texture.getHeight());
+                GL11.glVertex2f(0, texture.getImageHeight());
+                GL11.glTexCoord2f(texture.getWidth(), texture.getHeight());
+                GL11.glVertex2f(texture.getImageWidth(),texture.getImageHeight());
+                GL11.glTexCoord2f(texture.getWidth(), 0);
+                GL11.glVertex2f(texture.getImageWidth(),0);
+            }else if(drawStyle == STRETCH) {
+                GL11.glTexCoord2f(0, 0);
+                GL11.glVertex2f(0, 0);
+                GL11.glTexCoord2f(0, 1.0f);
+                GL11.glVertex2f(0, texture.getImageHeight());
+                GL11.glTexCoord2f(1.0f,1.0f);
+                GL11.glVertex2f(texture.getImageWidth(),texture.getImageHeight());
+                GL11.glTexCoord2f(1.0f, 0);
+                GL11.glVertex2f(texture.getImageWidth(),0);
+            }
 	}
 	GL11.glEnd();
 		

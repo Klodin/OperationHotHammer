@@ -7,6 +7,7 @@ import OperationHotHammer.Display.ISprite;
 import org.lwjgl.util.vector.Vector3f;
 
 public abstract class Entity implements IDisplayable {
+
    public final static int LAYER_MIDDLE = 100;
    public static final float LAYER_MIN = 0;
    public static final float LAYER_MAX = 200;

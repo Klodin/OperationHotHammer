@@ -2,18 +2,23 @@
 package OperationHotHammer.Core;
 
 import OperationHotHammer.Core.GameObjects.Entity;
+import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.DepthSortedList;
+import OperationHotHammer.Core.Util.EntityArrayList;
+import OperationHotHammer.Core.Util.EntityList;
 import OperationHotHammer.Core.Util.Partitioning.QTree;
 import OperationHotHammer.Display.GameWindow;
 import OperationHotHammer.Display.IObservee;
-import java.util.ArrayList;
 
 public class Scene implements IObservee {
 
-    public final ArrayList<Entity> objects = new ArrayList<>();
+    private final EntityList objects = new EntityArrayList();
+    private final EntityList entitiesToDisplay = new DepthSortedList();
     public final String name;
-    public final QTree quadTree;
+    private final QTree quadTree;
     public final float width;
     public final float height;
+    private float drawRadius;
     
     public Scene(String n, float w, float h) {
      
@@ -21,6 +26,7 @@ public class Scene implements IObservee {
         width = w;
         height = h;
         quadTree = new QTree(Math.max(w,h), 6);
+        drawRadius = (float)Math.sqrt(width*width + height*height)/2.0f;
         
     }
     
@@ -42,8 +48,10 @@ public class Scene implements IObservee {
     
     @Override
     public void render(){
-        ArrayList<Entity> entities = quadTree.retrieveObjects(GameWindow.INSTANCE.getX(), GameWindow.INSTANCE.getY(), Math.max(GameWindow.INSTANCE.getScreenWidth(), GameWindow.INSTANCE.getScreenHeight()));
-        for(Entity e : entities) {
+        entitiesToDisplay.clear();
+        quadTree.retrieveObjects(entitiesToDisplay, GameWindow.INSTANCE.getX(), GameWindow.INSTANCE.getY(), drawRadius);
+        Debugging.INSTANCE.showMessage(String.valueOf(objects.size()) + " | " + String.valueOf(entitiesToDisplay.size()));
+        for(Entity e : entitiesToDisplay) {
             e.draw();
         }
     }

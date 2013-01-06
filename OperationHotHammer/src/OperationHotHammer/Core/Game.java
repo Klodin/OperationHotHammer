@@ -29,15 +29,15 @@ public enum Game implements IObservee{
         Sprite s;
         
         int num = 20;
-        for(int _x = 0; _x <= num; _x++)
+        for(int _x = 0; _x <= num; _x++){
         for(int _y = 0; _y <= num*0.7f; _y++) {
             
-            s = new Sprite("OperationHotHammer/Assets/Terrain/grass.png");
+            s = new Sprite("OperationHotHammer/Assets/smile.png");
             e = new SimpleCreature((scene.width/num)*_x,(scene.height/((int)num*0.7f))*_y);
             e.attach(s);
             scene.addEntity(e);
             
-        }
+        }}
         
         isRunning = true;
     }

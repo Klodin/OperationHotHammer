@@ -17,34 +17,47 @@ import java.util.Random;
 public class SimpleCreature extends Entity{
     private static Random randomGenerator = new Random();
     public SimpleCreature(float x, float y) {
-        super(new Vector3f(x,y,0),new Circle(Settings.GRID_SPACE_SIZE/2));
+        super(new Vector3f(x,y,50),new Circle(Settings.GRID_SPACE_SIZE/2));
         
         startx = position.x;
         starty = position.y;
         
         sizemod = randomGenerator.nextInt(100);
         
-        ranx = 1+randomGenerator.nextInt(1+sizemod/20);
-        rany = 1+randomGenerator.nextInt(1+sizemod/20);
+        ranx = 1+randomGenerator.nextInt(1+(100 - sizemod)/40);
+        rany = 1+randomGenerator.nextInt(1+(100 - sizemod)/40);
+     
+                
+        starth = (int)(position.x/20) + sizemod;
+        startw = (int)(((position.x/20) + sizemod) * 1.02f);
         
+        //radius = (float)Math.sqrt(startw*startw + starth*starth);
+        radius = startw;
+        position.z = radius;
+
+        ((Circle)this.collider).radius = radius;
     }
 
     float degree = 0;
     float speed = 0.3f;
-    float radius = 90;
+    float radius;
     float startx;
     float starty;
+    int startw;
+    int starth;
     float ranx;
     float rany;
     int sizemod;
     
     @Override
     public void update(float delta) {
+        
+        sprite.setWidth(startw);
+        sprite.setHeight(starth);
+        
         degree+=(speed*delta)/radius;
         position.x=(float)(startx+radius*Math.cos(degree)*ranx);
         position.y=(float)(starty+radius*Math.sin(degree)*rany);
-        sprite.setWidth((int)(position.x/20) + sizemod);
-        sprite.setHeight((int)(position.x/20) + sizemod);
     }
     
 }
