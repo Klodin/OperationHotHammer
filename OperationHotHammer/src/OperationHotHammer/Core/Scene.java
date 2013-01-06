@@ -9,6 +9,7 @@ import OperationHotHammer.Core.Util.EntityList;
 import OperationHotHammer.Core.Util.Partitioning.QTree;
 import OperationHotHammer.Display.GameWindow;
 import OperationHotHammer.Display.IObservee;
+import org.lwjgl.opengl.GL11;
 
 public class Scene implements IObservee {
 
@@ -51,9 +52,15 @@ public class Scene implements IObservee {
         entitiesToDisplay.clear();
         quadTree.retrieveObjects(entitiesToDisplay, GameWindow.INSTANCE.getX(), GameWindow.INSTANCE.getY(), drawRadius);
         Debugging.INSTANCE.showMessage(String.valueOf(objects.size()) + " | " + String.valueOf(entitiesToDisplay.size()));
+        
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
         for(Entity e : entitiesToDisplay) {
             e.draw();
         }
+        
+        GL11.glDisable(GL11.GL_BLEND);
     }
     
 }
