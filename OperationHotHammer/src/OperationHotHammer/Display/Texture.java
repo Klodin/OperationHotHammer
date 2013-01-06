@@ -1,4 +1,4 @@
-package org.newdawn.spaceinvaders.lwjgl;
+package OperationHotHammer.Display;
 
 import org.lwjgl.opengl.GL11;
 

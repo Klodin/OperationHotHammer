@@ -15,9 +15,10 @@ public class Scene implements IObservee {
     private final EntityList objects = new EntityArrayList();
     private final EntityList entitiesToDisplay = new DepthSortedList();
     public final String name;
-    public final QTree quadTree;
+    private final QTree quadTree;
     public final float width;
     public final float height;
+    private float drawRadius;
     
     public Scene(String n, float w, float h) {
      
@@ -25,6 +26,7 @@ public class Scene implements IObservee {
         width = w;
         height = h;
         quadTree = new QTree(Math.max(w,h), 6);
+        drawRadius = (float)Math.sqrt(width*width + height*height)/2.0f;
         
     }
     
@@ -47,7 +49,7 @@ public class Scene implements IObservee {
     @Override
     public void render(){
         entitiesToDisplay.clear();
-        quadTree.retrieveObjects(entitiesToDisplay, GameWindow.INSTANCE.getX(), GameWindow.INSTANCE.getY(), Math.max(GameWindow.INSTANCE.getScreenWidth(), GameWindow.INSTANCE.getScreenHeight()));
+        quadTree.retrieveObjects(entitiesToDisplay, GameWindow.INSTANCE.getX(), GameWindow.INSTANCE.getY(), drawRadius);
         Debugging.INSTANCE.showMessage(String.valueOf(objects.size()) + " | " + String.valueOf(entitiesToDisplay.size()));
         for(Entity e : entitiesToDisplay) {
             e.draw();
