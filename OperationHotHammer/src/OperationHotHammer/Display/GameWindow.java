@@ -41,9 +41,6 @@ public enum GameWindow implements IObserver{
 	GL11.glLoadIdentity();
                         
         for(IObservee o : observees){
-            o.update(delta);
-        }
-        for(IObservee o : observees){
             o.render();
         }
 
