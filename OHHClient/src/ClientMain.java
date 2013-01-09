@@ -9,7 +9,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 
-class Main {
+class ClientMain {
     
     
     public static void main(String argv[]) {
@@ -53,6 +53,20 @@ class Main {
             if(!Keyboard.isKeyDown(Keyboard.KEY_F1)) {              // Is F1 Being Pressed?
                 key_f1 = false;
             }
+            
+            if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {              // Is F1 Being Pressed?
+                Game.INSTANCE.changePositionX(10);
+            }
+            if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {              // Is F1 Being Pressed?
+                Game.INSTANCE.changePositionX(-10);
+            }
+            if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {              // Is F1 Being Pressed?
+                Game.INSTANCE.changePositionY(-10);
+            }
+            if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {              // Is F1 Being Pressed?
+                Game.INSTANCE.changePositionY(10);
+            }
+            
             
             if(Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                 Game.INSTANCE.shutdown();

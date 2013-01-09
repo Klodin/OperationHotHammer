@@ -4,12 +4,13 @@ package OperationHotHammer.Display;
 import OperationHotHammer.Core.Interfaces.IObserver;
 import OperationHotHammer.Core.Interfaces.IObservee;
 import OperationHotHammer.Core.Game;
+import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
+import OperationHotHammer.Core.GameObjects.Entity;
+import OperationHotHammer.Core.Scene;
 import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.Util.Settings;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -27,12 +28,32 @@ public enum GameWindow implements IObserver{
     private boolean fullscreen = false;
     
     public void initialize() {
-     
-        setResolution(1366,768);
-        startRendering();
-        Game.INSTANCE.initialize();
-        addObservee(Game.INSTANCE);
         
+        int resolutionWidth = 1366;
+        int resolutionHeight = 768;
+        
+        setResolution(resolutionWidth,resolutionHeight);
+        
+        startRendering();
+        
+        Game.INSTANCE.initialize();
+        
+        Scene scene = new Scene("Green Valley", 3000, 2000);
+        Entity e;
+        Sprite s;
+        
+        int num = 20;
+        for(int _x = 0; _x <= num*40; _x++){
+        for(int _y = 0; _y <= num*0.7f; _y++) {
+            
+            s = new Sprite("OperationHotHammer/Assets/smile.png");
+            e = new SimpleCreature((scene.width/(num*2))*_x-scene.width/2,(scene.height/((int)num*0.7f))*_y);
+            e.attach(s);
+            scene.addEntity(e);
+            
+        }}
+        
+        Game.INSTANCE.loadScene(scene);
     }
     
     public void draw(float delta){
@@ -42,10 +63,11 @@ public enum GameWindow implements IObserver{
 	GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	GL11.glLoadIdentity();
                         
-        for(IObservee o : observees){
-            o.draw(this.getX(), this.getX(), 1000);
-        }
-
+        //for(IObservee o : observees){
+        //    o.draw(Game.INSTANCE.draw, drawRadius);
+        //}
+        
+        Game.INSTANCE.draw(getScreenWidth(), getScreenHeight());
         
         // update window contents
 	Display.update();
@@ -119,14 +141,6 @@ public enum GameWindow implements IObserver{
 	height = y;
     }
     
-    public float getX() {
-        return Game.INSTANCE.getX();
-    }
-
-    public float getY() {
-        return Game.INSTANCE.getY();
-    }
-
     public int getScreenWidth() {
         return width;
     }

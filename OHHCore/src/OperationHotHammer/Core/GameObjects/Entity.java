@@ -30,13 +30,13 @@ public abstract class Entity implements IDisplayable {
    public abstract void update(float delta);
    
    @Override
-   public void draw() {
+   public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
        if(sprite == null) {
            Debugging.INSTANCE.showWarning("Attempted to draw an entity when no sprite has been attached!");
            return;
        }
-       
-       sprite.draw(position);
+       Vector3f pos = new Vector3f(position.x-(cameraPosition.x-resWidth/2), position.y-(cameraPosition.y-resHeight/2), position.z);
+       sprite.draw(pos);
    }
    
    @Override

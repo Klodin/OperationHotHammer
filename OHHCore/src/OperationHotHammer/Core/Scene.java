@@ -9,8 +9,9 @@ import OperationHotHammer.Core.Util.EntityList;
 import OperationHotHammer.Core.Util.Partitioning.QTree;
 import OperationHotHammer.Core.Interfaces.IObservee;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
 
-public class Scene implements IObservee {
+public class Scene {
 
     private final EntityList objects = new EntityArrayList();
     private final EntityList entitiesToDisplay = new DepthSortedList();
@@ -18,7 +19,8 @@ public class Scene implements IObservee {
     private final QTree quadTree;
     public final float width;
     public final float height;
-    private float drawRadius;
+    
+    private final Vector3f position = new Vector3f();
     
     public Scene(String n, float w, float h) {
      
@@ -26,15 +28,30 @@ public class Scene implements IObservee {
         width = w;
         height = h;
         quadTree = new QTree(Math.max(w,h), 6);
-        drawRadius = (float)Math.sqrt(width*width + height*height)/2.0f;
-        
+        position.x = width/2;
+        position.y = height/2;
     }
     
     public void addEntity(Entity object) {
         objects.add(object);
     }
     
-    @Override
+    public Vector3f getPosition() {
+        return position;
+    }
+    
+    public void changePositionX(float amt) {
+        position.x+=amt;
+    }
+    
+    public void changePositionY(float amt) {
+        position.y+=amt;
+    }
+    
+    public void changePositionZ(float amt) {
+        position.z+=amt;
+    }
+    
     public void update(float delta) {
         
         quadTree.clean();
@@ -46,17 +63,16 @@ public class Scene implements IObservee {
         
     }
     
-    @Override
-    public void draw(float x, float y, float radius){
+    public void draw(int resWidth, int resHeight, Vector3f cameraPosition, float drawRadius){
         entitiesToDisplay.clear();
-        quadTree.retrieveObjects(entitiesToDisplay, x, y, drawRadius);
+        quadTree.retrieveObjects(entitiesToDisplay, cameraPosition.x, cameraPosition.y, drawRadius);
         Debugging.INSTANCE.showMessage(String.valueOf(objects.size()) + " | " + String.valueOf(entitiesToDisplay.size()));
         
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         for(Entity e : entitiesToDisplay) {
-            e.draw();
+            e.draw(resWidth, resHeight, cameraPosition);
         }
         
         GL11.glDisable(GL11.GL_BLEND);

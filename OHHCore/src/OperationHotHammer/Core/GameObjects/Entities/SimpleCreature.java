@@ -28,8 +28,8 @@ public class SimpleCreature extends Entity{
         rany = 1+randomGenerator.nextInt(1+(100 - sizemod)/40);
      
                 
-        starth = (int)(position.x/20) + sizemod;
-        startw = (int)(((position.x/20) + sizemod) * 1.02f);
+        starth = (int)100 + sizemod;
+        startw = (int)((100 + sizemod) * 1.02f);
         
         //radius = (float)Math.sqrt(startw*startw + starth*starth);
         radius = startw;
@@ -53,8 +53,8 @@ public class SimpleCreature extends Entity{
     public void update(float delta) {
 
         degree+=(speed*delta)/radius;
-        position.x=(float)(startx+radius*Math.cos(degree)*ranx);
-        position.y=(float)(starty+radius*Math.sin(degree)*rany);
+        startw=(int)(5+radius*Math.cos(degree)*ranx);
+        starth=(int)(5+radius*Math.sin(degree)*rany);
         
         if(sprite != null){
             sprite.setWidth(startw);
