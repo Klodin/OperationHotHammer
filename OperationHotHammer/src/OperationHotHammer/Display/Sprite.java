@@ -1,5 +1,6 @@
 package OperationHotHammer.Display;
 
+import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Util.Debugging;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
@@ -22,12 +23,19 @@ public class Sprite implements ISprite {
         texture = temp;
     }
     
+    @Override
     public void setWidth(int w) {
         texture.setWidth(w);
     }
     
+    @Override
     public void setHeight(int h) {
         texture.setHeight(h);
+    }
+    
+    @Override
+    public void update(float delta, Entity e) {
+        
     }
     
     @Override
