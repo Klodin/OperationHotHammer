@@ -46,7 +46,7 @@ public enum GameWindow implements IObserver{
         for(int _x = 0; _x <= num*40; _x++){
         for(int _y = 0; _y <= num*0.7f; _y++) {
             
-            s = new Sprite("OperationHotHammer/Assets/smile.png");
+            s = new Sprite("OperationHotHammer/Assets/link.gif");
             e = new SimpleCreature((scene.width/(num*2))*_x-scene.width/2,(scene.height/((int)num*0.7f))*_y);
             e.attach(s);
             scene.addEntity(e);
