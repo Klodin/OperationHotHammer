@@ -75,6 +75,7 @@ class ClientMain {
             }
             
             Game.INSTANCE.update(delta);
+            GameWindow.INSTANCE.update(delta);
             GameWindow.INSTANCE.draw(delta);
             
             if(Debugging.INSTANCE.getMessageCount() > 0) {

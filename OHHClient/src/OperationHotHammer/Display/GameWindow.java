@@ -9,12 +9,16 @@ import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Scene;
 import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.Util.Settings;
+import OperationHotHammer.Display.Text.Text;
+import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 
 public enum GameWindow implements IObserver{
     INSTANCE;
@@ -26,6 +30,7 @@ public enum GameWindow implements IObserver{
     private int FPS = 0;
     private int prevFPS = 0;
     private boolean fullscreen = false;
+
     
     public void initialize() {
         
@@ -46,8 +51,8 @@ public enum GameWindow implements IObserver{
         for(int _x = 0; _x <= num*40; _x++){
         for(int _y = 0; _y <= num*0.7f; _y++) {
             
-            s = new Sprite("OperationHotHammer/Assets/link.gif");
-            e = new SimpleCreature((scene.width/(num*2))*_x-scene.width/2,(scene.height/((int)num*0.7f))*_y);
+            s = new Sprite("OperationHotHammer/Assets/Terrain/grass.png");
+            e = new SimpleCreature((scene.getWidth()/(num*2))*_x-scene.getWidth()/2,(scene.getHeight()/((int)num*0.7f))*_y);
             e.attach(s);
             scene.addEntity(e);
             
@@ -59,20 +64,26 @@ public enum GameWindow implements IObserver{
     public void draw(float delta){
         
         // clear screen
-	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	GL11.glLoadIdentity();
-                        
-        //for(IObservee o : observees){
-        //    o.draw(Game.INSTANCE.draw, drawRadius);
-        //}
         
         Game.INSTANCE.draw(getScreenWidth(), getScreenHeight());
-        
+        Hud.INSTANCE.draw(getScreenWidth(), getScreenHeight());
+                
         // update window contents
 	Display.update();
         Display.sync(Settings.FRAME_RATE_SECONDS); // cap fps to 60fps
         
+    }
+    
+    public void update(float delta){
+        Hud.INSTANCE.set("FPS", String.valueOf(getFPS()));
+        Hud.INSTANCE.set("Total Entities", String.valueOf(Game.INSTANCE.getScene().getEntityCount()));
+        Hud.INSTANCE.set("Drawn Entities", String.valueOf(Game.INSTANCE.getScene().getDrawnEntityCount()));
+        
+        for(int i = 0; i < 90; i++)
+            Hud.INSTANCE.set("Test"+String.valueOf(i), String.valueOf(i));
     }
     
     /**
@@ -89,8 +100,6 @@ public enum GameWindow implements IObserver{
 		"freq=" + 60,
 		"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel() 
             });
-            
-            
 
             return true;
 		
@@ -178,10 +187,22 @@ public enum GameWindow implements IObserver{
             // disable the OpenGL depth test since we're rendering 2D graphics
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 			
+            GL11.glShadeModel(GL11.GL_SMOOTH);
+            GL11.glDisable(GL11.GL_LIGHTING);
+            
+            GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            GL11.glClearDepth(1);
+            
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            
+            GL11.glViewport(0,0,width,height);
+            
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
-			
-            GL11.glOrtho(0, width, height, 0, -1, 1);
+            GL11.glOrtho(0, width, height, 0, 1, -1);
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			
             //if(callback != null) {
             //    callback.initialise();
