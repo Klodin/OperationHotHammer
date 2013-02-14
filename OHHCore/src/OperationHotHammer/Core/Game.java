@@ -16,7 +16,7 @@ public enum Game{
     float drawRadius = 0;
     
     public void initialize() {
-        Debugging.INSTANCE.showMessage("Initializing the game...");
+        Debugging.INSTANCE.showMessage("Initializing: Game.java");
 
         isRunning = true;
     }
@@ -66,7 +66,7 @@ public enum Game{
     
     public void shutdown() {
         isRunning = false;
-        Debugging.INSTANCE.showMessage("Shutting down game...");
+        Debugging.INSTANCE.showMessage("Shutting down.");
     }
     
 }

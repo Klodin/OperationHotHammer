@@ -34,6 +34,8 @@ public enum GameWindow implements IObserver{
     
     public void initialize() {
         
+        Debugging.INSTANCE.showMessage("Initializing: GameWindow.java");
+        
         int resolutionWidth = 1366;
         int resolutionHeight = 768;
         
@@ -42,6 +44,9 @@ public enum GameWindow implements IObserver{
         startRendering();
         
         Game.INSTANCE.initialize();
+        
+        
+        Debugging.INSTANCE.showMessage("Creating Testing Scene");
         
         Scene scene = new Scene("Green Valley", 500, 500);
         
@@ -53,16 +58,20 @@ public enum GameWindow implements IObserver{
         float w = scene.getWidth()/xx; //adjusted grid space width, to maximize scene space
         float h = scene.getHeight()/yy; //adjusted grid space height, to maximize scene space
         
+        Debugging.INSTANCE.showMessage("Populating Testing Scene");
         for(int x = 0; x < xx; x++)
         for(int y = 0; y < yy; y++) {
-            s = new Sprite("OperationHotHammer/Assets/link.gif", Sprite.TEXTURE_STRETCH);
+            s = new Sprite("OperationHotHammer/Assets/link.gif", Sprite.TEXTURE_STRETCH, true);
             e = new SimpleCreature(w*x+w/2,h*y+h/2); //center them on their respective squares
             e.attach(s);
             scene.addEntity(e);
         }        
         
-        s = new Sprite("OperationHotHammer/Assets/Terrain/grass.png", Sprite.TEXTURE_STRETCH);
-        scene.attach(s,0.3f);
+        s = new Sprite("OperationHotHammer/Assets/valley2.png", Sprite.TEXTURE_TILED);
+        scene.attach(new Background(s, 0.05f));
+        
+        s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", Sprite.TEXTURE_TILED);
+        scene.attach(new Background(s, 0.5f));
         
         /*
         int num = 20;
@@ -77,7 +86,10 @@ public enum GameWindow implements IObserver{
         }}
         */
         
-        Game.INSTANCE.loadScene(scene);
+        if(!Debugging.INSTANCE.hasError()) {
+            Debugging.INSTANCE.showMessage("Loading Testing Scene");
+            Game.INSTANCE.loadScene(scene);
+        }
     }
     
     public void draw(float delta){

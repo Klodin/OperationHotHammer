@@ -156,8 +156,8 @@ public enum TextureLoader {
         GL11.glTexImage2D(target, 
                       0, 
                       dstPixelFormat, 
-                      get2Fold(bufferedImage.getWidth()), 
-                      get2Fold(bufferedImage.getHeight()), 
+                      bufferedImage.getWidth(), 
+                      bufferedImage.getHeight(), 
                       0, 
                       srcPixelFormat, 
                       GL11.GL_UNSIGNED_BYTE, 
@@ -192,17 +192,19 @@ public enum TextureLoader {
         WritableRaster raster;
         BufferedImage texImage;
         
-        int texWidth = 2;
-        int texHeight = 2;
+        int texWidth = bufferedImage.getWidth();//2;
+        int texHeight = bufferedImage.getHeight();//2;
         
         // find the closest power of 2 for the width and height
         // of the produced texture
+        /*
         while (texWidth < bufferedImage.getWidth()) {
             texWidth *= 2;
         }
         while (texHeight < bufferedImage.getHeight()) {
             texHeight *= 2;
         }
+        */
         
         texture.setTextureHeight(texHeight);
         texture.setTextureWidth(texWidth);

@@ -14,15 +14,17 @@ import java.util.ArrayList;
  */
 public enum Debugging {
     INSTANCE;
+    private boolean hasError = false;
     
     private ArrayList<String> messageQueue = new ArrayList<>();
     
     public void showWarning(String message) {
-        showMessage("Warning:" + message);
+        showMessage("*Warning* - " + message);
     }
         
     public void showError(String message) {
-        showMessage("Error:" + message);
+        hasError = true;
+        showMessage("*Error!* - " + message);
         Game.INSTANCE.shutdown();
     }
     
@@ -40,5 +42,9 @@ public enum Debugging {
         messages = messageQueue.toArray(messages);
         messageQueue.clear();
         return messages;
+    }
+    
+    public boolean hasError(){
+        return this.hasError;
     }
 }

@@ -60,7 +60,7 @@ public class Texture {
      */
     public void setHeight(int height) {
         this.height = height;
-        setHeight();
+        setSizes();
     }
     
     /**
@@ -70,8 +70,9 @@ public class Texture {
      */
     public void setWidth(int width) {
         this.width = width;
-        setWidth();
+        setSizes();
     }
+    
     
     /**
      * Get the height of the original image
@@ -82,6 +83,13 @@ public class Texture {
         return height;
     }
     
+    public int getImageHeight(boolean maintainAspectRatio) {
+        int h = height;
+        if(maintainAspectRatio && texHeight < texWidth)
+            h = (int)(((float)texHeight/(float)texWidth)*(float)width);
+        return h;
+    }
+    
     /** 
      * Get the width of the original image
      *
@@ -89,6 +97,13 @@ public class Texture {
      */
     public int getImageWidth() {
         return width;
+    }
+    
+    public int getImageWidth(boolean maintainAspectRatio) {
+        int w = width;
+        if(maintainAspectRatio && texWidth < texHeight)
+            w = (int)(((float)texWidth/(float)texHeight)*(float)height);
+        return w;
     }
     
     /**
@@ -116,7 +131,7 @@ public class Texture {
      */
     public void setTextureHeight(int texHeight) {
         this.texHeight = texHeight;
-        setHeight();
+        setSizes();
     }
     
     /**
@@ -126,24 +141,18 @@ public class Texture {
      */
     public void setTextureWidth(int texWidth) {
         this.texWidth = texWidth;
-        setWidth();
+        setSizes();
     }
     
     /**
      * Set the height of the texture. This will update the
      * ratio also.
      */
-    private void setHeight() {
+    private void setSizes() {
         if (texHeight != 0) {
             heightRatio = ((float) height)/texHeight;
         }
-    }
-    
-    /**
-     * Set the width of the texture. This will update the
-     * ratio also.
-     */
-    private void setWidth() {
+
         if (texWidth != 0) {
             widthRatio = ((float) width)/texWidth;
         }

@@ -11,8 +11,9 @@ public class Sprite implements ISprite {
     public final static int TEXTURE_TILED = 1;
     public final static int TEXTURE_STRETCH = 2;
     
-    public final Texture texture;
+    private final Texture texture;
     private final int drawStyle;
+    private final boolean maintainAspectRatio;
     
     private static int drawnCount = 0;
     private static int updateCount = 0;
@@ -33,6 +34,8 @@ public class Sprite implements ISprite {
     public Sprite(String resource) {
         Texture temp = null;
         drawStyle = TEXTURE_TILED;
+        maintainAspectRatio = false;
+        
         try{
             temp = TextureLoader.INSTANCE.getTexture(resource);
         }catch(IOException e){
@@ -41,9 +44,24 @@ public class Sprite implements ISprite {
         texture = temp;
     }
     
-    public Sprite(String resource, int dStyle) {
+    public Sprite(String resource, int drawStyle) {
         Texture temp = null;
-        drawStyle = dStyle;
+        this.drawStyle = drawStyle;
+        this.maintainAspectRatio = false;
+        
+        try{
+            temp = TextureLoader.INSTANCE.getTexture(resource);
+        }catch(IOException e){
+            Debugging.INSTANCE.showError("A problem occured when loading a texture! (" + resource + ")");            
+        }
+        texture = temp;
+    }
+    
+    public Sprite(String resource, int drawStyle, boolean maintainAspectRatio) {
+        Texture temp = null;
+        this.drawStyle = drawStyle;
+        this.maintainAspectRatio = maintainAspectRatio;
+        
         try{
             temp = TextureLoader.INSTANCE.getTexture(resource);
         }catch(IOException e){
@@ -108,11 +126,11 @@ public class Sprite implements ISprite {
                 GL11.glTexCoord2f(0, 0);
                 GL11.glVertex2f(0, 0);
                 GL11.glTexCoord2f(0, 1.0f);
-                GL11.glVertex2f(0, texture.getImageHeight());
+                GL11.glVertex2f(0, texture.getImageHeight(maintainAspectRatio));
                 GL11.glTexCoord2f(1.0f,1.0f);
-                GL11.glVertex2f(texture.getImageWidth(),texture.getImageHeight());
+                GL11.glVertex2f(texture.getImageWidth(maintainAspectRatio),texture.getImageHeight(maintainAspectRatio));
                 GL11.glTexCoord2f(1.0f, 0);
-                GL11.glVertex2f(texture.getImageWidth(),0);
+                GL11.glVertex2f(texture.getImageWidth(maintainAspectRatio),0);
             }
 	}
 	GL11.glEnd();
