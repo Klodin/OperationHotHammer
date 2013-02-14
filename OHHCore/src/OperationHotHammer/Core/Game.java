@@ -57,7 +57,7 @@ public enum Game{
             drawRadius = (float)Math.sqrt(resWidth*resWidth + resHeight*resHeight)/2.0f;
         }
         if(isRunning)
-            scene.draw(resWidth, resHeight, getPosition(), drawRadius);
+            scene.draw(resWidth, resHeight, scene.getPosition(), drawRadius);
     }
     
     public boolean isRunning() {

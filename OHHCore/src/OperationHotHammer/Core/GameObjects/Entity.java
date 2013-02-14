@@ -1,5 +1,6 @@
 package OperationHotHammer.Core.GameObjects;
 
+import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.Util.Debugging;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.Interfaces.IDisplayable;
@@ -46,5 +47,9 @@ public abstract class Entity implements IDisplayable {
        }
               
        sprite = s;
+       if(this.collider.getShape() == IBoundaryShape.CIRCLE) {
+           sprite.setWidth((int)((Circle)this.collider).radius*2);
+           sprite.setHeight((int)((Circle)this.collider).radius*2);   
+       }
    }
 }

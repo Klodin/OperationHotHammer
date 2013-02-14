@@ -15,7 +15,7 @@ public class Settings {
     public static final float MINSPEED = 1;
     public static final int FRAME_RATE_SECONDS = 60;
     public static final int FRAME_RATE_MILLISECONDS = 1000/FRAME_RATE_SECONDS;
-    public static final float GRID_SPACE_SIZE = 10.0f;
+    public static final float GRID_SPACE_SIZE = 50.0f;
     public static final float PLAYER_SIZE = GRID_SPACE_SIZE/2;
     public static final String ASSETS_DIR = System.getProperty("user.dir") + "\\src\\OperationHotHammer\\Assets\\";
     public static final Map<String, String> DATA_MAP;

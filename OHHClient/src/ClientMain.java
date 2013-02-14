@@ -72,11 +72,11 @@ class ClientMain {
                 Game.INSTANCE.shutdown();
                 Display.destroy();
                 //callback.windowClosed();
+            }else{
+                Game.INSTANCE.update(delta);
+                GameWindow.INSTANCE.update(delta);
+                GameWindow.INSTANCE.draw(delta);
             }
-            
-            Game.INSTANCE.update(delta);
-            GameWindow.INSTANCE.update(delta);
-            GameWindow.INSTANCE.draw(delta);
             
             if(Debugging.INSTANCE.getMessageCount() > 0) {
                 String[] messages = Debugging.INSTANCE.getMessages(); 

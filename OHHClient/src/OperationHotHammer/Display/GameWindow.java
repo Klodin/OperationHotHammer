@@ -43,10 +43,28 @@ public enum GameWindow implements IObserver{
         
         Game.INSTANCE.initialize();
         
-        Scene scene = new Scene("Green Valley", 3000, 2000);
+        Scene scene = new Scene("Green Valley", 500, 500);
+        
         Entity e;
         Sprite s;
         
+        float xx = (int)(scene.getWidth()/Settings.GRID_SPACE_SIZE); //round down, most we can fit with grid spacing 
+        float yy = (int)(scene.getHeight()/Settings.GRID_SPACE_SIZE); 
+        float w = scene.getWidth()/xx; //adjusted width, to maximize space
+        float h = scene.getHeight()/yy; //adjusted height, to maximize space
+        
+        for(int x = 0; x < xx; x++)
+        for(int y = 0; y < yy; y++) {
+            s = new Sprite("OperationHotHammer/Assets/link.gif", Sprite.TEXTURE_STRETCH);
+            e = new SimpleCreature(w*x+w/2,h*y+h/2); //center them on their respective squares
+            e.attach(s);
+            scene.addEntity(e);
+        }        
+        
+        s = new Sprite("OperationHotHammer/Assets/Terrain/grass.png", Sprite.TEXTURE_STRETCH);
+        scene.attach(s,0.3f);
+        
+        /*
         int num = 20;
         for(int _x = 0; _x <= num*40; _x++){
         for(int _y = 0; _y <= num*0.7f; _y++) {
@@ -57,6 +75,7 @@ public enum GameWindow implements IObserver{
             scene.addEntity(e);
             
         }}
+        */
         
         Game.INSTANCE.loadScene(scene);
     }
@@ -81,9 +100,6 @@ public enum GameWindow implements IObserver{
         Hud.INSTANCE.set("FPS", String.valueOf(getFPS()));
         Hud.INSTANCE.set("Total Entities", String.valueOf(Game.INSTANCE.getScene().getEntityCount()));
         Hud.INSTANCE.set("Drawn Entities", String.valueOf(Game.INSTANCE.getScene().getDrawnEntityCount()));
-        
-        for(int i = 0; i < 90; i++)
-            Hud.INSTANCE.set("Test"+String.valueOf(i), String.valueOf(i));
     }
     
     /**

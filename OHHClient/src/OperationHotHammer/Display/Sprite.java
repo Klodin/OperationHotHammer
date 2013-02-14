@@ -12,10 +12,22 @@ public class Sprite implements ISprite {
     public final static int TEXTURE_STRETCH = 2;
     
     public final Texture texture;
-    private int drawStyle = TEXTURE_STRETCH;
+    private final int drawStyle;
     
     public Sprite(String resource) {
         Texture temp = null;
+        drawStyle = TEXTURE_TILED;
+        try{
+            temp = TextureLoader.INSTANCE.getTexture(resource);
+        }catch(IOException e){
+            Debugging.INSTANCE.showError("A problem occured when loading a texture! (" + resource + ")");            
+        }
+        texture = temp;
+    }
+    
+    public Sprite(String resource, int dStyle) {
+        Texture temp = null;
+        drawStyle = dStyle;
         try{
             temp = TextureLoader.INSTANCE.getTexture(resource);
         }catch(IOException e){
@@ -32,6 +44,16 @@ public class Sprite implements ISprite {
     @Override
     public void setHeight(int h) {
         texture.setHeight(h);
+    }
+    
+    @Override
+    public int getWidth() {
+        return (int)texture.getImageWidth();
+    }
+    
+    @Override
+    public int getHeight() {
+        return (int)texture.getImageHeight();
     }
     
     @Override

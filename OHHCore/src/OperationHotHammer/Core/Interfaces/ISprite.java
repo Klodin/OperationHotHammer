@@ -9,4 +9,6 @@ public interface ISprite {
     public void update(float delta, Entity e);
     public void setWidth(int w);
     public void setHeight(int h);
+    public int getWidth();
+    public int getHeight();
 }

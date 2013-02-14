@@ -18,7 +18,7 @@ public class SimpleCreature extends Entity{
     private static Random randomGenerator = new Random();
     public SimpleCreature(float x, float y) {
         super(new Vector3f(x,y,50),new Circle(Settings.GRID_SPACE_SIZE/2));
-        
+        /*
         startx = position.x;
         starty = position.y;
         
@@ -36,8 +36,10 @@ public class SimpleCreature extends Entity{
         position.z = radius;
 
         ((Circle)this.collider).radius = radius;
+        */
     }
 
+    /*
     float degree = 0;
     float speed = 0.3f;
     float radius;
@@ -48,17 +50,18 @@ public class SimpleCreature extends Entity{
     float ranx;
     float rany;
     int sizemod;
+    */
     
     @Override
     public void update(float delta) {
-
+        /*
         degree+=(speed*delta)/radius;
         startw=(int)(5+radius*Math.cos(degree)*ranx);
         starth=(int)(5+radius*Math.sin(degree)*rany);
-        
+        */
         if(sprite != null){
-            sprite.setWidth(startw);
-            sprite.setHeight(starth);
+            //sprite.setWidth(startw);
+            //sprite.setHeight(starth);
             sprite.update(delta, this);
         }
     }
