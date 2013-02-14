@@ -16,7 +16,21 @@ public abstract class Entity implements IDisplayable {
    public final IBoundaryShape collider;
    
    public final Vector3f position;
+   private static int drawnCount = 0;
+   private static int updateCount = 0;
    
+   public static int getDrawnCount(){
+       return drawnCount;
+   }
+    
+   public static int getUpdateCount(){
+       return updateCount;
+   }
+   
+   public static void clearCounts(){
+       drawnCount = 0;
+       updateCount = 0;
+   }
    
    public Entity(Vector3f p, IBoundaryShape colliderShape) {
       collider = colliderShape;
@@ -28,7 +42,9 @@ public abstract class Entity implements IDisplayable {
        position = p;
    }
    
-   public abstract void update(float delta);
+   public void update(float delta){
+       updateCount++;
+   }
    
    @Override
    public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
@@ -36,6 +52,7 @@ public abstract class Entity implements IDisplayable {
            Debugging.INSTANCE.showWarning("Attempted to draw an entity when no sprite has been attached!");
            return;
        }
+       drawnCount++;
        Vector3f pos = new Vector3f(position.x-(cameraPosition.x-resWidth/2), position.y-(cameraPosition.y-resHeight/2), position.z);
        sprite.draw(pos);
    }

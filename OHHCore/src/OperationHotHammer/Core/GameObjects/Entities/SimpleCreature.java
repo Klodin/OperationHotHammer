@@ -54,11 +54,13 @@ public class SimpleCreature extends Entity{
     
     @Override
     public void update(float delta) {
+        super.update(delta);
         /*
         degree+=(speed*delta)/radius;
         startw=(int)(5+radius*Math.cos(degree)*ranx);
         starth=(int)(5+radius*Math.sin(degree)*rany);
         */
+        
         if(sprite != null){
             //sprite.setWidth(startw);
             //sprite.setHeight(starth);

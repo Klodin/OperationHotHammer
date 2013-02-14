@@ -98,8 +98,10 @@ public enum GameWindow implements IObserver{
     
     public void update(float delta){
         Hud.INSTANCE.set("FPS", String.valueOf(getFPS()));
-        Hud.INSTANCE.set("Total Entities", String.valueOf(Game.INSTANCE.getScene().getEntityCount()));
-        Hud.INSTANCE.set("Drawn Entities", String.valueOf(Game.INSTANCE.getScene().getDrawnEntityCount()));
+        Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
+        Hud.INSTANCE.set("Drawn Sprites", String.valueOf(Sprite.getDrawnCount()));
+        Sprite.clearCounts();
+        Entity.clearCounts();
     }
     
     /**

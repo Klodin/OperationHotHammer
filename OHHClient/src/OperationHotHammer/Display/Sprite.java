@@ -14,6 +14,22 @@ public class Sprite implements ISprite {
     public final Texture texture;
     private final int drawStyle;
     
+    private static int drawnCount = 0;
+    private static int updateCount = 0;
+    
+    public static int getDrawnCount(){
+        return drawnCount;
+    }
+    
+    public static int getUpdateCount(){
+        return updateCount;
+    }
+    
+    public static void clearCounts(){
+        drawnCount = 0;
+        updateCount = 0;
+    }
+    
     public Sprite(String resource) {
         Texture temp = null;
         drawStyle = TEXTURE_TILED;
@@ -58,11 +74,13 @@ public class Sprite implements ISprite {
     
     @Override
     public void update(float delta, Entity e) {
-        
+        updateCount++;
     }
     
     @Override
     public void draw(Vector3f position) {
+        
+        drawnCount++;
         
         // store the current model matrix
 	GL11.glPushMatrix();

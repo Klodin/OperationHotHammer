@@ -23,8 +23,6 @@ public class Scene {
     private final QTree quadTree;
     private final float width;
     private final float height;
-    private int totalEntities = 0;
-    private int drawnEntities = 0;
     private ISprite backgroundSprite;
     private int backgroundType;
     private float backgroundParallexRatio = 1f;
@@ -70,14 +68,6 @@ public class Scene {
         backgroundType = BACKGROUND_PAN;
     }
     
-    public int getEntityCount(){
-        return totalEntities;
-    }
-    
-    public int getDrawnEntityCount(){
-        return drawnEntities;
-    }
-    
     public Vector3f getPosition() {
         return position;
     }
@@ -109,8 +99,6 @@ public class Scene {
             o.update(delta);
             quadTree.insertObject(o);
         }
-        
-        totalEntities = objects.size();
     }
     
     public void draw(int resWidth, int resHeight, Vector3f cameraPosition, float drawRadius){
@@ -137,8 +125,6 @@ public class Scene {
         
         entitiesToDisplay.clear();
         quadTree.retrieveObjects(entitiesToDisplay, cameraPosition.x, cameraPosition.y, drawRadius);
-        
-        drawnEntities = entitiesToDisplay.size();
         
         for(Entity e : entitiesToDisplay) {
             e.draw(resWidth, resHeight, cameraPosition);
