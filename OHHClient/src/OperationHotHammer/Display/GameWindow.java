@@ -50,8 +50,8 @@ public enum GameWindow implements IObserver{
         
         float xx = (int)(scene.getWidth()/Settings.GRID_SPACE_SIZE); //round down, most we can fit with grid spacing 
         float yy = (int)(scene.getHeight()/Settings.GRID_SPACE_SIZE); 
-        float w = scene.getWidth()/xx; //adjusted width, to maximize space
-        float h = scene.getHeight()/yy; //adjusted height, to maximize space
+        float w = scene.getWidth()/xx; //adjusted grid space width, to maximize scene space
+        float h = scene.getHeight()/yy; //adjusted grid space height, to maximize scene space
         
         for(int x = 0; x < xx; x++)
         for(int y = 0; y < yy; y++) {
