@@ -26,7 +26,7 @@ public enum Hud {
             for (Map.Entry<String, String> entry : vars.entrySet()) { 
                 uifont.draw(10+column, 10+fontSize*line++, entry.getKey() + ": " + entry.getValue(), Color.white);
                 if(10+fontSize*line+fontSize > screenHeight-10) {
-                    column += 300; 
+                    column += 300;
                     line = 0;
                 }
             }
