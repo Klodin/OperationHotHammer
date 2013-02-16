@@ -55,9 +55,8 @@ public enum GameWindow implements IObserver{
         float w = scene.getWidth()/xx; //adjusted grid space width, to maximize scene space
         float h = scene.getHeight()/yy; //adjusted grid space height, to maximize scene space
         
-        Debugging.INSTANCE.addGroup("Initializing (Scene '" + scene.getName() + "')");
-        
-        Debugging.INSTANCE.addGroup("Populating Entites");
+        Debugging.INSTANCE.beginGroup("Initializing (Scene '" + scene.getName() + "')");
+        Debugging.INSTANCE.beginGroup("Populating Entites");
         for(int x = 0; x < xx; x++)
         for(int y = 0; y < yy; y++) {
             s = new Sprite("OperationHotHammer/Assets/link.gif", Sprite.TEXTURE_STRETCH, true);
@@ -65,7 +64,7 @@ public enum GameWindow implements IObserver{
             e.attach(s);
             scene.addEntity(e);
         }
-        Debugging.INSTANCE.closeGroup();
+        Debugging.INSTANCE.finishGroup();
         
         Debugging.INSTANCE.showMessage("Setting Background");
         s = new Sprite("OperationHotHammer/Assets/valley2.png", Sprite.TEXTURE_TILED);
@@ -74,7 +73,7 @@ public enum GameWindow implements IObserver{
         s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", Sprite.TEXTURE_TILED);
         scene.attach(new Background(s, 0.5f));
         
-        Debugging.INSTANCE.closeGroup();
+        Debugging.INSTANCE.finishGroup();
         
         /*
         int num = 20;

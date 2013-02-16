@@ -21,17 +21,17 @@ public enum Debugging {
     private MessageGroup messageGroup;
     
         
-    public void addGroup(String message){
+    public void beginGroup(String message){
         if(messageGroup == null)
             messageGroup = new MessageGroup(getFormattedTime(), message, 1);
         else
-            messageGroup.addGroup(getFormattedTime(), message);
+            messageGroup.beginGroup(getFormattedTime(), message);
     }
     
-    public void closeGroup(){
+    public void finishGroup(){
         if(messageGroup != null) {
             if(messageGroup.hasGroup()) {
-                messageGroup.closeGroup();
+                messageGroup.finishGroup();
             }else{
                 add(messageGroup);            
                 messageGroup = null;
@@ -39,9 +39,9 @@ public enum Debugging {
         }
     }
     
-   public void closeAll(){
+   public void finishAll(){
         if(messageGroup!=null) {
-            messageGroup.closeAll();
+            messageGroup.finishAll();
             add(messageGroup);
             messageGroup = null;
         }
@@ -65,7 +65,7 @@ public enum Debugging {
         hasError = true;
         if(messageGroup != null) {
             messageGroup.add(getFormattedTime(), "*Error!* - " + message);
-            messageGroup.closeAll();
+            messageGroup.finishAll();
             add(messageGroup);
             messageGroup = null;
         }
@@ -98,7 +98,7 @@ public enum Debugging {
         
         if(messageGroup != null) {
             System.out.println("WARNING!!! A debugging message group was not closed before trying to use it.");
-            closeAll();
+            finishAll();
         }
         
         for (DebuggingMessage message : messageQueue){

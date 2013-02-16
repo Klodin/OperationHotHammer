@@ -16,21 +16,21 @@ public class MessageGroup extends DebuggingMessage {
     private MessageGroup messageGroup;
     private final int depth;
     
-    public void addGroup(String time, String message){
+    public void beginGroup(String time, String message){
         if(messageGroup == null)
             messageGroup = new MessageGroup(time, message, depth+1);
         else
-            messageGroup.addGroup(time, message);
+            messageGroup.beginGroup(time, message);
     }
     
     public boolean hasGroup(){
         return messageGroup != null;
     }
     
-    public void closeGroup(){
+    public void finishGroup(){
         if(messageGroup != null) {
             if(messageGroup.hasGroup()) {
-                messageGroup.closeGroup();
+                messageGroup.finishGroup();
             }else{
                 add(messageGroup);
                 messageGroup = null;
@@ -38,9 +38,9 @@ public class MessageGroup extends DebuggingMessage {
         }
     }
     
-    public void closeAll(){
+    public void finishAll(){
         if(messageGroup!=null) {
-            messageGroup.closeAll();
+            messageGroup.finishAll();
             add(messageGroup);
             messageGroup = null;
         }
@@ -76,7 +76,7 @@ public class MessageGroup extends DebuggingMessage {
     public boolean hasMessage(){
         if(messageGroup != null) {
             System.out.println("WARNING!!! A debugging message group was not closed before trying to use it.");
-            closeAll();
+            finishAll();
         }
         return messageQueue.size() > 0;
     }
@@ -85,7 +85,7 @@ public class MessageGroup extends DebuggingMessage {
     public String[] popMessage(){
         if(messageGroup != null) {
             System.out.println("WARNING!!! A debugging message group was not closed before trying to use it.");
-            closeAll();
+            finishAll();
         }
         
         if(messageQueue.size() == 0)
@@ -117,7 +117,7 @@ public class MessageGroup extends DebuggingMessage {
     public String[] peekMessage(){
         if(messageGroup != null) {
             System.out.println("WARNING!!! A debugging message group was not closed before trying to use it.");
-            closeAll();
+            finishAll();
         }
         
         if(messageQueue.size() == 0)
@@ -134,7 +134,7 @@ public class MessageGroup extends DebuggingMessage {
         
         if(messageGroup != null) {
             System.out.println("WARNING!!! A debugging message group was not closed before trying to use it.");
-            closeAll();
+            finishAll();
         }
         
         for (DebuggingMessage message : messageQueue){
