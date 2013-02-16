@@ -125,6 +125,43 @@ public class QTreeNode {
             }
         }
     }
+    
+    public void retrieveObjects(EntityList objList, float centerX, float centerY, float halfW, float halfH){
+       
+        Vector3f subNodePos = new Vector3f();
+        float xx, yy;
+        float delta;
+        float radius;
+       
+        for(Entity object : objects){
+            if(object.collider.getShape() == IBoundaryShape.CIRCLE) {
+                radius = ((Circle)object.collider).radius;
+                
+                if(object.position.x+radius < centerX - halfW || object.position.x-radius > centerX + halfW)
+                    continue;
+                if(object.position.y-radius > centerY + halfH || object.position.y+radius < centerY - halfH)
+                    continue;
+
+                objList.add(object);
+            }
+        }
+       
+        float diagonal = (float)Math.sqrt(halfW*halfW + halfH*halfH);
+        
+        if(nodes != null) {
+            for(int n = 0; n < 4; n++) {
+                subNodePos.x = nodes[n].center.x;
+                subNodePos.y = nodes[n].center.y;
+                xx = centerX - subNodePos.x;
+                yy = centerY - subNodePos.y;
+                delta = xx*xx + yy*yy;
+                
+                if (delta <= (nodes[n].halfWidth + diagonal)*(nodes[n].halfWidth + diagonal)) {
+                    nodes[n].retrieveObjects(objList, centerX, centerY, halfW, halfH);     
+                }
+            }
+        }
+    }
    
     public void clean() {
         objects.clear();

@@ -1,7 +1,7 @@
 package OperationHotHammer.Core.GameObjects;
 
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.Interfaces.IDisplayable;
 import OperationHotHammer.Core.Interfaces.ISprite;
@@ -32,7 +32,7 @@ public abstract class Entity implements IDisplayable {
        updateCount = 0;
    }
    
-   public Entity(Vector3f p, IBoundaryShape colliderShape) {
+   public Entity(Vector3f p, IBoundaryShape colliderShape) {       
       collider = colliderShape;
       position = p;
    }

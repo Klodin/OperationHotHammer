@@ -6,6 +6,7 @@ package OperationHotHammer.Core.GameObjects.Entities;
 
 import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.GameObjects.Entity;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
 import org.lwjgl.util.vector.Vector3f;
 import java.util.Random;
@@ -18,6 +19,7 @@ public class SimpleCreature extends Entity{
     private static Random randomGenerator = new Random();
     public SimpleCreature(float x, float y) {
         super(new Vector3f(x,y,50),new Circle(Settings.GRID_SPACE_SIZE/2));
+        Debugging.INSTANCE.showMessage("Create (Entity->SimpleCreature)");
         /*
         startx = position.x;
         starty = position.y;

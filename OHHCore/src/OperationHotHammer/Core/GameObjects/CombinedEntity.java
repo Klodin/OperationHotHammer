@@ -4,7 +4,7 @@
  */
 package OperationHotHammer.Core.GameObjects;
 
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 

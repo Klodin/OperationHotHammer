@@ -7,7 +7,7 @@ import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Scene;
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Display.Text.Text;
 import java.awt.Font;
@@ -34,7 +34,7 @@ public enum GameWindow implements IObserver{
     
     public void initialize() {
         
-        Debugging.INSTANCE.showMessage("Initializing: GameWindow.java");
+        Debugging.INSTANCE.showMessage("Initializing (GameWindow)");
         
         int resolutionWidth = 1366;
         int resolutionHeight = 768;
@@ -44,11 +44,8 @@ public enum GameWindow implements IObserver{
         startRendering();
         
         Game.INSTANCE.initialize();
-        
-        
-        Debugging.INSTANCE.showMessage("Creating Testing Scene");
-        
-        Scene scene = new Scene("Green Valley", 500, 500);
+             
+        Scene scene = new Scene("Testing Scene", 500, 500);
         
         Entity e;
         Sprite s;
@@ -58,20 +55,26 @@ public enum GameWindow implements IObserver{
         float w = scene.getWidth()/xx; //adjusted grid space width, to maximize scene space
         float h = scene.getHeight()/yy; //adjusted grid space height, to maximize scene space
         
-        Debugging.INSTANCE.showMessage("Populating Testing Scene");
+        Debugging.INSTANCE.addGroup("Initializing (Scene '" + scene.getName() + "')");
+        
+        Debugging.INSTANCE.addGroup("Populating Entites");
         for(int x = 0; x < xx; x++)
         for(int y = 0; y < yy; y++) {
             s = new Sprite("OperationHotHammer/Assets/link.gif", Sprite.TEXTURE_STRETCH, true);
             e = new SimpleCreature(w*x+w/2,h*y+h/2); //center them on their respective squares
             e.attach(s);
             scene.addEntity(e);
-        }        
+        }
+        Debugging.INSTANCE.closeGroup();
         
+        Debugging.INSTANCE.showMessage("Setting Background");
         s = new Sprite("OperationHotHammer/Assets/valley2.png", Sprite.TEXTURE_TILED);
         scene.attach(new Background(s, 0.05f));
         
         s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", Sprite.TEXTURE_TILED);
         scene.attach(new Background(s, 0.5f));
+        
+        Debugging.INSTANCE.closeGroup();
         
         /*
         int num = 20;
@@ -87,7 +90,6 @@ public enum GameWindow implements IObserver{
         */
         
         if(!Debugging.INSTANCE.hasError()) {
-            Debugging.INSTANCE.showMessage("Loading Testing Scene");
             Game.INSTANCE.loadScene(scene);
         }
     }

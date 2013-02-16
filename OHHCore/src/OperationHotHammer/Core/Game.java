@@ -1,7 +1,7 @@
 
 package OperationHotHammer.Core;
 
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import org.lwjgl.util.vector.Vector3f;
 
 public enum Game{
@@ -16,12 +16,13 @@ public enum Game{
     float drawRadius = 0;
     
     public void initialize() {
-        Debugging.INSTANCE.showMessage("Initializing: Game.java");
+        Debugging.INSTANCE.showMessage("Initializing (Game)");
 
         isRunning = true;
     }
     
     public void loadScene(Scene s) {
+        Debugging.INSTANCE.showMessage("Loading Scene (Scene '" + s.getName() + "')");
         scene = s;
     }
     
@@ -54,10 +55,10 @@ public enum Game{
         if(resHeight != resolutionHeight || resWidth != resolutionWidth){
             resWidth = resolutionWidth;
             resHeight = resolutionHeight;
-            drawRadius = (float)Math.sqrt(resWidth*resWidth + resHeight*resHeight)/2.0f;
+            //drawRadius = (float)Math.sqrt(resWidth*resWidth + resHeight*resHeight)/2.0f;
         }
         if(isRunning)
-            scene.draw(resWidth, resHeight, scene.getPosition(), drawRadius);
+            scene.draw(resWidth, resHeight, scene.getPosition());
     }
     
     public boolean isRunning() {
@@ -66,7 +67,7 @@ public enum Game{
     
     public void shutdown() {
         isRunning = false;
-        Debugging.INSTANCE.showMessage("Shutting down.");
+        Debugging.INSTANCE.showMessage("Shutting Down");
     }
     
 }

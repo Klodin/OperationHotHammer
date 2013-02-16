@@ -2,7 +2,7 @@
 
 
 import OperationHotHammer.Core.Game;
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Display.GameWindow;
 import org.lwjgl.input.Keyboard;
@@ -18,7 +18,10 @@ class ClientMain {
         if(!Debugging.INSTANCE.hasError()) {
             
             long lastLoopTime = System.nanoTime();
-            Debugging.INSTANCE.showMessage("Beginning main game loop");
+            Debugging.INSTANCE.showMessage("");
+            Debugging.INSTANCE.showMessage("Beginning Main Game Loop");
+            Debugging.INSTANCE.showMessage(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            Debugging.INSTANCE.showMessage("");
         
             long prevFpsTime = System.nanoTime();
             long count = 0;
@@ -82,18 +85,23 @@ class ClientMain {
                 if(Debugging.INSTANCE.getMessageCount() > 0) {
                     String[] messages = Debugging.INSTANCE.getMessages(); 
                     for(String message : messages) {
-                        System.out.println(message);
+                        if(message != null)
+                            System.out.println(message);
                     }
                 }
 
             }
+            Debugging.INSTANCE.showMessage("");
+            Debugging.INSTANCE.showMessage("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            Debugging.INSTANCE.showMessage("Exited Main Game Loop");
         }
         
         //if any messages left spit them out
         if(Debugging.INSTANCE.getMessageCount() > 0) {
                 String[] messages = Debugging.INSTANCE.getMessages(); 
                 for(String message : messages) {
-                    System.out.println(message);
+                    if(message != null)
+                        System.out.println(message);
                 }
         }
     }

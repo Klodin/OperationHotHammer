@@ -4,7 +4,7 @@
  */
 package OperationHotHammer.Display.Text;
 
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import java.awt.Font;
 import java.io.InputStream;
 import org.newdawn.slick.Color;

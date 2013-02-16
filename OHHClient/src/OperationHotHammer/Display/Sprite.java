@@ -2,7 +2,7 @@ package OperationHotHammer.Display;
 
 import OperationHotHammer.Core.Interfaces.ISprite;
 import OperationHotHammer.Core.GameObjects.Entity;
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;

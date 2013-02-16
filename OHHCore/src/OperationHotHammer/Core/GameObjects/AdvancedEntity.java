@@ -2,14 +2,14 @@
 package OperationHotHammer.Core.GameObjects;
 
 
-import OperationHotHammer.Core.Interfaces.iDestructible;
-import OperationHotHammer.Core.Interfaces.iPhysics;
+import OperationHotHammer.Core.Interfaces.IDestructible;
+import OperationHotHammer.Core.Interfaces.IPhysics;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.StatusEffects.StatusEffects;
 import org.lwjgl.util.vector.Vector3f;
 
 
-public abstract class AdvancedEntity extends Entity implements iDestructible, iPhysics {
+public abstract class AdvancedEntity extends Entity implements IDestructible, IPhysics {
 
     private  float health;
     private float maxHealth;

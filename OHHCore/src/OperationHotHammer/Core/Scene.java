@@ -4,7 +4,7 @@ package OperationHotHammer.Core;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Interfaces.IBackground;
 import OperationHotHammer.Core.Interfaces.ISprite;
-import OperationHotHammer.Core.Util.Debugging;
+import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.DepthSortedList;
 import OperationHotHammer.Core.Util.EntityArrayList;
 import OperationHotHammer.Core.Util.EntityList;
@@ -28,6 +28,8 @@ public class Scene {
     
     public Scene(String n, float w, float h) {
      
+        Debugging.INSTANCE.showMessage("Create (Scene '" + n + "')");
+        
         name = n;
         width = w;
         height = h;
@@ -67,6 +69,10 @@ public class Scene {
     public float getHeight() {
         return height;
     }
+
+    public String getName() {
+        return name;
+    }
     
     public void update(float delta) {
         quadTree.clean();
@@ -77,7 +83,7 @@ public class Scene {
         }
     }
     
-    public void draw(int resWidth, int resHeight, Vector3f cameraPosition, float drawRadius){
+    public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
         for(IBackground background : backgrounds){
         
             ISprite backgroundSprite = background.getBackgroundSprite();
@@ -108,7 +114,7 @@ public class Scene {
         }
         
         entitiesToDisplay.clear();
-        quadTree.retrieveObjects(entitiesToDisplay, cameraPosition.x, cameraPosition.y, drawRadius);
+        quadTree.retrieveObjects(entitiesToDisplay, cameraPosition.x, cameraPosition.y, resWidth/2, resHeight/2);
         
         for(Entity e : entitiesToDisplay) {
             e.draw(resWidth, resHeight, cameraPosition);

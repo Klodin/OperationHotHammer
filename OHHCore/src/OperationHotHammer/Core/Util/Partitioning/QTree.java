@@ -18,6 +18,11 @@ public class QTree {
    }
    
    // insert a GameObject at the quadtree
+   public void retrieveObjects(EntityList objects, float centerX, float centerY, int halfWidth, int halfHeight) {
+      node.retrieveObjects(objects, centerX, centerY, halfWidth, halfHeight);
+   }
+   
+   // insert a GameObject at the quadtree
    public void retrieveObjects(EntityList objects, float centerX, float centerY, float halfWidth) {
       node.retrieveObjects(objects, centerX, centerY, halfWidth);
    }
