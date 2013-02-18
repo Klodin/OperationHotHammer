@@ -41,11 +41,17 @@ public enum GameWindow{
         
         Debugging.INSTANCE.showMessage("Initializing (GameWindow)");
         
-        initFullscreenResolution();
+        fullscreenWidth = Display.getDesktopDisplayMode().getWidth();
+        fullscreenHeight = Display.getDesktopDisplayMode().getHeight();
+        
+        //Initialize the game
+        Game.INSTANCE.initialize();
+        
+        //Begin rendering the screen
         startRendering();
         
-        Game.INSTANCE.initialize();
-             
+        
+        //Generate some content
         Scene scene = new Scene("Testing Scene", 500, 500);
         
         Entity e;
@@ -75,7 +81,6 @@ public enum GameWindow{
         s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", Sprite.TEXTURE_TILED);
         scene.attach(new Background(s, 0.25f));
 
-        
         Debugging.INSTANCE.finishGroup();
         
         if(!Debugging.INSTANCE.hasError()) {
@@ -83,42 +88,43 @@ public enum GameWindow{
         }
     }
     
-    private void initFullscreenResolution(){
-        fullscreenWidth = Display.getDesktopDisplayMode().getWidth();
-        fullscreenHeight = Display.getDesktopDisplayMode().getHeight();
-    }
-    
     public void draw(){
-        // clear screen
+        // Clear the colour buffer.  This clear the current screen
 	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        
+        // Prepare to draw
 	GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	GL11.glLoadIdentity();
         
-        //Cry "Havoc!" and let slip the dogs of war,
+        // Cry "Havoc!" and let slip the dogs of war, draw stuff
         Game.INSTANCE.draw(getWidth(), getHeight());
         Hud.INSTANCE.draw(getWidth(), getHeight());
                 
-        // update window contents
+        // Update window contents, moves the content we rendered in a buffer off screen into the active video memory so we can see it
 	Display.update();
         
-        // cap fps to 60fps
+        // Cap fps to 60fps, this must be called at each iteraton and tries to limit the frame rate as best as it can to 60
         Display.sync(Settings.FRAME_RATE_SECONDS);
     }
     
     public void update(float delta){
+        // update the game!  this allows entities to update / move around
         Game.INSTANCE.update(delta);
         
+        // update the displayed values in out hud, mostly for debugging
         Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
         Hud.INSTANCE.set("Drawn Sprites", String.valueOf(Sprite.getDrawnCount()));
         
+        // if the window was resized lets ensure all the rendering stuff is configured to the new dimensions
         if(Display.wasResized() && !fullscreen) {
             setResolution(Display.getWidth(),Display.getHeight());
             initializeGlDisplay();
         }
         
+        // update hud to show the current dimensions!
         Hud.INSTANCE.set("Dimensions", String.valueOf(Display.getWidth()) + "x" + String.valueOf(Display.getHeight()));
         
-        //Reset counters back to 0, these are mostly just for display in the hud
+        //Reset counters back to 0, these are mostly just generated for displaying in the hud
         Sprite.clearCounts();
         Entity.clearCounts();
     }
