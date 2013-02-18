@@ -68,11 +68,13 @@ public enum GameWindow{
         Debugging.INSTANCE.finishGroup();
         
         Debugging.INSTANCE.showMessage("Setting Background");
+        
         s = new Sprite("OperationHotHammer/Assets/valley2.png", Sprite.TEXTURE_TILED);
         scene.attach(new Background(s, 0.05f));
         
         s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", Sprite.TEXTURE_TILED);
-        scene.attach(new Background(s, 0.5f));
+        scene.attach(new Background(s, 0.25f));
+
         
         Debugging.INSTANCE.finishGroup();
         
