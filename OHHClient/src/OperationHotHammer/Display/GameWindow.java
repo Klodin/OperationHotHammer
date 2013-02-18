@@ -206,26 +206,29 @@ public enum GameWindow{
     private void setupDisplay(boolean fullscreen) {
         this.fullscreen = fullscreen;  
         
-        //if windowed I gotta do this first *shrug*
+        // if windowed I gotta do this first *shrug*
         if(!this.fullscreen)
             Display.setResizable(allowResizing());
         
         
         setDisplayMode(getWidth(), getHeight(), fullscreen);
         
-        //something went wrong D:
+        if(Debugging.INSTANCE.hasError())
+            return; //I guess something fatal happened, oops..
+        
+        // something went wrong and it's still window mode O.o
         if(this.fullscreen && !Display.isFullscreen()) {
-            this.fullscreen = !this.fullscreen; //whatever windowed mode is cooler anyways
-            Display.setResizable(allowResizing()); //resizing is always better
+            this.fullscreen = !this.fullscreen;     //whatever windowed mode is cooler anyways
+            Display.setResizable(allowResizing());  //resizing is always better too!
         }
         
-        //hide the mouse if fullscreen
+        // hide the mouse if fullscreen
         Mouse.setGrabbed(!allowMouse());
 
-        //we need vsync on in fullscreen or visual tearing is seen
+        // we need vsync on in fullscreen or visual tearing will be seen
         Display.setVSyncEnabled(allowVSync()); 
         
-        //setup opengl display settings, this is here mostly to make sure the width and height are set properly
+        // lets setup opengl display settings, this is here mostly to make sure the width and height are set properly for rendering
         initializeGlDisplay();
     }
         
