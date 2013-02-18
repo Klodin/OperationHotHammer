@@ -237,7 +237,7 @@ public enum GameWindow{
     }
     
     private boolean allowVSync(){
-        return fullscreen;
+        return true;//fullscreen;
     }
     
     private boolean allowResizing(){
