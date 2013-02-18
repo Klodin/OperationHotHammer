@@ -25,8 +25,16 @@ public enum GameWindow implements IObserver{
     
     ArrayList<IObservee> observees = new ArrayList<>();  
     private String title;
-    private int width;
-    private int height;
+    
+    private int minWidth = 100;
+    private int minHeight = 100;
+    
+    private int windowedWidth = 800;
+    private int windowedHeight = 800;
+    
+    private int fullscreenWidth = 1920;
+    private int fullscreenHeight = 1080;
+    
     private int FPS = 0;
     private int prevFPS = 0;
     private boolean fullscreen = false;
@@ -35,11 +43,6 @@ public enum GameWindow implements IObserver{
     public void initialize() {
         
         Debugging.INSTANCE.showMessage("Initializing (GameWindow)");
-        
-        int resolutionWidth = 1366;
-        int resolutionHeight = 768;
-        
-        setResolution(resolutionWidth,resolutionHeight);
         
         startRendering();
         
@@ -93,73 +96,152 @@ public enum GameWindow implements IObserver{
         }
     }
     
-    public void draw(float delta){
-        
+    public void draw(){
         // clear screen
 	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	GL11.glLoadIdentity();
         
-        Game.INSTANCE.draw(getScreenWidth(), getScreenHeight());
-        Hud.INSTANCE.draw(getScreenWidth(), getScreenHeight());
+        //Cry "Havoc!" and let slip the dogs of war,
+        Game.INSTANCE.draw(getWidth(), getHeight());
+        Hud.INSTANCE.draw(getWidth(), getHeight());
                 
         // update window contents
 	Display.update();
-        Display.sync(Settings.FRAME_RATE_SECONDS); // cap fps to 60fps
+        
+        // cap fps to 60fps
+        Display.sync(Settings.FRAME_RATE_SECONDS);
         
     }
     
     public void update(float delta){
+        Game.INSTANCE.update(delta);
+        
         Hud.INSTANCE.set("FPS", String.valueOf(getFPS()));
         Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
         Hud.INSTANCE.set("Drawn Sprites", String.valueOf(Sprite.getDrawnCount()));
+        
+        if(Display.wasResized() && !fullscreen) {
+            setResolution(Display.getWidth(),Display.getHeight());
+            initializeGlDisplay();
+        }
+        
+        Hud.INSTANCE.set("Dimensions", String.valueOf(Display.getWidth()) + "x" + String.valueOf(Display.getHeight()));
+        
         Sprite.clearCounts();
         Entity.clearCounts();
     }
     
     /**
-    * Sets the display mode for fullscreen mode
-    */
-    private boolean setDisplayMode() {
-	try {
-            
-            // get modes
-            DisplayMode[] dm = org.lwjgl.util.Display.getAvailableDisplayModes(width, height, -1, -1, -1, -1, 60, 60);
-            org.lwjgl.util.Display.setDisplayMode(dm, new String[] {
-		"width=" + width,
-		"height=" + height,
-		"freq=" + 60,
-		"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel() 
-            });
+     * Set the display mode to be used 
+     * 
+     * @param width The width of the display required
+     * @param height The height of the display required
+     * @param fullscreen True if we want fullscreen mode
+     */
+    public void setDisplayMode(int width, int height, boolean fullscreen) {
 
-            return true;
-		
-        } catch (Exception e) {
-            
-            e.printStackTrace();
-            Debugging.INSTANCE.showWarning("Unable to enter fullscreen, continuing in windowed mode.");
-            
-	}
+        // return if requested DisplayMode is already set
+        if ((Display.getDisplayMode().getWidth() == width) && 
+            (Display.getDisplayMode().getHeight() == height) && 
+            (Display.isFullscreen() == fullscreen)) {
+                return;
+        }
 
-	return false;
+        try {
+            DisplayMode targetDisplayMode = null;
+
+            if (fullscreen) {
+                DisplayMode[] modes = Display.getAvailableDisplayModes();
+                int freq = 0;
+
+                for (int i=0;i<modes.length;i++) {
+                    DisplayMode current = modes[i];
+
+                    if ((current.getWidth() == width) && (current.getHeight() == height)) {
+                        if ((targetDisplayMode == null) || (current.getFrequency() >= freq)) {
+                            if ((targetDisplayMode == null) || (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel())) {
+                                targetDisplayMode = current;
+                                freq = targetDisplayMode.getFrequency();
+                            }
+                        }
+
+                        // if we've found a match for bpp and frequence against the 
+                        // original display mode then it's probably best to go for this one
+                        // since it's most likely compatible with the monitor
+                        if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) &&
+                            (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency())) {
+                                targetDisplayMode = current;
+                                break;
+                        }
+                    }
+                }
+            } else {
+                targetDisplayMode = new DisplayMode(width,height);
+            }
+
+            if (targetDisplayMode == null) {
+                Debugging.INSTANCE.showWarning("Failed to find value mode: "+width+"x"+height+" fs="+fullscreen);
+                return;
+            }
+
+            Display.setDisplayMode(targetDisplayMode);
+            Display.setFullscreen(fullscreen);
+            
+            if(!Display.isCreated())
+                Display.create();
+
+        } catch (LWJGLException e) {
+            if(Display.isCreated())
+                Debugging.INSTANCE.showWarning("Unable to setup mode "+width+"x"+height+" fullscreen="+fullscreen + e);
+            else
+                Debugging.INSTANCE.showError("Unable to setup mode "+width+"x"+height+" fullscreen="+fullscreen + e);
+        }
     }
         
     
-    public void switchMode() {
-        fullscreen = !fullscreen;
-        try {
-            Display.setFullscreen(fullscreen);
-            Mouse.setGrabbed(fullscreen);
-            Display.setVSyncEnabled(fullscreen);
+    public void toggleFullscreen() {
+        setDisplayMode(!fullscreen);
+    }
+    
+    public void setDisplayMode(boolean fullscreen) {
+        this.fullscreen = fullscreen;  
+        
+        //if windowed I gotta do this first *shrug*
+        if(!this.fullscreen)
+            Display.setResizable(allowResizing());
+        
+        
+        setDisplayMode(getWidth(), getHeight(), fullscreen);
+        
+        //something went wrong D:
+        if(this.fullscreen && !Display.isFullscreen()) {
+            this.fullscreen = !this.fullscreen; //whatever windowed mode is cooler anyways
+            Display.setResizable(allowResizing()); //resizing is always better
         }
-        catch(Exception e) {
-            
-            e.printStackTrace();
-            Debugging.INSTANCE.showWarning("Unable to enter fullscreen, continuing in windowed mode.");
-            
-        }
+        
+        //hide the mouse if fullscreen
+        Mouse.setGrabbed(!allowMouse());
+
+        //we need vsync on in fullscreen or visual tearing is seen
+        Display.setVSyncEnabled(allowVSync()); 
+        
+        //setup opengl display settings, this is here mostly to make sure the width and height are set properly
+        initializeGlDisplay();
     }
         
+    public boolean allowMouse(){
+        return !fullscreen;
+    }
+    
+    public boolean allowVSync(){
+        return fullscreen;
+    }
+    
+    public boolean allowResizing(){
+        return !fullscreen;
+    }
+    
     public void setTitle(String title) {
 	this.title = title;
 	if(Display.isCreated()) {
@@ -176,17 +258,22 @@ public enum GameWindow implements IObserver{
         return (int)(((float)FPS)*0.9 + ((float)prevFPS)*0.1);
     }
     
-    public void setResolution(int x, int y) {
-	width = x;
-	height = y;
+    public void setResolution(int width, int height) {
+	if(fullscreen){
+            fullscreenWidth = width;
+            fullscreenHeight = height;
+        }else{
+            windowedWidth = width;
+            windowedHeight = height;
+        }
     }
     
-    public int getScreenWidth() {
-        return width;
+    public int getWidth() {
+        return Math.max(fullscreen?fullscreenWidth:windowedWidth, minWidth);
     }
 
-    public int getScreenHeight() {
-        return height;
+    public int getHeight() {
+        return Math.max(fullscreen?fullscreenHeight:windowedHeight, minHeight);
     }
     
     public boolean isRunning() {
@@ -202,44 +289,33 @@ public enum GameWindow implements IObserver{
     * Start the rendering process. This method will cause the display to redraw
     * as fast as possible.
     */
-    public void startRendering() {
-        try {                
-            setDisplayMode();
-            Display.create();
-            setTitle("Awesome Secret Game");
+    public void startRendering() {            
+        setTitle("Awesome Secret Game");
             
-            // grab the mouse, dont want that hideous cursor when we're playing!
-            Mouse.setGrabbed(fullscreen);
-            Display.setFullscreen(fullscreen);
+        setDisplayMode(fullscreen = false);
   
-            // enable textures since we're going to use these for our sprites
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+        // enable textures since we're going to use these for our sprites
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
 			
-            // disable the OpenGL depth test since we're rendering 2D graphics
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
+        // disable the OpenGL depth test since we're rendering 2D graphics
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
 			
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-            GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glDisable(GL11.GL_LIGHTING);
             
-            GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            GL11.glClearDepth(1);
+        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glClearDepth(1);
             
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            
-            GL11.glViewport(0,0,width,height);
-            
-            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-            GL11.glMatrixMode(GL11.GL_PROJECTION);
-            GL11.glLoadIdentity();
-            GL11.glOrtho(0, width, height, 0, 1, -1);
-            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			
-            //if(callback != null) {
-            //    callback.initialise();
-            //}
-        } catch (LWJGLException le) {
-            //callback.windowClosed();
-	}
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    }
+    
+    public void initializeGlDisplay(){
+        GL11.glViewport(0,0,getWidth(),getHeight());
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0, getWidth(),getHeight(), 0, 1, -1);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);    
     }
 } 

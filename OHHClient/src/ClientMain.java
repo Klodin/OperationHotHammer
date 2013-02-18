@@ -5,6 +5,7 @@ import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Display.GameWindow;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -16,34 +17,27 @@ class ClientMain {
         GameWindow.INSTANCE.initialize();
         
         if(!Debugging.INSTANCE.hasError()) {
-            
-            long lastLoopTime = System.nanoTime();
             Debugging.INSTANCE.showMessage("");
             Debugging.INSTANCE.showMessage("Beginning Main Game Loop");
             Debugging.INSTANCE.showMessage(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             Debugging.INSTANCE.showMessage("");
         
-            long prevFpsTime = System.nanoTime();
+            long lastLoopTime = (Sys.getTime() * 1000) / Sys.getTimerResolution();
+            long prevFpsTime = (Sys.getTime() * 1000) / Sys.getTimerResolution();
             long count = 0;
             boolean key_f1 = false;
 
             while(Game.INSTANCE.isRunning()) {
-                long time = System.nanoTime();
-                float delta = ((time - lastLoopTime) / 1000000L);
+                long time = (Sys.getTime() * 1000) / Sys.getTimerResolution();
+                float delta = (float)(time - lastLoopTime);
 
                 if(delta < Settings.FRAME_RATE_MILLISECONDS) {
-                    //try{
-                        //Thread.sleep(100);//sleep for 100 ms
-                    //}catch(InterruptedException e){
-
-                    //}
                     continue;
                 }
 
-
                 count++;
-                if((time - prevFpsTime) / 1000000L >= 1000L) {
-                    int fps = (int)(count / ((time - prevFpsTime) / 1000000L / 1000L));
+                if((time - prevFpsTime) >= 1000L) {
+                    int fps = (int)(count / ((time - prevFpsTime) / 1000L));
                     count = 0;
                     prevFpsTime = time;
                     GameWindow.INSTANCE.setFPS(fps);
@@ -52,7 +46,7 @@ class ClientMain {
 
                 if(Keyboard.isKeyDown(Keyboard.KEY_F1) && !key_f1) {    // Is F1 Being Pressed?
                     key_f1 = true;                                      // Tell Program F1 Is Being Held
-                    GameWindow.INSTANCE.switchMode();                                       // Toggle Fullscreen / Windowed Mode
+                    GameWindow.INSTANCE.toggleFullscreen();            // Toggle Fullscreen / Windowed Mode
                 }
                 if(!Keyboard.isKeyDown(Keyboard.KEY_F1)) {              // Is F1 Being Pressed?
                     key_f1 = false;
@@ -75,11 +69,9 @@ class ClientMain {
                 if(Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                     Game.INSTANCE.shutdown();
                     Display.destroy();
-                    //callback.windowClosed();
                 }else{
-                    Game.INSTANCE.update(delta);
                     GameWindow.INSTANCE.update(delta);
-                    GameWindow.INSTANCE.draw(delta);
+                    GameWindow.INSTANCE.draw();
                 }
 
                 if(Debugging.INSTANCE.getMessageCount() > 0) {
