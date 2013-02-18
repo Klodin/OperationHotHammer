@@ -67,7 +67,7 @@ class ClientMain {
                     GameWindow.INSTANCE.update(delta);
                     GameWindow.INSTANCE.draw();
                 }
-
+ 
                 showDebuggingMessages();
 
             }
