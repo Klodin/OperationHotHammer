@@ -33,9 +33,7 @@ public enum GameWindow{
     
     private int fullscreenWidth = 0;
     private int fullscreenHeight = 0;
-    
-    private int FPS = 0;
-    private int prevFPS = 0;
+
     private boolean fullscreen = false;
 
     
@@ -108,7 +106,6 @@ public enum GameWindow{
     public void update(float delta){
         Game.INSTANCE.update(delta);
         
-        Hud.INSTANCE.set("FPS", String.valueOf(getFPS()));
         Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
         Hud.INSTANCE.set("Drawn Sprites", String.valueOf(Sprite.getDrawnCount()));
         
@@ -243,15 +240,6 @@ public enum GameWindow{
 	}
     }
     
-    public void setFPS(int val) {
-        prevFPS = FPS;
-        FPS = val;
-    }
-    
-    public int getFPS() {
-        return (int)(((float)FPS)*0.9 + ((float)prevFPS)*0.1);
-    }
-    
     private void setResolution(int width, int height) {
 	if(fullscreen){
             fullscreenWidth = width;
@@ -306,5 +294,9 @@ public enum GameWindow{
         GL11.glLoadIdentity();
         GL11.glOrtho(0, getWidth(),getHeight(), 0, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);    
+    }
+    
+    public void shutdown(){
+        Display.destroy();
     }
 } 
