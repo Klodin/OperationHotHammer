@@ -20,10 +20,9 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
-public enum GameWindow implements IObserver{
+public enum GameWindow{
     INSTANCE;
     
-    ArrayList<IObservee> observees = new ArrayList<>();  
     private String title;
     
     private int minWidth = 100;
@@ -32,8 +31,8 @@ public enum GameWindow implements IObserver{
     private int windowedWidth = 800;
     private int windowedHeight = 800;
     
-    private int fullscreenWidth = 1920;
-    private int fullscreenHeight = 1080;
+    private int fullscreenWidth = 0;
+    private int fullscreenHeight = 0;
     
     private int FPS = 0;
     private int prevFPS = 0;
@@ -44,6 +43,7 @@ public enum GameWindow implements IObserver{
         
         Debugging.INSTANCE.showMessage("Initializing (GameWindow)");
         
+        initFullscreenResolution();
         startRendering();
         
         Game.INSTANCE.initialize();
@@ -78,22 +78,14 @@ public enum GameWindow implements IObserver{
         
         Debugging.INSTANCE.finishGroup();
         
-        /*
-        int num = 20;
-        for(int _x = 0; _x <= num*40; _x++){
-        for(int _y = 0; _y <= num*0.7f; _y++) {
-            
-            s = new Sprite("OperationHotHammer/Assets/Terrain/grass.png");
-            e = new SimpleCreature((scene.getWidth()/(num*2))*_x-scene.getWidth()/2,(scene.getHeight()/((int)num*0.7f))*_y);
-            e.attach(s);
-            scene.addEntity(e);
-            
-        }}
-        */
-        
         if(!Debugging.INSTANCE.hasError()) {
             Game.INSTANCE.loadScene(scene);
         }
+    }
+    
+    private void initFullscreenResolution(){
+        fullscreenWidth = Display.getDesktopDisplayMode().getWidth();
+        fullscreenHeight = Display.getDesktopDisplayMode().getHeight();
     }
     
     public void draw(){
@@ -111,7 +103,6 @@ public enum GameWindow implements IObserver{
         
         // cap fps to 60fps
         Display.sync(Settings.FRAME_RATE_SECONDS);
-        
     }
     
     public void update(float delta){
@@ -128,6 +119,7 @@ public enum GameWindow implements IObserver{
         
         Hud.INSTANCE.set("Dimensions", String.valueOf(Display.getWidth()) + "x" + String.valueOf(Display.getHeight()));
         
+        //Reset counters back to 0, these are mostly just for display in the hud
         Sprite.clearCounts();
         Entity.clearCounts();
     }
@@ -139,7 +131,7 @@ public enum GameWindow implements IObserver{
      * @param height The height of the display required
      * @param fullscreen True if we want fullscreen mode
      */
-    public void setDisplayMode(int width, int height, boolean fullscreen) {
+    private void setDisplayMode(int width, int height, boolean fullscreen) {
 
         // return if requested DisplayMode is already set
         if ((Display.getDisplayMode().getWidth() == width) && 
@@ -188,8 +180,10 @@ public enum GameWindow implements IObserver{
             Display.setDisplayMode(targetDisplayMode);
             Display.setFullscreen(fullscreen);
             
-            if(!Display.isCreated())
+            if(!Display.isCreated()) {
                 Display.create();
+                Display.setTitle(title);   
+            }
 
         } catch (LWJGLException e) {
             if(Display.isCreated())
@@ -201,10 +195,10 @@ public enum GameWindow implements IObserver{
         
     
     public void toggleFullscreen() {
-        setDisplayMode(!fullscreen);
+        setupDisplay(!fullscreen);
     }
     
-    public void setDisplayMode(boolean fullscreen) {
+    private void setupDisplay(boolean fullscreen) {
         this.fullscreen = fullscreen;  
         
         //if windowed I gotta do this first *shrug*
@@ -230,15 +224,15 @@ public enum GameWindow implements IObserver{
         initializeGlDisplay();
     }
         
-    public boolean allowMouse(){
+    private boolean allowMouse(){
         return !fullscreen;
     }
     
-    public boolean allowVSync(){
+    private boolean allowVSync(){
         return fullscreen;
     }
     
-    public boolean allowResizing(){
+    private boolean allowResizing(){
         return !fullscreen;
     }
     
@@ -258,7 +252,7 @@ public enum GameWindow implements IObserver{
         return (int)(((float)FPS)*0.9 + ((float)prevFPS)*0.1);
     }
     
-    public void setResolution(int width, int height) {
+    private void setResolution(int width, int height) {
 	if(fullscreen){
             fullscreenWidth = width;
             fullscreenHeight = height;
@@ -280,19 +274,14 @@ public enum GameWindow implements IObserver{
         return Game.INSTANCE.isRunning();
     }
     
-    @Override
-    public void addObservee(IObservee rl) {
-        observees.add(rl);
-    }
-    
     /**
     * Start the rendering process. This method will cause the display to redraw
     * as fast as possible.
     */
-    public void startRendering() {            
+    private void startRendering() {            
         setTitle("Awesome Secret Game");
             
-        setDisplayMode(fullscreen = false);
+        setupDisplay(fullscreen = false);
   
         // enable textures since we're going to use these for our sprites
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -310,7 +299,7 @@ public enum GameWindow implements IObserver{
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     }
     
-    public void initializeGlDisplay(){
+    private void initializeGlDisplay(){
         GL11.glViewport(0,0,getWidth(),getHeight());
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
