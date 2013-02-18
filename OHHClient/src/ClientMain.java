@@ -45,7 +45,7 @@ class ClientMain {
             
             while(Game.INSTANCE.isRunning()) {
                 time = getTime();
-                delta = (float)(time - lastLoopTime);
+                delta = (float)(time - lastLoopTime) / Settings.FRAME_RATE_MILLISECONDS;
                 lastLoopTime = time;
                 
                 frameCount++;
@@ -57,7 +57,7 @@ class ClientMain {
                 }                
 
                 //resolve any key presses
-                handleUserInputs();
+                handleUserInputs(1);//delta);
 
                 
                 if(quitRequested) {
@@ -94,7 +94,7 @@ class ClientMain {
         }
     }
     
-    public void handleUserInputs(){
+    public void handleUserInputs(float delta){
 
         if (Display.isCloseRequested())
         {
@@ -158,15 +158,15 @@ class ClientMain {
         }
 
         if(KEY_RIGHT)
-            Game.INSTANCE.changePositionX(Settings.CAMERA_MOVE_SPEED);
+            Game.INSTANCE.changePositionX(Settings.CAMERA_MOVE_SPEED * delta);
                         
         if(KEY_LEFT)
-            Game.INSTANCE.changePositionX(-Settings.CAMERA_MOVE_SPEED);
+            Game.INSTANCE.changePositionX(-Settings.CAMERA_MOVE_SPEED * delta);
                         
         if(KEY_UP)
-            Game.INSTANCE.changePositionY(-Settings.CAMERA_MOVE_SPEED);
+            Game.INSTANCE.changePositionY(-Settings.CAMERA_MOVE_SPEED * delta);
                         
         if(KEY_DOWN)
-            Game.INSTANCE.changePositionY(Settings.CAMERA_MOVE_SPEED);
+            Game.INSTANCE.changePositionY(Settings.CAMERA_MOVE_SPEED * delta);
     }
 }
