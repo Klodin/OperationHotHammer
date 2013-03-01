@@ -128,14 +128,13 @@ public enum TextureLoader {
         
         // create the texture ID for this texture 
         int textureID = createTextureID(); 
-        Texture texture = new Texture(target,textureID); 
         
         // bind this texture 
         GL11.glBindTexture(target, textureID); 
  
         BufferedImage bufferedImage = loadImage(resourceName); 
-        texture.setWidth(bufferedImage.getWidth());
-        texture.setHeight(bufferedImage.getHeight());
+        
+        Texture texture = new Texture(target,textureID,bufferedImage.getWidth(),bufferedImage.getHeight());
         
         if (bufferedImage.getColorModel().hasAlpha()) {
             srcPixelFormat = GL11.GL_RGBA;

@@ -4,10 +4,11 @@ import OperationHotHammer.Core.GameObjects.Boundary.Circle;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.Interfaces.IDisplayable;
+import OperationHotHammer.Core.Interfaces.IEntity;
 import OperationHotHammer.Core.Interfaces.ISprite;
 import org.lwjgl.util.vector.Vector3f;
 
-public abstract class Entity implements IDisplayable {
+public abstract class Entity implements IDisplayable, IEntity {
 
    public final static int LAYER_MIDDLE = 100;
    public static final float LAYER_MIN = 0;
@@ -69,4 +70,31 @@ public abstract class Entity implements IDisplayable {
            sprite.setHeight((int)((Circle)this.collider).radius*2);   
        }
    }
+   
+   @Override
+   public String getState(){
+       return ""; //TODO: this
+   }
+
+    @Override
+    public float getX() {
+        return position.x;
+    }
+
+    @Override
+    public float getY() {
+        return position.y;
+    }
+
+    @Override
+    public void setX(float x) {
+        position.x = x;
+    }
+
+    @Override
+    public void setY(float y) {
+        position.y = y;
+    }
+   
+   
 }

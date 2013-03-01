@@ -18,7 +18,7 @@ import java.util.Random;
 public class SimpleCreature extends Entity{
     private static Random randomGenerator = new Random();
     public SimpleCreature(float x, float y) {
-        super(new Vector3f(x,y,50),new Circle(Settings.GRID_SPACE_SIZE/2));
+        super(new Vector3f(x,y,50),new Circle(15));
         Debugging.INSTANCE.showMessage("Create (Entity->SimpleCreature)");
         /*
         startx = position.x;

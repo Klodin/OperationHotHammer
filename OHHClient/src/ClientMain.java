@@ -158,15 +158,15 @@ class ClientMain {
         }
 
         if(KEY_RIGHT)
-            Game.INSTANCE.changePositionX(Settings.CAMERA_MOVE_SPEED * delta);
+            Game.INSTANCE.changePositionX(Settings.MOVEMENT_SPEED * delta);
                         
         if(KEY_LEFT)
-            Game.INSTANCE.changePositionX(-Settings.CAMERA_MOVE_SPEED * delta);
+            Game.INSTANCE.changePositionX(-Settings.MOVEMENT_SPEED * delta);
                         
         if(KEY_UP)
-            Game.INSTANCE.changePositionY(-Settings.CAMERA_MOVE_SPEED * delta);
+            Game.INSTANCE.changePositionY(-Settings.MOVEMENT_SPEED * delta);
                         
         if(KEY_DOWN)
-            Game.INSTANCE.changePositionY(Settings.CAMERA_MOVE_SPEED * delta);
+            Game.INSTANCE.changePositionY(Settings.MOVEMENT_SPEED * delta);
     }
 }

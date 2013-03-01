@@ -38,8 +38,17 @@ public class Scene {
         position.y = height/2;
     }
     
-    public void addEntity(Entity object) {
-        objects.add(object);
+    public void load(){
+        Game.INSTANCE.loadScene(this);
+    }
+    
+    public void addPlayer(Entity e) {
+        objects.add(e);
+        Game.INSTANCE.setPlayer(e);
+    }
+    
+    public void addEntity(Entity e) {
+        objects.add(e);
     }
     
     public void attach(IBackground s) {
@@ -50,15 +59,23 @@ public class Scene {
         return position;
     }
     
-    public void changePositionX(float amt) {
+    public void setX(float x) {
+        position.x = x;
+    }
+
+    public void setY(float y) {
+        position.y = y;
+    }
+    
+    public void changeX(float amt) {
         position.x+=amt;
     }
     
-    public void changePositionY(float amt) {
+    public void changeY(float amt) {
         position.y+=amt;
     }
     
-    public void changePositionZ(float amt) {
+    public void changeZ(float amt) {
         position.z+=amt;
     }
     
@@ -81,34 +98,46 @@ public class Scene {
             o.update(delta);
             quadTree.insertObject(o);
         }
+        
+        for(IBackground background : backgrounds)
+             background.getBackgroundSprite().update(delta, null);
     }
     
     public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
         for(IBackground background : backgrounds){
         
             ISprite backgroundSprite = background.getBackgroundSprite();
-            int backgroundType = background.getBackgroundType();
-            float backgroundParallexRatio = background.getBackgroundParallexRatio();
             
-            if(backgroundSprite != null && backgroundType == IBackground.BACKGROUND_FIXED && backgroundSprite.getWidth() != resWidth) {
-                backgroundSprite.setWidth(resWidth);
-                backgroundSprite.setHeight(resHeight);        
+            int w = resWidth;
+            int h = resHeight;
+         
+            if(backgroundSprite != null && backgroundSprite.getWidth() != w) {
+                backgroundSprite.setWidth(w);
             }
+            if(backgroundSprite != null && backgroundSprite.getHeight() != h) {
+                backgroundSprite.setHeight(h);
+            }
+
+
+            int backgroundType = background.getBackgroundType();
 
             if(backgroundSprite != null && backgroundType == IBackground.BACKGROUND_FIXED)
                 backgroundSprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
 
-            if(backgroundSprite != null && backgroundType == IBackground.BACKGROUND_PAN && backgroundSprite.getWidth() != Math.max(this.getWidth()*(2+(backgroundParallexRatio)), resWidth * (2+(backgroundParallexRatio)))) {
-                backgroundSprite.setWidth((int)Math.max(this.getWidth()*(2+backgroundParallexRatio), resWidth * (2+backgroundParallexRatio)));
-                backgroundSprite.setHeight((int)Math.max(this.getHeight()*(2+backgroundParallexRatio), resHeight * (2+backgroundParallexRatio)));
-            }
-
             if(backgroundSprite != null && backgroundType == IBackground.BACKGROUND_PAN) {
+                float parallex = background.getBackgroundParallexRatio();
+                
+                backgroundSprite.getTexture().setOffsetX(-cameraPosition.x * parallex);
+                backgroundSprite.getTexture().setOffsetY(-cameraPosition.y * parallex);
+                
+                backgroundSprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
+                /*
                 backgroundSprite.draw(new Vector3f(
                         resWidth/2 - (cameraPosition.x-getWidth()/2)*backgroundParallexRatio,
                         resHeight/2 - (cameraPosition.y-getHeight()/2)*backgroundParallexRatio, 
                         0)
                 );
+                * */
             }
             
         }

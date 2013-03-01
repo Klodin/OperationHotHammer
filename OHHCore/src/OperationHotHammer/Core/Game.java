@@ -1,6 +1,7 @@
 
 package OperationHotHammer.Core;
 
+import OperationHotHammer.Core.Interfaces.IEntity;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -14,6 +15,8 @@ public enum Game{
     int resWidth = 0;
     int resHeight = 0;
     float drawRadius = 0;
+    
+    IEntity player;
     
     public void initialize() {
         Debugging.INSTANCE.showMessage("Initializing (Game)");
@@ -30,20 +33,34 @@ public enum Game{
         return scene;
     }
     
+    public void setPlayer(IEntity e){
+        player = e;
+    }
+    
     public Vector3f getPosition(){
         return scene.getPosition();
     }
     
     public void changePositionX(float amt) {
-        scene.changePositionX(amt);
+        if(player != null) {
+            player.setX(player.getX()+amt);
+            scene.setX(player.getX()); 
+        } else {
+            scene.changeX(amt);
+        }
     }
     
     public void changePositionY(float amt) {
-        scene.changePositionY(amt);
+        if(player != null) {
+            player.setY(player.getY()+amt);
+            scene.setY(player.getY()); 
+        } else {
+            scene.changeY(amt);
+        }
     }
     
     public void changePositionZ(float amt) {
-        scene.changePositionZ(amt);
+        scene.changeZ(amt);
     }
     
     public void update(float delta) {

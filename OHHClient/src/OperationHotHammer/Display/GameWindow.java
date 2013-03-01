@@ -1,24 +1,21 @@
 
 package OperationHotHammer.Display;
 
-import OperationHotHammer.Core.Interfaces.IObserver;
-import OperationHotHammer.Core.Interfaces.IObservee;
+import OperationHotHammer.Display.Sprite.Sprite;
 import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
 import OperationHotHammer.Core.GameObjects.Entity;
+import OperationHotHammer.Core.Interfaces.ITexture;
 import OperationHotHammer.Core.Scene;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
-import OperationHotHammer.Display.Text.Text;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.HashMap;
+import OperationHotHammer.Display.Sprite.AnimatedSprite;
+import OperationHotHammer.Display.Sprite.TextureScrollBehaviour;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
 
 public enum GameWindow{
     INSTANCE;
@@ -44,6 +41,9 @@ public enum GameWindow{
         fullscreenWidth = Display.getDesktopDisplayMode().getWidth();
         fullscreenHeight = Display.getDesktopDisplayMode().getHeight();
         
+        windowedWidth = Math.min(windowedWidth, fullscreenWidth-100);
+        windowedHeight = Math.min(windowedHeight, fullscreenHeight-100);
+                
         //Initialize the game
         Game.INSTANCE.initialize();
         
@@ -55,6 +55,7 @@ public enum GameWindow{
         Scene scene = new Scene("Testing Scene", 500, 500);
         
         Entity e;
+        AnimatedSprite as;
         Sprite s;
         
         float xx = (int)(scene.getWidth()/Settings.GRID_SPACE_SIZE); //round down, most we can fit with grid spacing 
@@ -63,6 +64,7 @@ public enum GameWindow{
         float h = scene.getHeight()/yy; //adjusted grid space height, to maximize scene space
         
         Debugging.INSTANCE.beginGroup("Initializing (Scene '" + scene.getName() + "')");
+        /*
         Debugging.INSTANCE.beginGroup("Populating Entites");
         for(int x = 0; x < xx; x++)
         for(int y = 0; y < yy; y++) {
@@ -72,19 +74,36 @@ public enum GameWindow{
             scene.addEntity(e);
         }
         Debugging.INSTANCE.finishGroup();
+        */
+        as = new AnimatedSprite();
+        
+        //e = new SimpleCreature(50,50); //center them on their respective squares
+        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 1200f);
+        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 800f);
+        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 2400f);
+        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 400f);
+        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 300f);
+        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 200f);
+        
+        e = new SimpleCreature(250,250); 
+        e.attach(as);
+        scene.addPlayer(e);
         
         Debugging.INSTANCE.showMessage("Setting Background");
         
-        s = new Sprite("OperationHotHammer/Assets/valley2.png", Sprite.TEXTURE_TILED);
-        scene.attach(new Background(s, 0.05f));
+        s = new Sprite("OperationHotHammer/Assets/valley2.png", ITexture.TILED);
+        scene.attach(new Background(s, 0.5f));
         
-        s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", Sprite.TEXTURE_TILED);
-        scene.attach(new Background(s, 0.25f));
 
+        as = new AnimatedSprite(new TextureScrollBehaviour(-4f, -2f));
+        
+        as.add(new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED), 1000f);
+        scene.attach(new Background(as, 0f));        
+        
         Debugging.INSTANCE.finishGroup();
         
         if(!Debugging.INSTANCE.hasError()) {
-            Game.INSTANCE.loadScene(scene);
+            scene.load();
         }
     }
     
@@ -111,9 +130,11 @@ public enum GameWindow{
         // update the game!  this allows entities to update / move around
         Game.INSTANCE.update(delta);
         
+        Hud.INSTANCE.set("Position", "X " + String.valueOf(Game.INSTANCE.getScene().getPosition().x) + ", Y " + String.valueOf(Game.INSTANCE.getScene().getPosition().y) + "");
+        
         // update the displayed values in out hud, mostly for debugging
-        Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
-        Hud.INSTANCE.set("Drawn Sprites", String.valueOf(Sprite.getDrawnCount()));
+        //Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
+        //Hud.INSTANCE.set("Drawn Sprites", String.valueOf(Sprite.getDrawnCount()));
         
         // if the window was resized lets ensure all the rendering stuff is configured to the new dimensions
         if(Display.wasResized() && !fullscreen) {
