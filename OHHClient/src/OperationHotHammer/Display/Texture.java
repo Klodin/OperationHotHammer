@@ -158,6 +158,11 @@ public class Texture implements ITexture {
     @Override
     public void setOffsetX(float offset) {
         textureOffsetX = offset;
+        
+        if(textureOffsetX >= getTextureWidth())
+            textureOffsetX -= getTextureWidth();
+        if(textureOffsetX <= -getTextureWidth())
+            textureOffsetX += getTextureWidth();
     }
     
     @Override
@@ -166,8 +171,13 @@ public class Texture implements ITexture {
     }
     
     @Override
-    public void setOffsetY(float offset) {
+    public void setOffsetY(float offset) {       
         textureOffsetY = offset;
+        
+        if(textureOffsetY >= getTextureHeight())
+            textureOffsetY -= getTextureHeight();
+        if(textureOffsetY <= -getTextureHeight())
+            textureOffsetY += getTextureHeight();
     }
     
 

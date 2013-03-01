@@ -19,6 +19,9 @@ public class Settings {
     public static final float PLAYER_SIZE = GRID_SPACE_SIZE/2;
     public static final String ASSETS_DIR = System.getProperty("user.dir") + "\\src\\OperationHotHammer\\Assets\\";
     public static final float MOVEMENT_SPEED = 6;
+    public static final float CAMERA_EASE_TO_POSITION = 1/5f;
+    public static final float CAMERA_EASE_LOWER_LIMIT = 1.5f;
+            
     public static final Map<String, String> DATA_MAP;
     static {
         Map<String, String> map = new HashMap<>();

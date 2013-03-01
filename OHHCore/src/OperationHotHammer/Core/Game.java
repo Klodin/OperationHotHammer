@@ -16,7 +16,7 @@ public enum Game{
     int resHeight = 0;
     float drawRadius = 0;
     
-    IEntity player;
+    private IEntity player;
     
     public void initialize() {
         Debugging.INSTANCE.showMessage("Initializing (Game)");
@@ -37,6 +37,10 @@ public enum Game{
         player = e;
     }
     
+    public IEntity getPlayer(){
+        return player;
+    }
+    
     public Vector3f getPosition(){
         return scene.getPosition();
     }
@@ -44,7 +48,6 @@ public enum Game{
     public void changePositionX(float amt) {
         if(player != null) {
             player.setX(player.getX()+amt);
-            scene.setX(player.getX()); 
         } else {
             scene.changeX(amt);
         }
@@ -53,7 +56,6 @@ public enum Game{
     public void changePositionY(float amt) {
         if(player != null) {
             player.setY(player.getY()+amt);
-            scene.setY(player.getY()); 
         } else {
             scene.changeY(amt);
         }

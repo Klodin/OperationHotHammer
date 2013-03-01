@@ -43,17 +43,6 @@ public class TextureScrollBehaviour implements AnimationBehaviour{
                 
         float offsetX = t.getOffsetX() + cloudXSpeed;
         float offsetY = t.getOffsetY() + cloudYSpeed;
-                
-        if(cloudXSpeed > 0 && offsetX >= t.getTextureWidth())
-            offsetX -= t.getTextureWidth();
-        if(cloudXSpeed < 0 && offsetX <= -t.getTextureWidth())
-            offsetX += t.getTextureWidth();
-        
-                
-        if(cloudYSpeed > 0 && offsetY >= t.getTextureHeight())
-            offsetY -= t.getTextureHeight();
-        if(cloudYSpeed < 0 && offsetY <= -t.getTextureHeight())
-            offsetY += t.getTextureHeight();
         
         t.setOffsetX(offsetX);
         t.setOffsetY(offsetY);

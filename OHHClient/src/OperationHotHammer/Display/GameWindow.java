@@ -92,7 +92,7 @@ public enum GameWindow{
         Debugging.INSTANCE.showMessage("Setting Background");
         
         s = new Sprite("OperationHotHammer/Assets/valley2.png", ITexture.TILED);
-        scene.attach(new Background(s, 0.5f));
+        scene.attach(new Background(s, 1f));
         
 
         as = new AnimatedSprite(new TextureScrollBehaviour(-4f, -2f));
