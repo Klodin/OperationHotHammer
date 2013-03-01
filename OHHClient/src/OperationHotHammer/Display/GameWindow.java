@@ -91,14 +91,14 @@ public enum GameWindow{
         
         Debugging.INSTANCE.showMessage("Setting Background");
         
-        s = new Sprite("OperationHotHammer/Assets/valley2.png", ITexture.TILED);
+        s = new Sprite("OperationHotHammer/Assets/dirt2.jpg", ITexture.TILED);
         scene.attach(new Background(s, 1f));
         
 
-        as = new AnimatedSprite(new TextureScrollBehaviour(-4f, -2f));
+        as = new AnimatedSprite(new TextureScrollBehaviour(-2.4f, -1.2f));
         
         as.add(new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED), 1000f);
-        scene.attach(new Background(as, 0f));        
+        scene.attach(new Foreground(as, 0f));        
         
         Debugging.INSTANCE.finishGroup();
         
@@ -130,7 +130,6 @@ public enum GameWindow{
         // update the game!  this allows entities to update / move around
         Game.INSTANCE.update(delta);
         
-        //Hud.INSTANCE.set("Position", "X " + String.valueOf((int)Game.INSTANCE.getScene().getPosition().x) + ", Y " + String.valueOf((int)Game.INSTANCE.getScene().getPosition().y) + "");
         Hud.INSTANCE.set("X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
         Hud.INSTANCE.set("Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
         

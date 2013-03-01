@@ -4,30 +4,30 @@
  */
 package OperationHotHammer.Display;
 
-import OperationHotHammer.Core.Interfaces.IBackground;
+import OperationHotHammer.Core.Interfaces.IForeground;
 import OperationHotHammer.Core.Interfaces.ISprite;
 
 /**
  *
  * @author Kaitlyn
  */
-public class Background implements IBackground {    
+public class Foreground implements IForeground {    
     private ISprite sprite;
     private int type;
     private float parallexRatio;
     
-    public Background(ISprite sprite, float parallex){
+    public Foreground(ISprite sprite, float parallex){
         this.sprite = sprite;
-        this.type = IBackground.PAN;
+        this.type = IForeground.PAN;
         this.parallexRatio = parallex;
         
         if(getParallexRatio() == 0f)
-            setType(IBackground.FIXED);
+            setType(IForeground.FIXED);
     }
     
-    public Background(ISprite sprite){
+    public Foreground(ISprite sprite){
         this.sprite = sprite;
-        this.type = IBackground.FIXED;
+        this.type = IForeground.FIXED;
         this.parallexRatio = 0f;
     }
 

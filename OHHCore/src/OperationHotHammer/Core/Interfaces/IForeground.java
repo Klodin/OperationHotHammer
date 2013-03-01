@@ -8,7 +8,7 @@ package OperationHotHammer.Core.Interfaces;
  *
  * @author Kaitlyn
  */
-public interface IBackground {
+public interface IForeground {
     public static int FIXED = 1;
     public static int PAN = 2;
     

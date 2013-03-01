@@ -3,6 +3,7 @@ package OperationHotHammer.Core;
 
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Interfaces.IBackground;
+import OperationHotHammer.Core.Interfaces.IForeground;
 import OperationHotHammer.Core.Interfaces.ISprite;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.DepthSortedList;
@@ -24,6 +25,7 @@ public class Scene {
     private final float width;
     private final float height;
     private ArrayList<IBackground> backgrounds = new ArrayList();
+    private ArrayList<IForeground> foregrounds = new ArrayList();
     
     private final Vector3f position = new Vector3f();
     
@@ -54,6 +56,10 @@ public class Scene {
     
     public void attach(IBackground s) {
         backgrounds.add(s);
+    }
+    
+    public void attach(IForeground s) {
+        foregrounds.add(s);
     }
     
     public Vector3f getPosition() {
@@ -109,7 +115,10 @@ public class Scene {
         }
         
         for(IBackground background : backgrounds)
-             background.getBackgroundSprite().update(delta, null);
+             background.getSprite().update(delta, null);
+        
+        for(IForeground foreground : foregrounds)
+             foreground.getSprite().update(delta, null);
         
         /* camera easing.. */
         
@@ -153,43 +162,7 @@ public class Scene {
     }
     
     public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
-        for(IBackground background : backgrounds){
-        
-            ISprite backgroundSprite = background.getBackgroundSprite();
-            
-            int w = resWidth;
-            int h = resHeight;
-         
-            if(backgroundSprite != null && backgroundSprite.getWidth() != w) {
-                backgroundSprite.setWidth(w);
-            }
-            if(backgroundSprite != null && backgroundSprite.getHeight() != h) {
-                backgroundSprite.setHeight(h);
-            }
-
-
-            int backgroundType = background.getBackgroundType();
-
-            if(backgroundSprite != null && backgroundType == IBackground.BACKGROUND_FIXED)
-                backgroundSprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
-
-            if(backgroundSprite != null && backgroundType == IBackground.BACKGROUND_PAN) {
-                float parallex = background.getBackgroundParallexRatio();
-                
-                backgroundSprite.getTexture().setOffsetX(-cameraPosition.x * parallex);
-                backgroundSprite.getTexture().setOffsetY(-cameraPosition.y * parallex);
-                
-                backgroundSprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
-                /*
-                backgroundSprite.draw(new Vector3f(
-                        resWidth/2 - (cameraPosition.x-getWidth()/2)*backgroundParallexRatio,
-                        resHeight/2 - (cameraPosition.y-getHeight()/2)*backgroundParallexRatio, 
-                        0)
-                );
-                * */
-            }
-            
-        }
+        drawBackgrounds(resWidth, resHeight, cameraPosition);
         
         entitiesToDisplay.clear();
         quadTree.retrieveObjects(entitiesToDisplay, cameraPosition.x, cameraPosition.y, resWidth/2, resHeight/2);
@@ -197,6 +170,69 @@ public class Scene {
         for(Entity e : entitiesToDisplay) {
             e.draw(resWidth, resHeight, cameraPosition);
         }
+        
+        drawForegrounds(resWidth, resHeight, cameraPosition);
     }
     
+    private void drawBackgrounds(int resWidth, int resHeight, Vector3f cameraPosition){
+        for(IBackground background : backgrounds){
+        
+            ISprite sprite = background.getSprite();
+            
+            int w = resWidth;
+            int h = resHeight;
+         
+            if(sprite != null && sprite.getWidth() != w) {
+                sprite.setWidth(w);
+            }
+            if(sprite != null && sprite.getHeight() != h) {
+                sprite.setHeight(h);
+            }
+
+            int type = background.getType();
+
+            if(sprite != null && type == IBackground.FIXED)
+                sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
+
+            if(sprite != null && type == IBackground.PAN) {
+                float parallex = background.getParallexRatio();
+                
+                sprite.getTexture().setOffsetX(-cameraPosition.x * parallex);
+                sprite.getTexture().setOffsetY(-cameraPosition.y * parallex);
+                
+                sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
+            }
+        }   
+    }
+    
+    private void drawForegrounds(int resWidth, int resHeight, Vector3f cameraPosition){
+        for(IForeground foreground : foregrounds){
+        
+            ISprite sprite = foreground.getSprite();
+            
+            int w = resWidth;
+            int h = resHeight;
+         
+            if(sprite != null && sprite.getWidth() != w) {
+                sprite.setWidth(w);
+            }
+            if(sprite != null && sprite.getHeight() != h) {
+                sprite.setHeight(h);
+            }
+
+            int type = foreground.getType();
+
+            if(sprite != null && type == IForeground.FIXED)
+                sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
+
+            if(sprite != null && type == IForeground.PAN) {
+                float parallex = foreground.getParallexRatio();
+                
+                sprite.getTexture().setOffsetX(-cameraPosition.x * parallex);
+                sprite.getTexture().setOffsetY(-cameraPosition.y * parallex);
+                
+                sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
+            }
+        }   
+    }
 }
