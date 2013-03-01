@@ -130,11 +130,13 @@ public enum GameWindow{
         // update the game!  this allows entities to update / move around
         Game.INSTANCE.update(delta);
         
-        Hud.INSTANCE.set("Position", "X " + String.valueOf(Game.INSTANCE.getScene().getPosition().x) + ", Y " + String.valueOf(Game.INSTANCE.getScene().getPosition().y) + "");
+        //Hud.INSTANCE.set("Position", "X " + String.valueOf((int)Game.INSTANCE.getScene().getPosition().x) + ", Y " + String.valueOf((int)Game.INSTANCE.getScene().getPosition().y) + "");
+        Hud.INSTANCE.set("X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
+        Hud.INSTANCE.set("Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
         
         // update the displayed values in out hud, mostly for debugging
         //Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
-        //Hud.INSTANCE.set("Drawn Sprites", String.valueOf(Sprite.getDrawnCount()));
+        Hud.INSTANCE.set("Sprites Drawn", String.valueOf(Sprite.getDrawnCount()));
         
         // if the window was resized lets ensure all the rendering stuff is configured to the new dimensions
         if(Display.wasResized() && !fullscreen) {
@@ -143,7 +145,7 @@ public enum GameWindow{
         }
         
         // update hud to show the current dimensions!
-        Hud.INSTANCE.set("Dimensions", String.valueOf(Display.getWidth()) + "x" + String.valueOf(Display.getHeight()));
+        //Hud.INSTANCE.set("Dimensions", String.valueOf(Display.getWidth()) + "x" + String.valueOf(Display.getHeight()));
         
         //Reset counters back to 0, these are mostly just generated for displaying in the hud
         Sprite.clearCounts();
