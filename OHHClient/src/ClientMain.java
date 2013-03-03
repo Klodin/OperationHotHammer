@@ -21,6 +21,9 @@ class ClientMain {
     boolean KEY_DOWN = false;
     
     public static void main(String argv[]) {
+        //this is needed when compiling into a jar file for distribution
+        //System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/natives/");
+        
         ClientMain app = new ClientMain();
         app.run();
     }
