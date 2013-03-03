@@ -4,6 +4,7 @@ package OperationHotHammer.Display;
 import OperationHotHammer.Display.Sprite.Sprite;
 import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
+import OperationHotHammer.Core.GameObjects.Entities.SimpleEntity;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Interfaces.ITexture;
 import OperationHotHammer.Core.Scene;
@@ -88,17 +89,23 @@ public enum GameWindow{
         e = new SimpleCreature(250,250); 
         e.attach(as);
         scene.addPlayer(e);
+        Camera.INSTANCE.setTarget(e);
         
         Debugging.INSTANCE.showMessage("Setting Background");
         
-        s = new Sprite("OperationHotHammer/Assets/dirt2.jpg", ITexture.TILED);
-        scene.attach(new Background(s, 1f));
+        as = new AnimatedSprite(new TextureScrollBehaviour(-2.4f, -1.2f));
+        as.add(new Sprite("OperationHotHammer/Assets/valley2.png", ITexture.TILED), 1000f);
+        scene.attach(new Background(as, 0f));   
+        
+        s = new Sprite("OperationHotHammer/Assets/ship.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
+        Entity entity = new SimpleEntity(270,250,400,400);
+        entity.attach(s);
+        scene.addEntity(entity);
         
 
-        as = new AnimatedSprite(new TextureScrollBehaviour(-2.4f, -1.2f));
-        
+        as = new AnimatedSprite(new TextureScrollBehaviour(-4.2f, -0.5f));
         as.add(new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED), 1000f);
-        scene.attach(new Foreground(as, 0f));        
+        scene.attach(new Background(as, 0f));        
         
         Debugging.INSTANCE.finishGroup();
         
@@ -129,9 +136,13 @@ public enum GameWindow{
     public void update(float delta){
         // update the game!  this allows entities to update / move around
         Game.INSTANCE.update(delta);
+        Camera.INSTANCE.update(delta);
         
-        Hud.INSTANCE.set("X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
-        Hud.INSTANCE.set("Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
+        Hud.INSTANCE.set("Player X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
+        Hud.INSTANCE.set("Player Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
+        
+        Hud.INSTANCE.set("Scene X", String.valueOf((int)Game.INSTANCE.getScene().getX()));
+        Hud.INSTANCE.set("Scene Y", String.valueOf((int)Game.INSTANCE.getScene().getY()));
         
         // update the displayed values in out hud, mostly for debugging
         //Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));

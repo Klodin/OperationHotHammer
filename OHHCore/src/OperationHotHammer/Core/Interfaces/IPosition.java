@@ -10,13 +10,12 @@ import org.lwjgl.util.vector.Vector3f;
  *
  * @author Kaitlyn
  */
-public interface IEntity {
-    String getState();
+public interface IPosition {
     Vector3f getPosition();
     float getX();
     float getY();
     float getZ();
-    void setX(float x);
-    void setY(float y);
-    void setZ(float z);
+    void setX(float X);
+    void setY(float Y);
+    void setZ(float Z);
 }

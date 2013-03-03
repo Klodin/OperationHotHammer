@@ -4,17 +4,17 @@ package OperationHotHammer.Core;
 import OperationHotHammer.Core.GameObjects.Entity;
 import OperationHotHammer.Core.Interfaces.IBackground;
 import OperationHotHammer.Core.Interfaces.IForeground;
+import OperationHotHammer.Core.Interfaces.IPosition;
 import OperationHotHammer.Core.Interfaces.ISprite;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.DepthSortedList;
 import OperationHotHammer.Core.Util.EntityArrayList;
 import OperationHotHammer.Core.Util.EntityList;
 import OperationHotHammer.Core.Util.Partitioning.QTree;
-import OperationHotHammer.Core.Util.Settings;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Scene {
+public class Scene implements IPosition {
 
 
     
@@ -74,6 +74,14 @@ public class Scene {
         position.y = y;
     }
     
+    public void setZ(float z) {
+        position.z = z;
+    }
+    
+    public float getZ() {
+        return position.z;
+    }
+    
     public float getX() {
         return position.x;
     }
@@ -120,45 +128,6 @@ public class Scene {
         for(IForeground foreground : foregrounds)
              foreground.getSprite().update(delta, null);
         
-        /* camera easing.. */
-        
-        float playerX = Game.INSTANCE.getPlayer().getX();
-        float playerY = Game.INSTANCE.getPlayer().getY();
-
-        //current dif between player position and camera
-        float difX = Math.abs(getX() - playerX);
-        float difY = Math.abs(getY() - playerY);
-        
-        //get a percentage of difference to move on this iteration
-        float adjX = difX * Settings.CAMERA_EASE_TO_POSITION;
-        float adjY = difY * Settings.CAMERA_EASE_TO_POSITION;
-        
-        //find the direction (positive or negative)
-        float modX = getX() - playerX > 0? -1 : 1;
-        float modY = getY() - playerY > 0? -1 : 1;
-        
-        //if the percentage is less then our lower limit cap off at the limit
-        if(adjX < Settings.CAMERA_EASE_LOWER_LIMIT)
-            adjX = Settings.CAMERA_EASE_LOWER_LIMIT;
-        if(adjY < Settings.CAMERA_EASE_LOWER_LIMIT)
-            adjY = Settings.CAMERA_EASE_LOWER_LIMIT;
-        
-        //if we are over the difference remaining, just move the remaining difference instead
-        if(adjX > difX)
-            adjX = difX;
-        if(adjY > difY)
-            adjY = difY;
-        
-        //lets update the scene position now
-        if(adjX != 0)
-            setX(getX() + modX * adjX);
-        else
-            setX(playerX);
-        
-        if(adjY != 0)
-            setY(getY() + modY * adjY);
-        else
-            setY(playerY);
     }
     
     public void draw(int resWidth, int resHeight, Vector3f cameraPosition){

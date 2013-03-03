@@ -4,6 +4,7 @@
 import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
+import OperationHotHammer.Display.Camera;
 import OperationHotHammer.Display.GameWindow;
 import OperationHotHammer.Display.Hud;
 import org.lwjgl.Sys;
@@ -168,5 +169,10 @@ class ClientMain {
                         
         if(KEY_DOWN)
             Game.INSTANCE.changePositionY(Settings.MOVEMENT_SPEED * delta);
+        
+        if(KEY_RIGHT || KEY_LEFT || KEY_UP || KEY_DOWN)
+            Camera.INSTANCE.setEasing(false);
+        else
+            Camera.INSTANCE.setEasing(true);
     }
 }

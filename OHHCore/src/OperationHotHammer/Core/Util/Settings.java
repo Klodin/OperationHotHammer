@@ -18,9 +18,12 @@ public class Settings {
     public static final float GRID_SPACE_SIZE = 50.0f;
     public static final float PLAYER_SIZE = GRID_SPACE_SIZE/2;
     public static final String ASSETS_DIR = System.getProperty("user.dir") + "\\src\\OperationHotHammer\\Assets\\";
-    public static final float MOVEMENT_SPEED = 6;
-    public static final float CAMERA_EASE_TO_POSITION = 1/5f;
-    public static final float CAMERA_EASE_LOWER_LIMIT = 1.5f;
+    public static final float MOVEMENT_SPEED = 4.4f;
+    public static final float CAMERA_EASE_TO_POSITION = 24f; //distance divided by..
+    public static final float CAMERA_EASE_LOWER_LIMIT = 4.5f;
+    public static final float CAMERA_EASE_UPPER_LIMIT = 8f;
+    public static final float CAMERA_EASE_MAXDISTANCE = 120f;
+    public static final float CAMERA_EASE_MINDISTANCE = 40f;
             
     public static final Map<String, String> DATA_MAP;
     static {

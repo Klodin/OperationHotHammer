@@ -5,10 +5,11 @@ import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.Interfaces.IDisplayable;
 import OperationHotHammer.Core.Interfaces.IEntity;
+import OperationHotHammer.Core.Interfaces.IPosition;
 import OperationHotHammer.Core.Interfaces.ISprite;
 import org.lwjgl.util.vector.Vector3f;
 
-public abstract class Entity implements IDisplayable, IEntity {
+public abstract class Entity implements IDisplayable, IEntity, IPosition {
 
    public final static int LAYER_MIDDLE = 100;
    public static final float LAYER_MIN = 0;
@@ -73,7 +74,7 @@ public abstract class Entity implements IDisplayable, IEntity {
    
    @Override
    public String getState(){
-       return ""; //TODO: this
+       return ""; //TODO: actual states
    }
 
     @Override
@@ -85,7 +86,17 @@ public abstract class Entity implements IDisplayable, IEntity {
     public float getY() {
         return position.y;
     }
+    
+    @Override
+    public float getZ() {
+        return position.z;
+    }
 
+    @Override
+    public Vector3f getPosition() {
+        return position;
+    }
+    
     @Override
     public void setX(float x) {
         position.x = x;
@@ -94,6 +105,11 @@ public abstract class Entity implements IDisplayable, IEntity {
     @Override
     public void setY(float y) {
         position.y = y;
+    }
+    
+    @Override
+    public void setZ(float z) {
+        position.z = z;
     }
    
    
