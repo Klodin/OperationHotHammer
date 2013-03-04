@@ -1,15 +1,12 @@
 
 package OperationHotHammer.Core.GameObjects;
 
-
-import OperationHotHammer.Core.Interfaces.IDestructible;
-import OperationHotHammer.Core.Interfaces.IPhysics;
 import OperationHotHammer.Core.GameObjects.Boundary.IBoundaryShape;
 import OperationHotHammer.Core.GameObjects.StatusEffects.StatusEffects;
 import org.lwjgl.util.vector.Vector3f;
 
 
-public abstract class AdvancedEntity extends Entity implements IDestructible, IPhysics {
+public abstract class AdvancedEntity extends Entity /*implements IDestructible, IPhysics*/ {
 
     private  float health;
     private float maxHealth;
@@ -34,6 +31,7 @@ public abstract class AdvancedEntity extends Entity implements IDestructible, IP
         statusEffects.update(delta);
     }
     
+    /*
     //implementation of iPhysics
     @Override
     public void setHeading(Vector3f vec) {
@@ -101,5 +99,6 @@ public abstract class AdvancedEntity extends Entity implements IDestructible, IP
     public boolean isDestructable() {
         return destructable;
     }
+    */
     
 }

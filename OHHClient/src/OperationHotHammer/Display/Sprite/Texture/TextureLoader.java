@@ -1,4 +1,4 @@
-package OperationHotHammer.Display;
+package OperationHotHammer.Display.Sprite.Texture;
 
 import java.awt.Color;
 import java.awt.Graphics;

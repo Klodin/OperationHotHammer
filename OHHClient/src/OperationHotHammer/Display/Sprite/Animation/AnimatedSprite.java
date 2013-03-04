@@ -1,4 +1,4 @@
-package OperationHotHammer.Display.Sprite;
+package OperationHotHammer.Display.Sprite.Animation;
 
 import OperationHotHammer.Core.Interfaces.IEntity;
 import OperationHotHammer.Core.Interfaces.ISprite;

@@ -29,14 +29,14 @@ public class CombinedEntity extends AdvancedEntity {
     }
     
     @Override
-    public void draw() {
+    public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
         if(entities.isEmpty()) {
             Debugging.INSTANCE.showWarning("Attempted to draw an empty entity group!");
             return;
         }
 
         for(Entity e : entities) {
-            e.draw();
+            e.draw(resWidth, resHeight, cameraPosition);
         }
     }
 }

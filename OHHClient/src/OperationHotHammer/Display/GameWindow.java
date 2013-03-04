@@ -10,8 +10,8 @@ import OperationHotHammer.Core.Interfaces.ITexture;
 import OperationHotHammer.Core.Scene;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
-import OperationHotHammer.Display.Sprite.AnimatedSprite;
-import OperationHotHammer.Display.Sprite.TextureScrollBehaviour;
+import OperationHotHammer.Display.Sprite.Animation.AnimatedSprite;
+import OperationHotHammer.Display.Sprite.Animation.TextureScrollBehaviour;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -105,6 +105,14 @@ public enum GameWindow{
 
         as = new AnimatedSprite(new TextureScrollBehaviour(-4.2f, -0.5f));
         as.add(new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED), 1000f);
+        scene.attach(new Background(as, 0f));        
+        
+        as = new AnimatedSprite(new TextureScrollBehaviour(-1.8f, -2.3f));
+        s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED | ITexture.MAINTAIN_ASPECT_MIN);
+        s.getTexture().setTextureWidth(1600);
+        s.getTexture().setTextureHeight(1600);
+        
+        as.add(s, 1000f);
         scene.attach(new Background(as, 0f));        
         
         Debugging.INSTANCE.finishGroup();

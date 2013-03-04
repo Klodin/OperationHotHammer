@@ -25,7 +25,7 @@ public class DataParser {
                     case "type":
                         switch (orders[1]){
                             case "terrain":
-                                entity = new Terrain();
+                                //entity = new Terrain();
                                 break;
                         }
                         break;

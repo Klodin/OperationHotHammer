@@ -1,4 +1,4 @@
-package OperationHotHammer.Display;
+package OperationHotHammer.Display.Sprite.Texture;
 
 import OperationHotHammer.Core.Interfaces.ITexture;
 import org.lwjgl.opengl.GL11;

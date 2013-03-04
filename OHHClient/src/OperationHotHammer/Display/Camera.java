@@ -52,7 +52,8 @@ public enum Camera {
         float adjX = 0, adjY = 0;
         float adjDistance = 0;
         
-        if(easing) {
+        //if(easing) {
+        
             //how much to move towards scene
             adjDistance = distance / Settings.CAMERA_EASE_TO_POSITION * delta;
             
@@ -66,16 +67,16 @@ public enum Camera {
             //1) lower limit if slower, or 2) or use lowerlimit/2 if within the range of minDistance (allows a smoother finish)
             float lower = (distance < Settings.CAMERA_EASE_MINDISTANCE * delta ? (Settings.CAMERA_EASE_LOWER_LIMIT * delta)/((Settings.CAMERA_EASE_MINDISTANCE * delta)/distance) : Settings.CAMERA_EASE_LOWER_LIMIT * delta);
             
-            //limit within slowest we'll move towards it
+            //limit 'slowest we'll move towards it'
             if(adjDistance < lower || distance < Settings.CAMERA_EASE_MINDISTANCE * delta)
                 adjDistance *= 0.2;         //20% of original adjusted amount
                 adjDistance += 0.8 * lower; //80% of lower speed, this smooth the transition to lower speed
 
-            //limit within fastest we'll move towards it
+            //limit 'fastest we'll move towards it'
             if(adjDistance > Settings.CAMERA_EASE_UPPER_LIMIT * delta)
                 adjDistance = Settings.CAMERA_EASE_UPPER_LIMIT * delta;
 
-            //when on lower speed, ensure the speed will precisly reach the character's world position
+            //when on lower speed, ensure the speed will precisly close the gap to reach the character's world position (smoother animation)
             if(adjDistance == lower)
                 adjDistance = distance / (float)((int)(distance / lower));
             
@@ -93,7 +94,7 @@ public enum Camera {
             //lets update the scene position now
             Game.INSTANCE.getScene().setX(adjX);
             Game.INSTANCE.getScene().setY(adjY);
-        }else{ 
+        //}else{ 
             //not easing
             if(distance > Settings.CAMERA_EASE_MAXDISTANCE) {
                 adjDistance = Settings.CAMERA_EASE_MAXDISTANCE;
@@ -110,6 +111,6 @@ public enum Camera {
                 Game.INSTANCE.getScene().setX(adjX);
                 Game.INSTANCE.getScene().setY(adjY);   
             }
-        }        
+        //}        
     }
 }
