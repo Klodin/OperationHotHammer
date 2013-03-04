@@ -37,7 +37,7 @@ public class TextureScrollBehaviour implements AnimationBehaviour{
     public void run(float delta, ISprite sprite, IEntity entity){
         float cloudXSpeed = (xSpeed*delta);
         float cloudYSpeed = (ySpeed*delta);
-                
+        
         AnimatedSprite s = ((AnimatedSprite)sprite);
         ITexture t = s.getAnimationFrame().sprite.getTexture();
                 

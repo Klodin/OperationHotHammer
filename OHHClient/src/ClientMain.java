@@ -49,7 +49,7 @@ class ClientMain {
             
             while(Game.INSTANCE.isRunning()) {
                 time = getTime();
-                delta = (float)(time - lastLoopTime) / Settings.FRAME_RATE_MILLISECONDS;
+                delta = (float)(time - lastLoopTime) / Settings.FRAME_RATE_PERMILLISECOND;
                 lastLoopTime = time;
                 
                 frameCount++;

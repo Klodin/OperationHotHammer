@@ -2,33 +2,30 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OperationHotHammer.Display;
+package OperationHotHammer.Display.Sprite;
 
-import OperationHotHammer.Core.Interfaces.IBackground;
+import OperationHotHammer.Core.Interfaces.IScenery;
 import OperationHotHammer.Core.Interfaces.ISprite;
 
 /**
  *
  * @author Kaitlyn
  */
-public class Background implements IBackground {    
+public class Scenery implements IScenery {    
     private ISprite sprite;
     private int type;
-    private float parallexRatio;
+    private float parallex; //how fast the texture moves with the camera-> 1f is 1:1 ratio, 0.5F is 1:2.. etc
     
-    public Background(ISprite sprite, float parallex){
+    public Scenery(ISprite sprite, int type, float parallex){
         this.sprite = sprite;
-        this.type = IBackground.PAN;
-        this.parallexRatio = parallex;
-        
-        if(getParallexRatio() == 0f)
-            setType(IBackground.FIXED);
+        this.type = type;
+        this.parallex = parallex;
     }
     
-    public Background(ISprite sprite){
+    public Scenery(ISprite sprite, int type){
         this.sprite = sprite;
-        this.type = IBackground.FIXED;
-        this.parallexRatio = 0f;
+        this.type = type;
+        this.parallex = 1f;
     }
 
     @Override
@@ -42,8 +39,8 @@ public class Background implements IBackground {
     }
 
     @Override
-    public float getParallexRatio() {
-        return parallexRatio;
+    public float getParallex() {
+        return parallex;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class Background implements IBackground {
     }
 
     @Override
-    public void setParallexRatio(float parallexRatio) {
-        this.parallexRatio = parallexRatio;
+    public void setParallex(float parallexRatio) {
+        this.parallex = parallexRatio;
     }
 }

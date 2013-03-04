@@ -6,12 +6,14 @@ import OperationHotHammer.Core.Game;
 import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
 import OperationHotHammer.Core.GameObjects.Entities.SimpleEntity;
 import OperationHotHammer.Core.GameObjects.Entity;
+import OperationHotHammer.Core.Interfaces.IScenery;
 import OperationHotHammer.Core.Interfaces.ITexture;
 import OperationHotHammer.Core.Scene;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
 import OperationHotHammer.Core.Util.Settings;
 import OperationHotHammer.Display.Sprite.Animation.AnimatedSprite;
 import OperationHotHammer.Display.Sprite.Animation.TextureScrollBehaviour;
+import OperationHotHammer.Display.Sprite.Scenery;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -79,12 +81,12 @@ public enum GameWindow{
         as = new AnimatedSprite();
         
         //e = new SimpleCreature(50,50); //center them on their respective squares
-        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 1200f);
-        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 800f);
-        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 2400f);
-        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 400f);
-        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 300f);
-        as.add(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN).setHeight(30).setWidth(30), 200f);
+        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 1200f);
+        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 800f);
+        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 2400f);
+        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
+        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
+        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
         
         e = new SimpleCreature(250,250); 
         e.attach(as);
@@ -93,28 +95,33 @@ public enum GameWindow{
         
         Debugging.INSTANCE.showMessage("Setting Background");
         
-        as = new AnimatedSprite(new TextureScrollBehaviour(-2.4f, -1.2f));
-        as.add(new Sprite("OperationHotHammer/Assets/valley2.png", ITexture.TILED), 1000f);
-        scene.attach(new Background(as, 0f));   
+        //as = new AnimatedSprite(new TextureScrollBehaviour(-2.4f, -1.2f));
+        //as.addSprite(new Sprite("OperationHotHammer/Assets/dirt2.jpg", ITexture.TILED), 1000f);
+        //scene.addBackground(new Scenery(as, IScenery.MOVE_WITH_CAMERA));   
         
+        s = new Sprite("OperationHotHammer/Assets/dirt2.jpg", ITexture.TILED);
+        scene.addBackground(new Scenery(s, IScenery.MOVE_WITH_CAMERA));   
+        
+        /*
         s = new Sprite("OperationHotHammer/Assets/ship.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
         Entity entity = new SimpleEntity(270,250,400,400);
         entity.attach(s);
         scene.addEntity(entity);
+        */
         
-
-        as = new AnimatedSprite(new TextureScrollBehaviour(-4.2f, -0.5f));
-        as.add(new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED), 1000f);
-        scene.attach(new Background(as, 0f));        
+        as = new AnimatedSprite(new TextureScrollBehaviour(-1.5f, -1.2f));
+        as.addSprite(new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED), 1000f);
+        scene.addForeground(new Scenery(as, IScenery.MOVE_WITH_CAMERA, 2.1f));  
         
+        /*
         as = new AnimatedSprite(new TextureScrollBehaviour(-1.8f, -2.3f));
-        s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED | ITexture.MAINTAIN_ASPECT_MIN);
+        s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.MAINTAIN_ASPECT_MIN);
         s.getTexture().setTextureWidth(1600);
         s.getTexture().setTextureHeight(1600);
         
-        as.add(s, 1000f);
-        scene.attach(new Background(as, 0f));        
-        
+        as.addSprite(s, 1000f);
+        scene.addBackground(new Scenery(as, IScenery.CENTERED_TO_SCREEN));        
+        */
         Debugging.INSTANCE.finishGroup();
         
         if(!Debugging.INSTANCE.hasError()) {
@@ -138,7 +145,7 @@ public enum GameWindow{
 	Display.update();
         
         // Cap fps to 60fps, this must be called at each iteraton and tries to limit the frame rate as best as it can to 60
-        Display.sync(Settings.FRAME_RATE_SECONDS);
+        Display.sync(Settings.FRAME_RATE_PERSECOND);
     }
     
     public void update(float delta){
@@ -146,8 +153,10 @@ public enum GameWindow{
         Game.INSTANCE.update(delta);
         Camera.INSTANCE.update(delta);
         
-        Hud.INSTANCE.set("Player X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
-        Hud.INSTANCE.set("Player Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
+        if(Game.INSTANCE.getPlayer() != null) {
+            Hud.INSTANCE.set("Player X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
+            Hud.INSTANCE.set("Player Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
+        }
         
         Hud.INSTANCE.set("Scene X", String.valueOf((int)Game.INSTANCE.getScene().getX()));
         Hud.INSTANCE.set("Scene Y", String.valueOf((int)Game.INSTANCE.getScene().getY()));

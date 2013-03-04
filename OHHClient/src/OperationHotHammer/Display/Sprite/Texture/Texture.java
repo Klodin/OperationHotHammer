@@ -22,15 +22,9 @@ public class Texture implements ITexture {
     
     private final int originalWidth;
     private final int originalHeight;
-    
-    private int height;
-    private int width;
 
     private int texWidth;
     private int texHeight;
-
-    private float widthRatio;
-    private float heightRatio;
     
     private float textureOffsetX = 0;
     private float textureOffsetY = 0;
@@ -43,13 +37,8 @@ public class Texture implements ITexture {
         this.originalWidth = width;
         this.originalHeight = height;
         
-        this.width=width;
-        this.height=height;
-        
         this.texHeight=width;
         this.texHeight=height;
-        
-        setSizes();
     }
     
     @Override
@@ -58,76 +47,13 @@ public class Texture implements ITexture {
     }
     
     @Override
-    public int getDrawHeight() {
-        return height;
-    }
-    
-    @Override
-    public int getDrawHeight(int drawStyle) {
-        int h = height;
-        if((drawStyle & ITexture.MAINTAIN_ASPECT_MAX) != 0 || (drawStyle & ITexture.MAINTAIN_ASPECT_MIN) != 0){
-            //if((drawStyle & ITexture.MAINTAIN_ASPECT_MAX) != 0) {
-//TODO:
-            //}else{
-                if(texHeight < texWidth)
-                    h = (int)(((float)texHeight/(float)texWidth)*(float)width);
-           // }
-        }
-        return h;
-    }
-    
-    @Override
-    public int getDrawWidth() {
-        return width;
-    }
-    
-    @Override
-    public int getDrawWidth(int drawStyle) {
-        int w = width;
-        if((drawStyle & ITexture.MAINTAIN_ASPECT_MAX) != 0 || (drawStyle & ITexture.MAINTAIN_ASPECT_MIN) != 0){
-            //if((drawStyle & ITexture.MAINTAIN_ASPECT_MAX) != 0) {
-//TODO: 
-            //}else{
-                if(texWidth < texHeight)
-                    w = (int)(((float)texWidth/(float)texHeight)*(float)height);
-            //}
-        }
-            
-        return w;
-    }
-
-    @Override
-    public void setDrawWidth(int width) {
-        this.width = width;
-        setSizes();
-    }
-    
-    @Override
-    public void setDrawHeight(int height) {
-        this.height = height;
-        setSizes();
-    }
-    
-    @Override
-    public float getHeightRatio() {
-        return heightRatio;
-    }
-
-    @Override
-    public float getWidthRatio() {
-        return widthRatio;
-    }
-    
-    @Override
     public void setTextureHeight(int texHeight) {
         this.texHeight = texHeight;
-        setSizes();
     }
 
     @Override
     public void setTextureWidth(int texWidth) {
         this.texWidth = texWidth;
-        setSizes();
     }
     
     @Override
@@ -159,9 +85,9 @@ public class Texture implements ITexture {
     public void setOffsetX(float offset) {
         textureOffsetX = offset;
         
-        if(textureOffsetX >= getTextureWidth())
+        while(textureOffsetX >= getTextureWidth())
             textureOffsetX -= getTextureWidth();
-        if(textureOffsetX <= -getTextureWidth())
+        while(textureOffsetX <= -getTextureWidth())
             textureOffsetX += getTextureWidth();
     }
     
@@ -174,32 +100,17 @@ public class Texture implements ITexture {
     public void setOffsetY(float offset) {       
         textureOffsetY = offset;
         
-        if(textureOffsetY >= getTextureHeight())
+        while(textureOffsetY >= getTextureHeight())
             textureOffsetY -= getTextureHeight();
-        if(textureOffsetY <= -getTextureHeight())
+        while(textureOffsetY <= -getTextureHeight())
             textureOffsetY += getTextureHeight();
-    }
-    
-
-    private void setSizes() {
-        if (texHeight != 0) {
-            heightRatio = ((float) height)/texHeight;
-        }
-
-        if (texWidth != 0) {
-            widthRatio = ((float) width)/texWidth;
-        }
     }
     
     @Override
     public Texture clone() {
         Texture t = new Texture(target,textureID, originalWidth, originalHeight);
-        t.height = height;
-        t.width = width;
         t.texWidth = texWidth;
         t.texHeight = texHeight;
-        t.widthRatio = widthRatio;
-        t.heightRatio = heightRatio;
         return t;
     }
 }

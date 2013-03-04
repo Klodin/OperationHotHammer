@@ -27,24 +27,21 @@ public class AnimatedSprite implements ISprite {
         runnable = r;
     }
     
-    public void add(ISprite sprite, float frameDisplayTime){
+    public void addSprite(ISprite sprite, float frameDisplayTime){
         animationFrames.add(new AnimationFrame(sprite, frameDisplayTime));
     }
     
     @Override
-    public ISprite setWidth(int w) {
+    public void setWidth(int w) {
         for(int i = 0; i < animationFrames.size(); i++)
             animationFrames.get(i).sprite.setWidth(w);
         width = w;
-        return this;
     }
 
-    @Override
-    public ISprite setHeight(int h) {
+    public void setHeight(int h) {
         for(int i = 0; i < animationFrames.size(); i++)
             animationFrames.get(i).sprite.setHeight(h);
         height = h;
-        return this;
     }
 
     @Override
@@ -61,7 +58,7 @@ public class AnimatedSprite implements ISprite {
     public void update(float delta, IEntity e) {
         
         if(animationFrames.size() > 1) {
-            time+=delta*Settings.FRAME_RATE_MILLISECONDS;
+            time+=delta*Settings.FRAME_RATE_PERMILLISECOND;
 
             AnimationFrame af;
             if(time >= (af = animationFrames.get(currentFrame)).time) {

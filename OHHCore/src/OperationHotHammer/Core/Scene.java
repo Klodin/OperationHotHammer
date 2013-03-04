@@ -2,8 +2,7 @@
 package OperationHotHammer.Core;
 
 import OperationHotHammer.Core.GameObjects.Entity;
-import OperationHotHammer.Core.Interfaces.IBackground;
-import OperationHotHammer.Core.Interfaces.IForeground;
+import OperationHotHammer.Core.Interfaces.IScenery;
 import OperationHotHammer.Core.Interfaces.IPosition;
 import OperationHotHammer.Core.Interfaces.ISprite;
 import OperationHotHammer.Core.Util.Debugging.Debugging;
@@ -24,8 +23,10 @@ public class Scene implements IPosition {
     private final QTree quadTree;
     private final float width;
     private final float height;
-    private ArrayList<IBackground> backgrounds = new ArrayList();
-    private ArrayList<IForeground> foregrounds = new ArrayList();
+    private ArrayList<IScenery> backgrounds = new ArrayList();
+    private ArrayList<IScenery> foregrounds = new ArrayList();
+    
+    private Vector3f prevCameraPosition = new Vector3f();
     
     private final Vector3f position = new Vector3f();
     
@@ -54,11 +55,11 @@ public class Scene implements IPosition {
         objects.add(e);
     }
     
-    public void attach(IBackground s) {
+    public void addBackground(IScenery s) {
         backgrounds.add(s);
     }
     
-    public void attach(IForeground s) {
+    public void addForeground(IScenery s) {
         foregrounds.add(s);
     }
     
@@ -122,10 +123,10 @@ public class Scene implements IPosition {
             quadTree.insertObject(o);
         }
         
-        for(IBackground background : backgrounds)
+        for(IScenery background : backgrounds)
              background.getSprite().update(delta, null);
         
-        for(IForeground foreground : foregrounds)
+        for(IScenery foreground : foregrounds)
              foreground.getSprite().update(delta, null);
         
     }
@@ -141,10 +142,14 @@ public class Scene implements IPosition {
         }
         
         drawForegrounds(resWidth, resHeight, cameraPosition);
+        
+        
+        prevCameraPosition.x = cameraPosition.x;
+        prevCameraPosition.y = cameraPosition.y;
     }
     
     private void drawBackgrounds(int resWidth, int resHeight, Vector3f cameraPosition){
-        for(IBackground background : backgrounds){
+        for(IScenery background : backgrounds){
         
             ISprite sprite = background.getSprite();
             
@@ -160,22 +165,22 @@ public class Scene implements IPosition {
 
             int type = background.getType();
 
-            if(sprite != null && type == IBackground.FIXED)
+            if(sprite != null && type == IScenery.CENTERED_TO_SCREEN)
                 sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
 
-            if(sprite != null && type == IBackground.PAN) {
-                float parallex = background.getParallexRatio();
+            if(sprite != null && type == IScenery.MOVE_WITH_CAMERA) {
+                float parallex = background.getParallex();
                 
-                sprite.getTexture().setOffsetX(-cameraPosition.x * parallex);
-                sprite.getTexture().setOffsetY(-cameraPosition.y * parallex);
-                
+                sprite.getTexture().setOffsetX(sprite.getTexture().getOffsetX() + (prevCameraPosition.x - cameraPosition.x) * parallex);
+                sprite.getTexture().setOffsetY(sprite.getTexture().getOffsetY() + (prevCameraPosition.y - cameraPosition.y) * parallex);
+
                 sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
             }
         }   
     }
     
     private void drawForegrounds(int resWidth, int resHeight, Vector3f cameraPosition){
-        for(IForeground foreground : foregrounds){
+        for(IScenery foreground : foregrounds){
         
             ISprite sprite = foreground.getSprite();
             
@@ -191,14 +196,14 @@ public class Scene implements IPosition {
 
             int type = foreground.getType();
 
-            if(sprite != null && type == IForeground.FIXED)
+            if(sprite != null && type == IScenery.CENTERED_TO_SCREEN)
                 sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
 
-            if(sprite != null && type == IForeground.PAN) {
-                float parallex = foreground.getParallexRatio();
+            if(sprite != null && type == IScenery.MOVE_WITH_CAMERA) {
+                float parallex = foreground.getParallex();
                 
-                sprite.getTexture().setOffsetX(-cameraPosition.x * parallex);
-                sprite.getTexture().setOffsetY(-cameraPosition.y * parallex);
+                sprite.getTexture().setOffsetX(sprite.getTexture().getOffsetX() + (prevCameraPosition.x - cameraPosition.x) * parallex);
+                sprite.getTexture().setOffsetY(sprite.getTexture().getOffsetY() + (prevCameraPosition.y - cameraPosition.y) * parallex);
                 
                 sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
             }

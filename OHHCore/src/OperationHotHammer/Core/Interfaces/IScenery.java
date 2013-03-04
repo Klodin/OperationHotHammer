@@ -8,15 +8,15 @@ package OperationHotHammer.Core.Interfaces;
  *
  * @author Kaitlyn
  */
-public interface IForeground {
-    public static int FIXED = 1;
-    public static int PAN = 2;
+public interface IScenery {
+    public static int CENTERED_TO_SCREEN = 1;
+    public static int MOVE_WITH_CAMERA = 2;
     
     public ISprite getSprite();
     public int getType();
-    public float getParallexRatio();
+    public float getParallex();
     
     public void setSprite(ISprite sprite);
     public void setType(int type);
-    public void setParallexRatio(float parallex);
+    public void setParallex(float parallex);
 }

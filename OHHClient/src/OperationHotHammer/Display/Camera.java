@@ -34,6 +34,9 @@ public enum Camera {
     public void update(float delta){
         /* camera easing.. */
         
+        if(getTarget() == null)
+            return; //nothing to do here
+        
         //vectors for player and scene (the camera's position)
         Vector3f scenePos = Game.INSTANCE.getScene().getPosition();
         Vector3f playerPos = getTarget().getPosition();
