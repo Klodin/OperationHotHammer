@@ -16,17 +16,17 @@ public interface ITexture {
     
     public void bind();
     
-    public int getTextureWidth();
-    public int getTextureHeight();
-    public int getOriginalTextureWidth();
-    public int getOriginalTextureHeight();
+    public int getWidth();
+    public int getHeight();
+    public int getOriginalWidth();
+    public int getOriginalHeight();
     public float getOffsetX();
     public float getOffsetY();
     
     public void setOffsetX(float x);
     public void setOffsetY(float y);
-    public void setTextureWidth(int w);
-    public void setTextureHeight(int h);
+    public void setWidth(int w);
+    public void setHeight(int h);
     
     public ITexture clone();
 }

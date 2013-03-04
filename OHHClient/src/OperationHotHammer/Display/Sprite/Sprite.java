@@ -49,8 +49,8 @@ public class Sprite implements ISprite {
         
         texture = temp;
         
-        adjustedWidth = texture.getTextureWidth();
-        adjustedHeight = texture.getTextureHeight();
+        actualWidth = adjustedWidth = texture.getWidth();
+        actualHeight = adjustedHeight = texture.getHeight();
     }
     
     public Sprite(String resource, int drawStyle) {
@@ -64,8 +64,8 @@ public class Sprite implements ISprite {
         }
         texture = temp;
         
-        this.adjustedWidth = this.actualWidth = texture.getTextureWidth();
-        this.adjustedHeight = this.actualHeight = texture.getTextureHeight();
+        this.adjustedWidth = this.actualWidth = texture.getWidth();
+        this.adjustedHeight = this.actualHeight = texture.getHeight();
     }
     
     @Override
@@ -73,9 +73,9 @@ public class Sprite implements ISprite {
         this.adjustedWidth = this.actualWidth = w;
         
         if(isMaintainingAspectMin() || isMaintainingAspectMax()) {
-            float scale = Math.min((float)this.actualWidth/(float)texture.getOriginalTextureWidth(), (float)this.actualHeight/(float)texture.getOriginalTextureHeight());
-            this.adjustedWidth = (int)((float)texture.getOriginalTextureWidth() * scale);
-            this.adjustedHeight = (int)((float)texture.getOriginalTextureHeight() * scale);
+            float scale = Math.min((float)this.actualWidth/(float)texture.getOriginalWidth(), (float)this.actualHeight/(float)texture.getOriginalHeight());
+            this.adjustedWidth = (int)((float)texture.getOriginalWidth() * scale);
+            this.adjustedHeight = (int)((float)texture.getOriginalHeight() * scale);
         }
     }
     
@@ -84,9 +84,9 @@ public class Sprite implements ISprite {
         this.adjustedHeight = this.actualHeight = h;
         
         if(isMaintainingAspectMin() || isMaintainingAspectMax()) {
-            float scale = Math.min((float)this.actualWidth/(float)texture.getOriginalTextureWidth(), (float)this.actualHeight/(float)texture.getOriginalTextureHeight());
-            this.adjustedWidth = (int)((float)texture.getOriginalTextureWidth() * scale);
-            this.adjustedHeight = (int)((float)texture.getOriginalTextureHeight() * scale);
+            float scale = Math.min((float)this.actualWidth/(float)texture.getOriginalWidth(), (float)this.actualHeight/(float)texture.getOriginalHeight());
+            this.adjustedWidth = (int)((float)texture.getOriginalWidth() * scale);
+            this.adjustedHeight = (int)((float)texture.getOriginalHeight() * scale);
         }
     }
     
@@ -153,8 +153,8 @@ public class Sprite implements ISprite {
             float widthRatio = 1f;  //1f would match the texture to the quad's dimensions
             
             if(isTiled()) {
-                heightRatio = (float)getHeight() / (float)texture.getTextureHeight();
-                widthRatio = (float)getWidth() / (float)texture.getTextureWidth();
+                heightRatio = (float)getHeight() / (float)texture.getHeight();
+                widthRatio = (float)getWidth() / (float)texture.getWidth();
             }
             
             if(isTiled() && (texture.getOffsetX() != 0 || texture.getOffsetY() != 0)) {
@@ -165,18 +165,18 @@ public class Sprite implements ISprite {
                 int y_offset = (int)texture.getOffsetY();
 
                 //min amount texture must be rendered shifted off screen (1 texture width & height)
-                int x_min = -texture.getTextureWidth();
-                int y_min = -texture.getTextureHeight();
+                int x_min = -texture.getWidth();
+                int y_min = -texture.getHeight();
 
                 //multipliers: amount of texture repeats required to completly fill the quad (rounded up)
-                int x_mul = (int)Math.ceil((float)getWidth()/(float)texture.getTextureWidth())+2;
-                int y_mul = (int)Math.ceil((float)getHeight()/(float)texture.getTextureHeight())+2;
+                int x_mul = (int)Math.ceil((float)getWidth()/(float)texture.getWidth())+2;
+                int y_mul = (int)Math.ceil((float)getHeight()/(float)texture.getHeight())+2;
                     
-                int x_size = texture.getTextureWidth()*x_mul;
-                int y_size = texture.getTextureHeight()*y_mul;
+                int x_size = texture.getWidth()*x_mul;
+                int y_size = texture.getHeight()*y_mul;
 
-                heightRatio = (float)y_size / (float)texture.getTextureHeight();
-                widthRatio = (float)x_size / (float)texture.getTextureWidth();
+                heightRatio = (float)y_size / (float)texture.getHeight();
+                widthRatio = (float)x_size / (float)texture.getWidth();
                     
                 GL11.glTexCoord2f(0, 0);
                 GL11.glVertex2f(x_min + x_offset, y_min + y_offset);

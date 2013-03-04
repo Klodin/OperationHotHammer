@@ -3,19 +3,6 @@ package OperationHotHammer.Display.Sprite.Texture;
 import OperationHotHammer.Core.Interfaces.ITexture;
 import org.lwjgl.opengl.GL11;
 
-/**
- * A texture to be bound within LWJGL. This object is responsible for 
- * keeping track of a given OpenGL texture and for calculating the
- * texturing mapping coordinates of the full image.
- * 
- * Since textures need to be powers of 2 the actual texture may be
- * considerably bigged that the source image and hence the texture
- * mapping coordinates need to be adjusted to matchup drawing the
- * sprite against the texture.
- *
- * @author Kevin Glass
- * @author Brian Matzon
- */
 public class Texture implements ITexture {
     private int target; 
     private int textureID;
@@ -47,32 +34,32 @@ public class Texture implements ITexture {
     }
     
     @Override
-    public void setTextureHeight(int texHeight) {
+    public void setHeight(int texHeight) {
         this.texHeight = texHeight;
     }
 
     @Override
-    public void setTextureWidth(int texWidth) {
+    public void setWidth(int texWidth) {
         this.texWidth = texWidth;
     }
     
     @Override
-    public int getTextureWidth(){
+    public int getWidth(){
         return this.texWidth;
     }
     
     @Override
-    public int getTextureHeight(){
+    public int getHeight(){
         return this.texHeight;
     }
     
     @Override
-    public int getOriginalTextureWidth(){
+    public int getOriginalWidth(){
         return this.originalWidth;
     }
     
     @Override
-    public int getOriginalTextureHeight(){
+    public int getOriginalHeight(){
         return this.originalHeight;
     }
     
@@ -85,10 +72,10 @@ public class Texture implements ITexture {
     public void setOffsetX(float offset) {
         textureOffsetX = offset;
         
-        while(textureOffsetX >= getTextureWidth())
-            textureOffsetX -= getTextureWidth();
-        while(textureOffsetX <= -getTextureWidth())
-            textureOffsetX += getTextureWidth();
+        while(textureOffsetX >= getWidth())
+            textureOffsetX -= getWidth();
+        while(textureOffsetX <= -getWidth())
+            textureOffsetX += getWidth();
     }
     
     @Override
@@ -100,10 +87,10 @@ public class Texture implements ITexture {
     public void setOffsetY(float offset) {       
         textureOffsetY = offset;
         
-        while(textureOffsetY >= getTextureHeight())
-            textureOffsetY -= getTextureHeight();
-        while(textureOffsetY <= -getTextureHeight())
-            textureOffsetY += getTextureHeight();
+        while(textureOffsetY >= getHeight())
+            textureOffsetY -= getHeight();
+        while(textureOffsetY <= -getHeight())
+            textureOffsetY += getHeight();
     }
     
     @Override

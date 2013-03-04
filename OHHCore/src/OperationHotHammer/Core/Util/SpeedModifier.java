@@ -67,12 +67,12 @@ public class SpeedModifier {
     
     public float apply(float moveSpeed){
         float newSpeed = moveSpeed * multMod + addMod;
-        if (newSpeed < Settings.MINSPEED){
+        /*if (newSpeed < Settings.MINSPEED){
             newSpeed = Settings.MINSPEED;
         }
         if (newSpeed > Settings.MAXSPEED){
             newSpeed = Settings.MAXSPEED;
-        }
+        }*/
         return newSpeed;
     }
 }

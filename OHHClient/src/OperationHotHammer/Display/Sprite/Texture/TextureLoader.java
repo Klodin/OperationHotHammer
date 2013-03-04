@@ -205,8 +205,8 @@ public enum TextureLoader {
         }
         */
         
-        texture.setTextureHeight(texHeight);
-        texture.setTextureWidth(texWidth);
+        texture.setHeight(texHeight);
+        texture.setWidth(texWidth);
         
         // create a raster that can be used by OpenGL as a source
         // for a texture
