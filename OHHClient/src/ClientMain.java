@@ -118,7 +118,7 @@ class ClientMain {
                         break;
 
                     case Keyboard.KEY_RETURN:
-                        if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+                        if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU)) {
                             GameWindow.INSTANCE.toggleFullscreen();
                         }
                         break;
