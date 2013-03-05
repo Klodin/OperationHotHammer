@@ -29,25 +29,3 @@
 
  * Developed by Kales and Klodin
 
-
-
-
-################################################################
-# Installation:
-################################################################
-
- 
- * Unzip the entire folder OHH to somewhere
-
-
-
-
-################################################################
-# How To Run:
-################################################################
-
-
- * Double click the shortcut inside that's labeled 'OOH Client' to run.
-
-
-
