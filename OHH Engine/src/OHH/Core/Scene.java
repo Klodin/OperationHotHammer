@@ -91,6 +91,7 @@ public class Scene implements IPosition {
         return position.y;
     }
     
+    /*
     public void changeX(float amt) {
         position.x+=amt;
     }
@@ -102,6 +103,7 @@ public class Scene implements IPosition {
     public void changeZ(float amt) {
         position.z+=amt;
     }
+    * */
     
     public float getWidth() {
         return width;

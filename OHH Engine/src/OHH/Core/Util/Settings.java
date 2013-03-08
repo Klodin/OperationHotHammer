@@ -23,6 +23,8 @@ public class Settings {
     public static final float CAMERA_EASE_UPPER_LIMIT = 8f;
     public static final float CAMERA_EASE_MAXDISTANCE = 120f;
     public static final float CAMERA_EASE_MINDISTANCE = 40f;
+    
+    public static final float PI = 3.1415926535897932384626f;
             
     public static final Map<String, String> DATA_MAP;
     static {
