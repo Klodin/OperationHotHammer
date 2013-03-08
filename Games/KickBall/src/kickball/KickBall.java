@@ -4,6 +4,7 @@
  */
 package kickball;
 
+import OHH.Core.Data.MapParser;
 import OHH.Core.Game;
 import OHH.Core.GameObjects.Entities.SimpleCreature;
 import OHH.Core.GameObjects.Entity;
@@ -66,11 +67,17 @@ public class KickBall {
             
             Debugging.INSTANCE.showMessage("Setting Camera To Follow Player");
             Camera.INSTANCE.setTarget(e);
-            
-                Sprite grassPic = new Sprite("KickBall/Assets/Terrain/grass.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                Entity grass = new SimpleCreature(250,250);
-                grass.attach(grassPic);
-                scene.addEntity(grass);
+                int gridSize = 30;
+                
+                MapParser M = new MapParser("land.map");
+                
+                for (int i = 0; i < 5; i++){
+                    Sprite grassPic = new Sprite("KickBall/Assets/Terrain/grass.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
+                    Entity grass = new SimpleCreature(250 + i*gridSize,250);
+                    grass.attach(grassPic);
+                    scene.addEntity(grass);
+                }
+                
 
             Debugging.INSTANCE.showMessage("Setting Foreground");
             as = new AnimatedSprite(new TextureScrollBehaviour(-1.5f, -1.2f));
