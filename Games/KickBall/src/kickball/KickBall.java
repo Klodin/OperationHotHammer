@@ -6,7 +6,7 @@ package kickball;
 
 import OHH.Core.Data.MapParser;
 import OHH.Core.Game;
-import OHH.Core.GameObjects.Entities.SimpleCreature;
+import OHH.Core.GameObjects.Entities.Terrain;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Interfaces.IScenery;
 import OHH.Core.Interfaces.ITexture;
@@ -61,22 +61,24 @@ public class KickBall {
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250,250);
+            e = new Terrain(250,250);
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
             Debugging.INSTANCE.showMessage("Setting Camera To Follow Player");
             Camera.INSTANCE.setTarget(e);
-                int gridSize = 30;
-                
-                MapParser M = new MapParser("land.map");
-                
-                for (int i = 0; i < 5; i++){
-                    Sprite grassPic = new Sprite("KickBall/Assets/Terrain/grass.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                    Entity grass = new SimpleCreature(250 + i*gridSize,250);
-                    grass.attach(grassPic);
-                    scene.addEntity(grass);
-                }
+            
+            
+            //Klodin's Code Start
+            int gridSize = 32;
+            MapParser M = new MapParser("land.map");
+
+            for (int i = 0; i < 5; i++){
+                Sprite grassPic = new Sprite("KickBall/Assets/Terrain/grass.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
+                Entity grass = new Terrain(250 + i*gridSize,250);
+                grass.attach(grassPic);
+                scene.addEntity(grass);
+            }
                 
 
             Debugging.INSTANCE.showMessage("Setting Foreground");
