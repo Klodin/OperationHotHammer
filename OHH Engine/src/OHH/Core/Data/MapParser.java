@@ -26,12 +26,12 @@ public class MapParser {
                 int i = 0;
                 while (queue.size() > i){
                     switch(queue.get(0)){
+                        case "terrain":
+                            break;
                         case "setSize":
-                            
                             break;
                         case "setBedrock":
                             String[] sizes = scan.nextLine().split(" ");
-                            
                             break;
                         default: queue.remove(0); break;
                     }
