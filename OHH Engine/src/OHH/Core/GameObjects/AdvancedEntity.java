@@ -18,7 +18,7 @@ public abstract class AdvancedEntity extends Entity /*implements IDestructible, 
     public final StatusEffects statusEffects = new StatusEffects();
     
     public AdvancedEntity(Vector3f p, IBoundaryShape colliderShape) {
-        super(p, colliderShape);
+        super(p, 10,10,colliderShape); //fix this
         
         health          = 100;
         maxHealth       = 100;

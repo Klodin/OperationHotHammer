@@ -14,8 +14,11 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
    public final static int LAYER_MIDDLE = 100;
    public static final float LAYER_MIN = 0;
    public static final float LAYER_MAX = 200;
-   public ISprite sprite = null;
+   private ISprite sprite = null;
    public final IBoundaryShape collider;
+   
+   private int width;
+   private int height;
    
    public final Vector3f position;
    private static int drawnCount = 0;
@@ -34,9 +37,11 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
        updateCount = 0;
    }
    
-   public Entity(Vector3f p, IBoundaryShape colliderShape) {       
+   public Entity(Vector3f p, int width, int height, IBoundaryShape colliderShape) {       
       collider = colliderShape;
       position = p;
+      this.width = width;
+      this.height = height;
    }
    
    public Entity(Vector3f p) {
@@ -46,6 +51,10 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
    
    public void update(float delta){
        updateCount++;
+   }
+   
+   public ISprite getSprite(){
+       return sprite;
    }
    
    @Override

@@ -18,8 +18,8 @@ public class SimpleEntity extends Entity{
     private int width;
     private int height;
     
-    public SimpleEntity(float x, float y, int width, int height) {
-        super(new Vector3f(x,y,10),new Circle(Math.max(width,height)));
+    public SimpleEntity(float x, float y, int width, int height, float radius) {
+        super(new Vector3f(x,y,10),width, height, new Circle(radius));
         
         Debugging.INSTANCE.showMessage("Create (Entity->SimpleEntity)");
         
@@ -39,8 +39,8 @@ public class SimpleEntity extends Entity{
     public void update(float delta) {
         super.update(delta);
         
-        if(sprite != null)
-            sprite.update(delta, this);
+        if(getSprite() != null)
+            getSprite().update(delta, this);
     }
     
 }
