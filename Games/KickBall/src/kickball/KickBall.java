@@ -77,7 +77,7 @@ public class KickBall {
             for (int i = 0; i < stadium.length; i++){
                 for (int j = 0; j < stadium[i].length; j++){
                     Sprite pic = new Sprite(stadium[i][j], ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                    Entity tile = new Terrain(250 + i*gridSize,250 + j*gridSize,gridSize,gridSize);
+                    Entity tile = new Terrain(i*gridSize, j*gridSize, gridSize, gridSize);
                     tile.attach(pic);
                     scene.addEntity(tile);
                 }
