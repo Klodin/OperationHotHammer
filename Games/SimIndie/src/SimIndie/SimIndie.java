@@ -1,26 +1,26 @@
 package SimIndie;
 
-import OperationHotHammer.Core.Game;
-import OperationHotHammer.Core.GameObjects.Entities.SimpleCreature;
-import OperationHotHammer.Core.GameObjects.Entity;
-import OperationHotHammer.Core.Interfaces.IScenery;
-import OperationHotHammer.Core.Interfaces.ITexture;
-import OperationHotHammer.Core.Scene;
-import OperationHotHammer.Core.Util.Debugging.Debugging;
-import OperationHotHammer.Core.Util.Settings;
-import OperationHotHammer.Display.Camera;
-import OperationHotHammer.Display.GameWindow;
-import OperationHotHammer.Display.Hud;
-import OperationHotHammer.Display.Sprite.Animation.AnimatedSprite;
-import OperationHotHammer.Display.Sprite.Animation.TextureScrollBehaviour;
-import OperationHotHammer.Display.Sprite.Scenery;
-import OperationHotHammer.Display.Sprite.Sprite;
+import OHH.Core.Game;
+import OHH.Core.GameObjects.Entities.SimpleCreature;
+import OHH.Core.GameObjects.Entity;
+import OHH.Core.Interfaces.IScenery;
+import OHH.Core.Interfaces.ITexture;
+import OHH.Core.Scene;
+import OHH.Core.Util.Debugging.Debugging;
+import OHH.Core.Util.Settings;
+import OHH.Display.Camera;
+import OHH.Display.GameWindow;
+import OHH.Display.Hud;
+import OHH.Display.Sprite.Animation.AnimatedSprite;
+import OHH.Display.Sprite.Animation.TextureScrollBehaviour;
+import OHH.Display.Sprite.Scenery;
+import OHH.Display.Sprite.Sprite;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 
-class SimIndie2 {
+class SimIndie {
     
     boolean quitRequested = false;
     boolean KEY_LEFT = false;
@@ -32,12 +32,13 @@ class SimIndie2 {
         //this is needed when compiling into a jar file for distribution
         //System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/natives/");
         
-        SimIndie2 app = new SimIndie2();
+        SimIndie app = new SimIndie();
         app.run();
     }
     
     public void run(){
         GameWindow.INSTANCE.initialize();
+        Hud.INSTANCE.initialize("SimIndie/Assets/Fonts/DisposableDroidBB.ttf");
         
         /////////////////////////////
 
