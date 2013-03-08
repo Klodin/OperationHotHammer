@@ -3,7 +3,7 @@ package OHH.Display;
 
 import OHH.Display.Sprite.Sprite;
 import OHH.Core.Game;
-import OHH.Core.GameObjects.Entities.SimpleCreature;
+import OHH.Core.GameObjects.Entities.Terrain;
 import OHH.Core.GameObjects.Entities.SimpleEntity;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Interfaces.IScenery;

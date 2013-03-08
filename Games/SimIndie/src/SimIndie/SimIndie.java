@@ -18,6 +18,7 @@ import OHH.Display.Sprite.Sprite;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector3f;
 
 
 class SimIndie {
@@ -59,7 +60,7 @@ class SimIndie {
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250,250); 
+            e = new SimpleCreature(250,250, 30, 30, 30/2); 
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
@@ -213,21 +214,32 @@ class SimIndie {
             }
         }
 
-        if(KEY_RIGHT)
-            Game.INSTANCE.changePositionX(Settings.MOVEMENT_SPEED * delta);
-                        
-        if(KEY_LEFT)
-            Game.INSTANCE.changePositionX(-Settings.MOVEMENT_SPEED * delta);
-                        
-        if(KEY_UP)
-            Game.INSTANCE.changePositionY(-Settings.MOVEMENT_SPEED * delta);
-                        
-        if(KEY_DOWN)
-            Game.INSTANCE.changePositionY(Settings.MOVEMENT_SPEED * delta);
+        float x = 0;
+        float y = 0;
         
-        if(KEY_RIGHT || KEY_LEFT || KEY_UP || KEY_DOWN)
-            Camera.INSTANCE.setEasing(false);
-        else
-            Camera.INSTANCE.setEasing(true);
+        if(KEY_RIGHT)
+            x = Settings.MOVEMENT_SPEED * delta;
+        else if(KEY_LEFT)
+            x = -Settings.MOVEMENT_SPEED * delta;
+        else if(KEY_DOWN)
+            y = Settings.MOVEMENT_SPEED * delta;
+        else if(KEY_UP)
+            y = -Settings.MOVEMENT_SPEED * delta;       
+        
+        if ((KEY_DOWN || KEY_UP) && (KEY_RIGHT || KEY_LEFT)){
+            //diagonal
+            
+            float angle = (Settings.PI / 4.0f);
+            x = (float)Math.cos(angle);
+            y = (float)Math.sin(angle);
+            
+            if(KEY_LEFT) x *= -1;
+            if(KEY_UP)   y *= -1;
+            
+            x *= Settings.MOVEMENT_SPEED * delta;
+            y *= Settings.MOVEMENT_SPEED * delta;
+        }
+        
+        Game.INSTANCE.changePosition(new Vector3f(x, y, 0f));    Camera.INSTANCE.setEasing(true);
     }
 }

@@ -45,6 +45,8 @@ public enum Game{
         return scene.getPosition();
     }
     
+    /*
+    
     public void changePositionX(float amt) {
         if(player != null) {
             player.setX(player.getX()+amt);
@@ -63,6 +65,20 @@ public enum Game{
     
     public void changePositionZ(float amt) {
         scene.changeZ(amt);
+    }
+    * */
+    
+    
+    public void changePosition(Vector3f amt) {
+        if(player != null) {
+            player.setX(player.getX()+amt.x);
+            player.setY(player.getY()+amt.y);
+            player.setZ(player.getZ()+amt.z);
+        } else if(scene != null) {
+            scene.setX(scene.getX()+amt.x);
+            scene.setY(scene.getY()+amt.y);
+            scene.setZ(scene.getZ()+amt.z);
+        }
     }
     
     public void update(float delta) {

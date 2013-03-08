@@ -6,6 +6,7 @@ package kickball;
 
 import OHH.Core.Game;
 import OHH.Core.GameObjects.Entities.SimpleCreature;
+import OHH.Core.GameObjects.Entities.Terrain;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Interfaces.IScenery;
 import OHH.Core.Interfaces.ITexture;
@@ -22,6 +23,7 @@ import OHH.Display.Sprite.Sprite;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector3f;
 
 /**
  *
@@ -60,17 +62,30 @@ public class KickBall {
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250,250);
+            e = new SimpleCreature(250,250, 30, 30, 15);
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
             Debugging.INSTANCE.showMessage("Setting Camera To Follow Player");
             Camera.INSTANCE.setTarget(e);
             
-                Sprite grassPic = new Sprite("KickBall/Assets/Terrain/grass.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                Entity grass = new SimpleCreature(250,250);
-                grass.attach(grassPic);
-                scene.addEntity(grass);
+            
+            //Klodin's Code Start
+            int gridSize = 32;
+            //MapParser M = new MapParser("land.map");
+            DrawStadium d = new DrawStadium();
+            String stadium[][] = d.stadiumGrid;
+            float radius = (float)Math.sqrt((float)gridSize*(float)gridSize + (float)gridSize*(float)gridSize) / 2;
+            
+            for (int i = 0; i < stadium.length; i++){
+                for (int j = 0; j < stadium[i].length; j++){
+                    Sprite pic = new Sprite(stadium[i][j], ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
+                    Entity tile = new Terrain(i*gridSize, j*gridSize, gridSize, gridSize, radius);
+                    tile.attach(pic);
+                    scene.addEntity(tile);
+                }
+            }
+                
 
             Debugging.INSTANCE.showMessage("Setting Foreground");
             as = new AnimatedSprite(new TextureScrollBehaviour(-1.5f, -1.2f));
@@ -215,21 +230,32 @@ public class KickBall {
             }
         }
 
-        if(KEY_RIGHT)
-            Game.INSTANCE.changePositionX(Settings.MOVEMENT_SPEED * delta);
-                        
-        if(KEY_LEFT)
-            Game.INSTANCE.changePositionX(-Settings.MOVEMENT_SPEED * delta);
-                        
-        if(KEY_UP)
-            Game.INSTANCE.changePositionY(-Settings.MOVEMENT_SPEED * delta);
-                        
-        if(KEY_DOWN)
-            Game.INSTANCE.changePositionY(Settings.MOVEMENT_SPEED * delta);
+        float x = 0;
+        float y = 0;
         
-        if(KEY_RIGHT || KEY_LEFT || KEY_UP || KEY_DOWN)
-            Camera.INSTANCE.setEasing(false);
-        else
-            Camera.INSTANCE.setEasing(true);
+        if(KEY_RIGHT)
+            x = Settings.MOVEMENT_SPEED * delta;
+        else if(KEY_LEFT)
+            x = -Settings.MOVEMENT_SPEED * delta;
+        else if(KEY_DOWN)
+            y = Settings.MOVEMENT_SPEED * delta;
+        else if(KEY_UP)
+            y = -Settings.MOVEMENT_SPEED * delta;       
+        
+        if ((KEY_DOWN || KEY_UP) && (KEY_RIGHT || KEY_LEFT)){
+            //diagonal
+            
+            float angle = (Settings.PI / 4.0f);
+            x = (float)Math.cos(angle);
+            y = (float)Math.sin(angle);
+            
+            if(KEY_LEFT) x *= -1;
+            if(KEY_UP)   y *= -1;
+            
+            x *= Settings.MOVEMENT_SPEED * delta;
+            y *= Settings.MOVEMENT_SPEED * delta;
+        }
+        
+        Game.INSTANCE.changePosition(new Vector3f(x, y, 0f));
     }
 }
