@@ -48,7 +48,7 @@ public enum Game{
     public void changePositionX(float amt) {
         if(player != null) {
             player.setX(player.getX()+amt);
-        } else {
+        } else if(scene != null) {
             scene.changeX(amt);
         }
     }
@@ -56,7 +56,7 @@ public enum Game{
     public void changePositionY(float amt) {
         if(player != null) {
             player.setY(player.getY()+amt);
-        } else {
+        } else if(scene != null) {
             scene.changeY(amt);
         }
     }
@@ -66,8 +66,11 @@ public enum Game{
     }
     
     public void update(float delta) {
-        if(isRunning)
+        if(isRunning && scene != null)
             scene.update(delta);
+        
+        if(scene == null)
+            Debugging.INSTANCE.showWarning("Attempted to update NULL scene.");
     }
     
     public void draw(int resolutionWidth, int resolutionHeight) {
@@ -76,8 +79,11 @@ public enum Game{
             resHeight = resolutionHeight;
             //drawRadius = (float)Math.sqrt(resWidth*resWidth + resHeight*resHeight)/2.0f;
         }
-        if(isRunning)
+        if(isRunning && scene != null)
             scene.draw(resWidth, resHeight, scene.getPosition());
+        
+        if(scene == null)
+            Debugging.INSTANCE.showWarning("Attempted to draw NULL scene.");
     }
     
     public boolean isRunning() {

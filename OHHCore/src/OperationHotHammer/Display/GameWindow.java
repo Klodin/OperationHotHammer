@@ -52,81 +52,7 @@ public enum GameWindow{
         
         //Begin rendering the screen
         startRendering();
-        
-        
-        //Generate some content
-        Scene scene = new Scene("Testing Scene", 500, 500);
-        
-        Entity e;
-        AnimatedSprite as;
-        Sprite s;
-        
-        float xx = (int)(scene.getWidth()/Settings.GRID_SPACE_SIZE); //round down, most we can fit with grid spacing 
-        float yy = (int)(scene.getHeight()/Settings.GRID_SPACE_SIZE); 
-        float w = scene.getWidth()/xx; //adjusted grid space width, to maximize scene space
-        float h = scene.getHeight()/yy; //adjusted grid space height, to maximize scene space
-        
-        Debugging.INSTANCE.beginGroup("Initializing (Scene '" + scene.getName() + "')");
-        /*
-        Debugging.INSTANCE.beginGroup("Populating Entites");
-        for(int x = 0; x < xx; x++)
-        for(int y = 0; y < yy; y++) {
-            s = new Sprite("OperationHotHammer/Assets/link.gif", Sprite.TEXTURE_STRETCH, true);
-            e = new SimpleCreature(w*x+w/2,h*y+h/2); //center them on their respective squares
-            e.attach(s);
-            scene.addEntity(e);
-        }
-        Debugging.INSTANCE.finishGroup();
-        */
-        as = new AnimatedSprite();
-        
-        //e = new SimpleCreature(50,50); //center them on their respective squares
-        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 1200f);
-        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 800f);
-        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 2400f);
-        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
-        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
-        as.addSprite(new Sprite("OperationHotHammer/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-        
-        e = new SimpleCreature(250,250); 
-        e.attach(as);
-        scene.addPlayer(e);
-        Camera.INSTANCE.setTarget(e);
-        
-        Debugging.INSTANCE.showMessage("Setting Background");
-        
-        //as = new AnimatedSprite(new TextureScrollBehaviour(-2.4f, -1.2f));
-        //as.addSprite(new Sprite("OperationHotHammer/Assets/dirt2.jpg", ITexture.TILED), 1000f);
-        //scene.addBackground(new Scenery(as, IScenery.MOVE_WITH_CAMERA));   
-        
-        s = new Sprite("OperationHotHammer/Assets/dirt2.jpg", ITexture.TILED);
-        scene.addBackground(new Scenery(s, IScenery.MOVE_WITH_CAMERA));   
-        
-        /*
-        s = new Sprite("OperationHotHammer/Assets/ship.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-        Entity entity = new SimpleEntity(270,250,400,400);
-        entity.attach(s);
-        scene.addEntity(entity);
-        */
-        
-        as = new AnimatedSprite(new TextureScrollBehaviour(-1.5f, -1.2f));
-        as.addSprite(new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.TILED), 1000f);
-        scene.addForeground(new Scenery(as, IScenery.MOVE_WITH_CAMERA, 2.1f));  
-        
-        /*
-        as = new AnimatedSprite(new TextureScrollBehaviour(-1.8f, -2.3f));
-        s = new Sprite("OperationHotHammer/Assets/cloudsbg.png", ITexture.MAINTAIN_ASPECT_MIN);
-        s.getTexture().setTextureWidth(1600);
-        s.getTexture().setTextureHeight(1600);
-        
-        as.addSprite(s, 1000f);
-        scene.addBackground(new Scenery(as, IScenery.CENTERED_TO_SCREEN));        
-        */
-        Debugging.INSTANCE.finishGroup();
-        
-        if(!Debugging.INSTANCE.hasError()) {
-            scene.load();
-        }
+
     }
     
     public void draw(){
@@ -158,8 +84,10 @@ public enum GameWindow{
             Hud.INSTANCE.set("Player Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
         }
         
-        Hud.INSTANCE.set("Scene X", String.valueOf((int)Game.INSTANCE.getScene().getX()));
-        Hud.INSTANCE.set("Scene Y", String.valueOf((int)Game.INSTANCE.getScene().getY()));
+        if(Game.INSTANCE.getScene() != null) {
+            Hud.INSTANCE.set("Scene X", String.valueOf((int)Game.INSTANCE.getScene().getX()));
+            Hud.INSTANCE.set("Scene Y", String.valueOf((int)Game.INSTANCE.getScene().getY()));
+        }
         
         // update the displayed values in out hud, mostly for debugging
         //Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
