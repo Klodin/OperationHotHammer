@@ -7,7 +7,6 @@ package OHH.Core.GameObjects.Entities;
 import OHH.Core.GameObjects.Boundary.Circle;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Util.Debugging.Debugging;
-import OHH.Core.Util.Settings;
 import org.lwjgl.util.vector.Vector3f;
 import java.util.Random;
 
@@ -17,8 +16,8 @@ import java.util.Random;
  */
 public class Terrain extends Entity{
     private static Random randomGenerator = new Random();
-    public Terrain(float x, float y) {
-        super(new Vector3f(x,y,50),new Circle(15));
+    public Terrain(float x, float y,float width, float height) {
+        super(new Vector3f(x,y,50),new Circle(Math.max(width,height)/2));
         Debugging.INSTANCE.showMessage("Create (Entity->Terrain)");
         /*
         startx = position.x;

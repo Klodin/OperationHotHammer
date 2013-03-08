@@ -4,8 +4,8 @@
  */
 package kickball;
 
-import OHH.Core.Data.MapParser;
 import OHH.Core.Game;
+import OHH.Core.GameObjects.Entities.SimpleCreature;
 import OHH.Core.GameObjects.Entities.Terrain;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Interfaces.IScenery;
@@ -61,7 +61,7 @@ public class KickBall {
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new Terrain(250,250);
+            e = new SimpleCreature(250,250);
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
@@ -70,14 +70,17 @@ public class KickBall {
             
             
             //Klodin's Code Start
-            int gridSize = 32;
-            MapParser M = new MapParser("land.map");
-
-            for (int i = 0; i < 5; i++){
-                Sprite grassPic = new Sprite("KickBall/Assets/Terrain/grass.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                Entity grass = new Terrain(250 + i*gridSize,250);
-                grass.attach(grassPic);
-                scene.addEntity(grass);
+            float gridSize = 32;
+            //MapParser M = new MapParser("land.map");
+            DrawStadium d = new DrawStadium();
+            String stadium[][] = d.stadiumGrid;
+            for (int i = 0; i < stadium.length; i++){
+                for (int j = 0; j < stadium[i].length; j++){
+                    Sprite pic = new Sprite(stadium[i][j], ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
+                    Entity tile = new Terrain(250 + i*gridSize,250 + j*gridSize,gridSize,gridSize);
+                    tile.attach(pic);
+                    scene.addEntity(tile);
+                }
             }
                 
 
