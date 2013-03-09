@@ -16,8 +16,8 @@ import java.util.Random;
  * @author Kaitlyn
  */
 public class SimpleCreature extends Entity{
-    public SimpleCreature(float x, float y, int width, int height, float radius) {
-        super(new Vector3f(x,y,50),width, height, new Circle(radius));
+    public SimpleCreature(float x, float y, float z, int width, int height, float radius) {
+        super(new Vector3f(x,y,z), width, height, new Circle(radius));
         Debugging.INSTANCE.showMessage("Create (Entity->SimpleCreature)");
     }
 

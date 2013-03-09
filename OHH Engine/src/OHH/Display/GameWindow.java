@@ -36,6 +36,7 @@ public enum GameWindow{
 
     private boolean fullscreen = false;
 
+    private boolean showWireframe = false;
     
     public void initialize() {
         
@@ -63,8 +64,8 @@ public enum GameWindow{
 	GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	GL11.glLoadIdentity();
         
-        // Cry "Havoc!" and let slip the dogs of war, draw stuff
-        Game.INSTANCE.draw(getWidth(), getHeight());
+        // Cry "Havoc!" and let slip the dogs of war
+        Game.INSTANCE.draw(getWidth(), getHeight(), showWireframe);
         Hud.INSTANCE.draw(getWidth(), getHeight());
                 
         // Update window contents, moves the content we rendered in a buffer off screen into the active video memory so we can see it
@@ -179,6 +180,10 @@ public enum GameWindow{
     
     public void toggleFullscreen() {
         setupDisplay(!fullscreen);
+    }
+    
+    public void toggleWireframe(){
+        showWireframe = !showWireframe;
     }
     
     private void setupDisplay(boolean fullscreen) {

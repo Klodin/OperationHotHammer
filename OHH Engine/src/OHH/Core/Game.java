@@ -90,13 +90,17 @@ public enum Game{
     }
     
     public void draw(int resolutionWidth, int resolutionHeight) {
+        draw(resolutionWidth, resolutionHeight, false);
+    }
+    
+    public void draw(int resolutionWidth, int resolutionHeight, boolean showWireframe) {
         if(resHeight != resolutionHeight || resWidth != resolutionWidth){
             resWidth = resolutionWidth;
             resHeight = resolutionHeight;
             //drawRadius = (float)Math.sqrt(resWidth*resWidth + resHeight*resHeight)/2.0f;
         }
         if(isRunning && scene != null)
-            scene.draw(resWidth, resHeight, scene.getPosition());
+            scene.draw(resWidth, resHeight, scene.getPosition(), showWireframe);
         
         if(scene == null)
             Debugging.INSTANCE.showWarning("Attempted to draw NULL scene.");

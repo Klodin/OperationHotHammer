@@ -82,7 +82,13 @@ public class AnimatedSprite implements ISprite {
     @Override
     public void draw(Vector3f position) {
         if(animationFrames.size()>0)
-            animationFrames.get(currentFrame).sprite.draw(position);
+            getAnimationFrame().sprite.draw(position);
+    }
+    
+    @Override
+    public void drawWireframe(Vector3f position) {
+        if(animationFrames.size()>0)
+            getAnimationFrame().sprite.drawWireframe(position);
     }
     
     public AnimationFrame getAnimationFrame(int index){
@@ -98,6 +104,33 @@ public class AnimatedSprite implements ISprite {
     }
     
     public ITexture getTexture(){
-        return animationFrames.get(currentFrame).sprite.getTexture();
+        return getAnimationFrame().sprite.getTexture();
     }
+
+    @Override
+    public boolean isTiled() {
+        return getAnimationFrame().sprite.isTiled();
+    }
+
+    @Override
+    public boolean isStretched() {
+        return getAnimationFrame().sprite.isStretched();
+    }
+
+    @Override
+    public boolean isCentered() {
+        return getAnimationFrame().sprite.isCentered();
+    }
+
+    @Override
+    public boolean isMaintainingAspectMin() {
+        return getAnimationFrame().sprite.isMaintainingAspectMin();
+    }
+
+    @Override
+    public boolean isMaintainingAspectMax() {
+        return getAnimationFrame().sprite.isMaintainingAspectMax();
+    }
+    
+    
 }

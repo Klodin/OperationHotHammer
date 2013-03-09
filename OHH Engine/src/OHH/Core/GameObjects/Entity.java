@@ -1,12 +1,12 @@
 package OHH.Core.GameObjects;
 
-import OHH.Core.GameObjects.Boundary.Circle;
 import OHH.Core.Util.Debugging.Debugging;
 import OHH.Core.GameObjects.Boundary.IBoundaryShape;
 import OHH.Core.Interfaces.IDisplayable;
 import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.IPosition;
 import OHH.Core.Interfaces.ISprite;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 public abstract class Entity implements IDisplayable, IEntity, IPosition {
@@ -58,14 +58,23 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
    }
    
    @Override
-   public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
+   public void draw(int resWidth, int resHeight, Vector3f cameraPosition) {
+       draw(resWidth, resHeight, cameraPosition, false);  
+   }
+   
+   @Override
+   public void draw(int resWidth, int resHeight, Vector3f cameraPosition, boolean showWireframe){
        if(sprite == null) {
            Debugging.INSTANCE.showWarning("Attempted to draw an entity when no sprite has been attached!");
            return;
        }
        drawnCount++;
        Vector3f pos = new Vector3f(position.x-(cameraPosition.x-resWidth/2), position.y-(cameraPosition.y-resHeight/2), position.z);
-       sprite.draw(pos);
+
+       if(!showWireframe)
+           sprite.draw(pos);
+       else
+           sprite.drawWireframe(pos);    
    }
    
    @Override
@@ -76,8 +85,8 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
               
        sprite = s;
        if(this.collider.getShape() == IBoundaryShape.CIRCLE) {
-           sprite.setWidth((int)((Circle)this.collider).radius*2);
-           sprite.setHeight((int)((Circle)this.collider).radius*2);   
+           sprite.setWidth(width);
+           sprite.setHeight(height);   
        }
    }
    

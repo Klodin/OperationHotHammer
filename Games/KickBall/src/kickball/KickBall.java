@@ -62,7 +62,7 @@ public class KickBall {
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250,250, 30, 30, 15);
+            e = new SimpleCreature(250, 250, 51, 30, 30, 15);
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
@@ -206,6 +206,10 @@ public class KickBall {
                         
                     case Keyboard.KEY_DOWN:
                         KEY_DOWN = true;
+                        break;
+                        
+                    case Keyboard.KEY_F1:
+                        GameWindow.INSTANCE.toggleWireframe();
                         break;
                 }
             }else{
