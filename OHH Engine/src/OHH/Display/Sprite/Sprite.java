@@ -3,13 +3,14 @@ package OHH.Display.Sprite;
 import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.ISprite;
 import OHH.Core.Interfaces.ITexture;
+import OHH.Core.Util.Color4f;
 import OHH.Core.Util.Debugging.Debugging;
 import OHH.Display.Sprite.Texture.Texture;
 import OHH.Display.Sprite.Texture.TextureLoader;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.opengl.TextureImpl;
 
 public class Sprite implements ISprite {
     private final Texture texture;
@@ -22,6 +23,8 @@ public class Sprite implements ISprite {
     
     private static int drawnCount = 0;
     private static int updateCount = 0;
+    
+    private Color4f color = new Color4f(1f, 1f, 1f, 1f);
     
     public static int getDrawnCount(){
         return drawnCount;
@@ -152,7 +155,7 @@ public class Sprite implements ISprite {
 		
 	// bind to the appropriate texture for this sprite
 	if(bindTexture) texture.bind();
-        if(bindTexture) GL11.glColor3f(1f, 1f, 1f);
+        if(bindTexture) color.bind();
     
 	// translate to the right location and prepare to draw
         if(isTiled())
@@ -239,7 +242,7 @@ public class Sprite implements ISprite {
     public void drawWireframe(Vector3f position){
         
         GL11.glPolygonMode( GL11.GL_FRONT, GL11.GL_LINE );
-        GL11.glLineWidth(1.0f);
+        GL11.glLineWidth(2.0f);
         
         //clear any texture bindings
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
@@ -247,7 +250,7 @@ public class Sprite implements ISprite {
         /*
          * I draw the quads here instead of using the draw function since
          * the draw function does a lot of adjustments for texture.
-         * As a result, this is the real (resulting) dimensions showin visually.
+         * This is the set quad dimensions shown visually.
          */
         
         //show the quad

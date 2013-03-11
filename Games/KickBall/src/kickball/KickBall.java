@@ -15,7 +15,7 @@ import OHH.Core.Util.Debugging.Debugging;
 import OHH.Core.Util.Settings;
 import OHH.Display.Camera;
 import OHH.Display.GameWindow;
-import OHH.Display.Hud;
+import OHH.Display.HUD.Hud;
 import OHH.Display.Sprite.Animation.AnimatedSprite;
 import OHH.Display.Sprite.Animation.TextureScrollBehaviour;
 import OHH.Display.Sprite.Scenery;
@@ -114,7 +114,7 @@ public class KickBall {
             long time;
             int fps = 0;
             
-            Hud.INSTANCE.set("FPS", "0");
+            Hud.INSTANCE.show("FPS", "0");
             
             while(Game.INSTANCE.isRunning()) {
                 time = getTime();
@@ -126,7 +126,7 @@ public class KickBall {
                     fps = (int)(frameCount / ((time - prevFpsTime) / 1000L));
                     frameCount = 0;
                     prevFpsTime = time;
-                    Hud.INSTANCE.set("FPS", String.valueOf(fps));
+                    Hud.INSTANCE.show("FPS", String.valueOf(fps));
                 }                
 
                 //resolve any key presses
@@ -209,7 +209,7 @@ public class KickBall {
                         break;
                         
                     case Keyboard.KEY_F1:
-                        GameWindow.INSTANCE.toggleWireframe();
+                        GameWindow.INSTANCE.toggleDebugging();
                         break;
                 }
             }else{

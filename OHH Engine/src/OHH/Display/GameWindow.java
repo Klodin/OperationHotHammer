@@ -1,6 +1,7 @@
 
 package OHH.Display;
 
+import OHH.Display.HUD.Hud;
 import OHH.Display.Sprite.Sprite;
 import OHH.Core.Game;
 import OHH.Core.GameObjects.Entities.Terrain;
@@ -35,8 +36,7 @@ public enum GameWindow{
     private int fullscreenHeight = 0;
 
     private boolean fullscreen = false;
-
-    private boolean showWireframe = false;
+    private boolean debugging = false;
     
     public void initialize() {
         
@@ -65,8 +65,8 @@ public enum GameWindow{
 	GL11.glLoadIdentity();
         
         // Cry "Havoc!" and let slip the dogs of war
-        Game.INSTANCE.draw(getWidth(), getHeight(), showWireframe);
-        Hud.INSTANCE.draw(getWidth(), getHeight());
+        Game.INSTANCE.draw(getWidth(), getHeight(), debugging);
+        Hud.INSTANCE.draw(getWidth(), getHeight(), debugging);
                 
         // Update window contents, moves the content we rendered in a buffer off screen into the active video memory so we can see it
 	Display.update();
@@ -81,18 +81,18 @@ public enum GameWindow{
         Camera.INSTANCE.update(delta);
         
         if(Game.INSTANCE.getPlayer() != null) {
-            Hud.INSTANCE.set("Player X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
-            Hud.INSTANCE.set("Player Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
+            Hud.INSTANCE.showDebugging("Player X", String.valueOf((int)Game.INSTANCE.getPlayer().getX()));
+            Hud.INSTANCE.showDebugging("Player Y", String.valueOf((int)Game.INSTANCE.getPlayer().getY()));
         }
         
         if(Game.INSTANCE.getScene() != null) {
-            Hud.INSTANCE.set("Scene X", String.valueOf((int)Game.INSTANCE.getScene().getX()));
-            Hud.INSTANCE.set("Scene Y", String.valueOf((int)Game.INSTANCE.getScene().getY()));
+            Hud.INSTANCE.showDebugging("Scene X", String.valueOf((int)Game.INSTANCE.getScene().getX()));
+            Hud.INSTANCE.showDebugging("Scene Y", String.valueOf((int)Game.INSTANCE.getScene().getY()));
         }
         
         // update the displayed values in out hud, mostly for debugging
         //Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
-        Hud.INSTANCE.set("Sprites Drawn", String.valueOf(Sprite.getDrawnCount()));
+        Hud.INSTANCE.showDebugging("Sprites Drawn", String.valueOf(Sprite.getDrawnCount()));
         
         // if the window was resized lets ensure all the rendering stuff is configured to the new dimensions
         if(Display.wasResized() && !fullscreen) {
@@ -181,9 +181,9 @@ public enum GameWindow{
     public void toggleFullscreen() {
         setupDisplay(!fullscreen);
     }
-    
-    public void toggleWireframe(){
-        showWireframe = !showWireframe;
+
+    public void toggleDebugging(){
+        debugging = !debugging;
     }
     
     private void setupDisplay(boolean fullscreen) {
