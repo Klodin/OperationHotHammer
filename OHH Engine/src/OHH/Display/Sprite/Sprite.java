@@ -5,16 +5,17 @@ import OHH.Core.Interfaces.ISprite;
 import OHH.Core.Interfaces.ITexture;
 import OHH.Core.Util.Color4f;
 import OHH.Core.Util.Debugging.Debugging;
+import OHH.Display.Sprite.Animation.SpriteBehaviour;
 import OHH.Display.Sprite.Texture.Texture;
 import OHH.Display.Sprite.Texture.TextureLoader;
-import java.awt.RenderingHints;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Sprite implements ISprite {
-    private final Texture texture;
-    private final int drawStyle;
+    
+    private Texture texture;
+    private int drawStyle;
     
     private int adjustedWidth = 0;
     private int adjustedHeight = 0;
@@ -23,6 +24,8 @@ public class Sprite implements ISprite {
     
     private static int drawnCount = 0;
     private static int updateCount = 0;
+    
+    private SpriteBehaviour runnable = null;
     
     private Color4f color = new Color4f(1f, 1f, 1f, 1f);
     
@@ -40,26 +43,26 @@ public class Sprite implements ISprite {
     }
     
     public Sprite(String resource) {
-        Texture temp = null;
-        drawStyle = ITexture.TILED;
-        
-        try{
-            temp = TextureLoader.INSTANCE.getTexture(resource);
-        }catch(IOException e){
-            Debugging.INSTANCE.showWarning("A problem occured when loading a texture! (" + resource + ")");            
-        }
-        
-        texture = temp;
-        
-        if(texture != null) {
-            actualWidth = adjustedWidth = texture.getWidth();
-            actualHeight = adjustedHeight = texture.getHeight();
-        }
+        init(resource, ITexture.TILED, null);
     }
     
     public Sprite(String resource, int drawStyle) {
+        init(resource, drawStyle, null);
+    }
+    
+        
+    public Sprite(String resource, SpriteBehaviour runnable) {
+        init(resource, ITexture.TILED, runnable);
+    }
+    
+    public Sprite(String resource, int drawStyle, SpriteBehaviour runnable) {
+        init(resource, drawStyle, runnable);
+    }
+    
+    private void init(String resource, int drawStyle, SpriteBehaviour runnable){
         Texture temp = null;
         this.drawStyle = drawStyle;
+        this.runnable = runnable;
         
         try{
             temp = TextureLoader.INSTANCE.getTexture(resource);
@@ -71,7 +74,7 @@ public class Sprite implements ISprite {
         if(texture != null) {
             this.adjustedWidth = this.actualWidth = texture.getWidth();
             this.adjustedHeight = this.actualHeight = texture.getHeight();
-        }
+        }   
     }
     
     @Override
@@ -114,6 +117,11 @@ public class Sprite implements ISprite {
     @Override
     public void update(float delta, IEntity e) {
         updateCount++;
+        
+        //run it
+        if(runnable != null){
+            runnable.run(delta, this);
+        }
     }
     
     public boolean isTiled(){
@@ -242,7 +250,6 @@ public class Sprite implements ISprite {
     public void drawWireframe(Vector3f position){
         
         GL11.glPolygonMode( GL11.GL_FRONT, GL11.GL_LINE );
-        GL11.glLineWidth(2.0f);
         
         //clear any texture bindings
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
@@ -254,7 +261,9 @@ public class Sprite implements ISprite {
          */
         
         //show the quad
-        GL11.glColor3f(1f, 0f, 0.3f);
+        GL11.glColor3f(0.3f, 0f, 1f);
+        GL11.glLineWidth(1.0f);
+        
         GL11.glPushMatrix();
         GL11.glTranslatef(position.x-(float)getWidth()/2f, position.y-(float)getHeight()/2f, 0);
         

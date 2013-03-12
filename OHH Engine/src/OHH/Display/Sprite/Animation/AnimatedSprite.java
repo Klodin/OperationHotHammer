@@ -11,19 +11,17 @@ public class AnimatedSprite implements ISprite {
 
     private LinkedList<AnimationFrame> animationFrames = new LinkedList<>();
     private int currentFrame = 0;
-    private AnimationBehaviour runnable;
+    private SpriteBehaviour runnable;
 
     private float time = 0;
     
     private int width = 0;
     private int height = 0;
     
-    public boolean hasInitRunnable = false;
-    
     public AnimatedSprite(){
     }
     
-    public AnimatedSprite(AnimationBehaviour r){
+    public AnimatedSprite(SpriteBehaviour r){
         runnable = r;
     }
     
@@ -54,6 +52,10 @@ public class AnimatedSprite implements ISprite {
         return height;
     }
     
+    public ISprite getSprite(){
+        return animationFrames.get(currentFrame).sprite;
+    }
+    
     @Override
     public void update(float delta, IEntity e) {
         
@@ -67,28 +69,22 @@ public class AnimatedSprite implements ISprite {
             }
         }
         
-        //init it on first loop
-        if(runnable != null && !hasInitRunnable) {
-            runnable.init(this, e);
-            hasInitRunnable = true;
-        }
-        
         //run it
         if(runnable != null){
-            runnable.run(delta, this, e);
+            runnable.run(delta, getAnimationFrame().sprite);
         }
     }
         
     @Override
     public void draw(Vector3f position) {
         if(animationFrames.size()>0)
-            getAnimationFrame().sprite.draw(position);
+            getSprite().draw(position);
     }
     
     @Override
     public void drawWireframe(Vector3f position) {
         if(animationFrames.size()>0)
-            getAnimationFrame().sprite.drawWireframe(position);
+            getSprite().drawWireframe(position);
     }
     
     public AnimationFrame getAnimationFrame(int index){
@@ -104,32 +100,32 @@ public class AnimatedSprite implements ISprite {
     }
     
     public ITexture getTexture(){
-        return getAnimationFrame().sprite.getTexture();
+        return getSprite().getTexture();
     }
 
     @Override
     public boolean isTiled() {
-        return getAnimationFrame().sprite.isTiled();
+        return getSprite().isTiled();
     }
 
     @Override
     public boolean isStretched() {
-        return getAnimationFrame().sprite.isStretched();
+        return getSprite().isStretched();
     }
 
     @Override
     public boolean isCentered() {
-        return getAnimationFrame().sprite.isCentered();
+        return getSprite().isCentered();
     }
 
     @Override
     public boolean isMaintainingAspectMin() {
-        return getAnimationFrame().sprite.isMaintainingAspectMin();
+        return getSprite().isMaintainingAspectMin();
     }
 
     @Override
     public boolean isMaintainingAspectMax() {
-        return getAnimationFrame().sprite.isMaintainingAspectMax();
+        return getSprite().isMaintainingAspectMax();
     }
     
     

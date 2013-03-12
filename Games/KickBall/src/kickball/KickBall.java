@@ -85,12 +85,10 @@ public class KickBall {
                     scene.addEntity(tile);
                 }
             }
-                
 
             Debugging.INSTANCE.showMessage("Setting Foreground");
-            as = new AnimatedSprite(new TextureScrollBehaviour(-1.5f, -1.2f));
-            as.addSprite(new Sprite("KickBall/Assets/cloudsbg.png", ITexture.TILED), 1000f);
-            scene.addForeground(new Scenery(as, IScenery.MOVE_WITH_CAMERA, 2.1f));  
+            s = new Sprite("KickBall/Assets/cloudsbg.png", ITexture.TILED, new TextureScrollBehaviour(-1.5f, -1.2f));
+            scene.addForeground(new Scenery(s, IScenery.MOVE_WITH_CAMERA, 2.1f));  
 
         Debugging.INSTANCE.finishGroup();
         
