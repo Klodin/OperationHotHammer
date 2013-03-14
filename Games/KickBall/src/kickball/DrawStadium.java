@@ -30,8 +30,9 @@ public class DrawStadium{
         String path = "KickBall/Assets/";
         for (int i = 0; i < this.stadiumGrid.length; i++){
             for (int j = 0; j < this.stadiumGrid[i].length; j++){
-                this.stadiumGrid[i][j] = path + "Terrain/grass.png";
+                this.stadiumGrid[i][j] = path + "Terrain/Swamp2.png";
             }
         }
+         this.stadiumGrid[0][0] = path + "Terrain/Water2.jpg";
     }
 }
