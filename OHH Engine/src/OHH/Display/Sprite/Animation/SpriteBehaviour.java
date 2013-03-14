@@ -4,16 +4,14 @@
  */
 package OHH.Display.Sprite.Animation;
 
-import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.ISprite;
 
 /**
  *
  * @author Kaitlyn
  */
-public interface AnimationBehaviour {
+public interface SpriteBehaviour {
     
-    public void init(ISprite sprite, IEntity e);
-    public void run(float delta, ISprite sprite, IEntity e);
+    public void run(float delta, ISprite sprite);
     
 }

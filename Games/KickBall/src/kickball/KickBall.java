@@ -15,7 +15,7 @@ import OHH.Core.Util.Debugging.Debugging;
 import OHH.Core.Util.Settings;
 import OHH.Display.Camera;
 import OHH.Display.GameWindow;
-import OHH.Display.Hud;
+import OHH.Display.HUD.Hud;
 import OHH.Display.Sprite.Animation.AnimatedSprite;
 import OHH.Display.Sprite.Animation.TextureScrollBehaviour;
 import OHH.Display.Sprite.Scenery;
@@ -62,7 +62,7 @@ public class KickBall {
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250,250, 30, 30, 15);
+            e = new SimpleCreature(250, 250, 51, 30, 30, 15);
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
@@ -85,12 +85,10 @@ public class KickBall {
                     scene.addEntity(tile);
                 }
             }
-                
 
             Debugging.INSTANCE.showMessage("Setting Foreground");
-            as = new AnimatedSprite(new TextureScrollBehaviour(-1.5f, -1.2f));
-            as.addSprite(new Sprite("KickBall/Assets/cloudsbg.png", ITexture.TILED), 1000f);
-            scene.addForeground(new Scenery(as, IScenery.MOVE_WITH_CAMERA, 2.1f));  
+            s = new Sprite("KickBall/Assets/cloudsbg.png", ITexture.TILED, new TextureScrollBehaviour(-1.5f, -1.2f));
+            scene.addForeground(new Scenery(s, IScenery.MOVE_WITH_CAMERA, 2.1f));  
 
         Debugging.INSTANCE.finishGroup();
         
@@ -114,7 +112,7 @@ public class KickBall {
             long time;
             int fps = 0;
             
-            Hud.INSTANCE.set("FPS", "0");
+            Hud.INSTANCE.show("FPS", "0");
             
             while(Game.INSTANCE.isRunning()) {
                 time = getTime();
@@ -126,7 +124,7 @@ public class KickBall {
                     fps = (int)(frameCount / ((time - prevFpsTime) / 1000L));
                     frameCount = 0;
                     prevFpsTime = time;
-                    Hud.INSTANCE.set("FPS", String.valueOf(fps));
+                    Hud.INSTANCE.show("FPS", String.valueOf(fps));
                 }                
 
                 //resolve any key presses
@@ -206,6 +204,10 @@ public class KickBall {
                         
                     case Keyboard.KEY_DOWN:
                         KEY_DOWN = true;
+                        break;
+                        
+                    case Keyboard.KEY_F1:
+                        GameWindow.INSTANCE.toggleDebugging();
                         break;
                 }
             }else{

@@ -134,7 +134,12 @@ public class Scene implements IPosition {
     }
     
     public void draw(int resWidth, int resHeight, Vector3f cameraPosition){
-        drawBackgrounds(resWidth, resHeight, cameraPosition);
+        draw(resWidth, resHeight, cameraPosition, false);
+    }
+    
+    public void draw(int resWidth, int resHeight, Vector3f cameraPosition, boolean showWireframe){
+        
+        draw(backgrounds, resWidth, resHeight, cameraPosition); 
         
         entitiesToDisplay.clear();
         quadTree.retrieveObjects(entitiesToDisplay, cameraPosition.x, cameraPosition.y, resWidth/2, resHeight/2);
@@ -143,17 +148,22 @@ public class Scene implements IPosition {
             e.draw(resWidth, resHeight, cameraPosition);
         }
         
-        drawForegrounds(resWidth, resHeight, cameraPosition);
+        if(showWireframe) {
+            for(Entity e : entitiesToDisplay) {
+                e.draw(resWidth, resHeight, cameraPosition, true);
+            } 
+        }
         
+        draw(foregrounds, resWidth, resHeight, cameraPosition);       
         
         prevCameraPosition.x = cameraPosition.x;
         prevCameraPosition.y = cameraPosition.y;
     }
     
-    private void drawBackgrounds(int resWidth, int resHeight, Vector3f cameraPosition){
-        for(IScenery background : backgrounds){
+    private void draw(ArrayList<IScenery> scenery, int resWidth, int resHeight, Vector3f cameraPosition){
+        for(IScenery s : scenery){
         
-            ISprite sprite = background.getSprite();
+            ISprite sprite = s.getSprite();
             
             int w = resWidth;
             int h = resHeight;
@@ -165,48 +175,18 @@ public class Scene implements IPosition {
                 sprite.setHeight(h);
             }
 
-            int type = background.getType();
+            int type = s.getType();
 
-            if(sprite != null && type == IScenery.CENTERED_TO_SCREEN)
+            if(sprite != null && type == IScenery.CENTERED_TO_SCREEN){
                 sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
+            }
 
             if(sprite != null && type == IScenery.MOVE_WITH_CAMERA) {
-                float parallex = background.getParallex();
+                float parallex = s.getParallex();
                 
                 sprite.getTexture().setOffsetX(sprite.getTexture().getOffsetX() + (prevCameraPosition.x - cameraPosition.x) * parallex);
                 sprite.getTexture().setOffsetY(sprite.getTexture().getOffsetY() + (prevCameraPosition.y - cameraPosition.y) * parallex);
 
-                sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
-            }
-        }   
-    }
-    
-    private void drawForegrounds(int resWidth, int resHeight, Vector3f cameraPosition){
-        for(IScenery foreground : foregrounds){
-        
-            ISprite sprite = foreground.getSprite();
-            
-            int w = resWidth;
-            int h = resHeight;
-         
-            if(sprite != null && sprite.getWidth() != w) {
-                sprite.setWidth(w);
-            }
-            if(sprite != null && sprite.getHeight() != h) {
-                sprite.setHeight(h);
-            }
-
-            int type = foreground.getType();
-
-            if(sprite != null && type == IScenery.CENTERED_TO_SCREEN)
-                sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
-
-            if(sprite != null && type == IScenery.MOVE_WITH_CAMERA) {
-                float parallex = foreground.getParallex();
-                
-                sprite.getTexture().setOffsetX(sprite.getTexture().getOffsetX() + (prevCameraPosition.x - cameraPosition.x) * parallex);
-                sprite.getTexture().setOffsetY(sprite.getTexture().getOffsetY() + (prevCameraPosition.y - cameraPosition.y) * parallex);
-                
                 sprite.draw(new Vector3f(resWidth/2, resHeight/2, 0));
             }
         }   

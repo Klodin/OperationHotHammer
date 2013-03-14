@@ -3,9 +3,9 @@ package OHH.Display.Sprite;
 import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.ISprite;
 import OHH.Core.Interfaces.ITexture;
+import OHH.Core.Util.Color4f;
 import OHH.Core.Util.Debugging.Debugging;
-import OHH.Display.GameWindow;
-import OHH.Display.Hud;
+import OHH.Display.Sprite.Animation.SpriteBehaviour;
 import OHH.Display.Sprite.Texture.Texture;
 import OHH.Display.Sprite.Texture.TextureLoader;
 import java.io.IOException;
@@ -13,8 +13,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Sprite implements ISprite {
-    private final Texture texture;
-    private final int drawStyle;
+    
+    private Texture texture;
+    private int drawStyle;
     
     private int adjustedWidth = 0;
     private int adjustedHeight = 0;
@@ -23,6 +24,10 @@ public class Sprite implements ISprite {
     
     private static int drawnCount = 0;
     private static int updateCount = 0;
+    
+    private SpriteBehaviour runnable = null;
+    
+    private Color4f color = new Color4f(1f, 1f, 1f, 1f);
     
     public static int getDrawnCount(){
         return drawnCount;
@@ -38,34 +43,38 @@ public class Sprite implements ISprite {
     }
     
     public Sprite(String resource) {
-        Texture temp = null;
-        drawStyle = ITexture.TILED;
-        
-        try{
-            temp = TextureLoader.INSTANCE.getTexture(resource);
-        }catch(IOException e){
-            Debugging.INSTANCE.showError("A problem occured when loading a texture! (" + resource + ")");            
-        }
-        
-        texture = temp;
-        
-        actualWidth = adjustedWidth = texture.getWidth();
-        actualHeight = adjustedHeight = texture.getHeight();
+        init(resource, ITexture.TILED, null);
     }
     
     public Sprite(String resource, int drawStyle) {
+        init(resource, drawStyle, null);
+    }
+    
+        
+    public Sprite(String resource, SpriteBehaviour runnable) {
+        init(resource, ITexture.TILED, runnable);
+    }
+    
+    public Sprite(String resource, int drawStyle, SpriteBehaviour runnable) {
+        init(resource, drawStyle, runnable);
+    }
+    
+    private void init(String resource, int drawStyle, SpriteBehaviour runnable){
         Texture temp = null;
         this.drawStyle = drawStyle;
+        this.runnable = runnable;
         
         try{
             temp = TextureLoader.INSTANCE.getTexture(resource);
         }catch(IOException e){
-            Debugging.INSTANCE.showError("A problem occured when loading a texture! (" + resource + ")");            
+            Debugging.INSTANCE.showWarning("A problem occured when loading a texture! (" + resource + ")");            
         }
         texture = temp;
         
-        this.adjustedWidth = this.actualWidth = texture.getWidth();
-        this.adjustedHeight = this.actualHeight = texture.getHeight();
+        if(texture != null) {
+            this.adjustedWidth = this.actualWidth = texture.getWidth();
+            this.adjustedHeight = this.actualHeight = texture.getHeight();
+        }   
     }
     
     @Override
@@ -108,14 +117,23 @@ public class Sprite implements ISprite {
     @Override
     public void update(float delta, IEntity e) {
         updateCount++;
+        
+        //run it
+        if(runnable != null){
+            runnable.run(delta, this);
+        }
     }
     
     public boolean isTiled(){
         return (drawStyle & ITexture.TILED) != 0;
     }
     
-    public boolean isStetched(){
+    public boolean isStretched(){
         return (drawStyle & ITexture.STRETCH) != 0;
+    }
+    
+    public boolean isCentered(){
+        return (drawStyle & ITexture.CENTERED) != 0;
     }
     
     public boolean isMaintainingAspectMin(){
@@ -128,22 +146,30 @@ public class Sprite implements ISprite {
     
     @Override
     public void draw(Vector3f position) {
+        if(texture == null) {
+            Debugging.INSTANCE.showWarning("Attempted to draw a texture that is NULL!");
+            return;
+        }
         
+        drawQuad(position, true);
+    }
+    
+    public void drawQuad(Vector3f position, boolean bindTexture) {
+
         drawnCount++;
         
         // store the current model matrix
 	GL11.glPushMatrix();
 		
 	// bind to the appropriate texture for this sprite
-	texture.bind();
+	if(bindTexture) texture.bind();
+        if(bindTexture) color.bind();
     
 	// translate to the right location and prepare to draw
         if(isTiled())
-            GL11.glTranslatef(position.x-getWidth()/2, position.y-getHeight()/2, 0);		
-        else
+            GL11.glTranslatef(position.x-getWidth()/2, position.y-getHeight()/2, 0);	
+        else 
             GL11.glTranslatef(position.x-this.adjustedWidth/2, position.y-this.adjustedHeight/2, 0);		
-        
-    	GL11.glColor3f(1f, 1f, 1f);
 
 	// draw a quad textured to match the sprite
     	GL11.glBegin(GL11.GL_QUADS);
@@ -187,7 +213,8 @@ public class Sprite implements ISprite {
                 GL11.glTexCoord2f(widthRatio, 0);
                 GL11.glVertex2f(x_min + x_size + x_offset, y_min + y_offset);
                     
-            }else{
+            }else if(isStretched() || isTiled()){
+                
                 GL11.glTexCoord2f(0, 0);
                 GL11.glVertex2f(0, 0);
                 GL11.glTexCoord2f(0, heightRatio);
@@ -197,12 +224,81 @@ public class Sprite implements ISprite {
                 GL11.glTexCoord2f(widthRatio, 0);
                 GL11.glVertex2f(adjustedWidth,0);
                     
+            }else{ //centered
+                
+                float xdif = ((float)actualWidth - (float)getTexture().getWidth()) / 2f;
+                float ydif = ((float)actualHeight - (float)getTexture().getHeight()) / 2f;
+                
+                GL11.glTexCoord2f(0, 0);
+                GL11.glVertex2f(xdif, ydif);
+                GL11.glTexCoord2f(0, heightRatio);
+                GL11.glVertex2f(xdif, ydif + getTexture().getHeight());
+                GL11.glTexCoord2f(widthRatio, heightRatio);
+                GL11.glVertex2f(xdif + getTexture().getWidth(), ydif + getTexture().getHeight());
+                GL11.glTexCoord2f(widthRatio, 0);
+                GL11.glVertex2f(xdif + getTexture().getWidth(), ydif);
             }
 	}
 	GL11.glEnd();
 		
 	// restore the model view matrix to prevent contamination
 	GL11.glPopMatrix();
+        
+    }
+    
+    @Override
+    public void drawWireframe(Vector3f position){
+        
+        GL11.glPolygonMode( GL11.GL_FRONT, GL11.GL_LINE );
+        
+        //clear any texture bindings
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        
+        /*
+         * I draw the quads here instead of using the draw function since
+         * the draw function does a lot of adjustments for texture.
+         * This is the set quad dimensions shown visually.
+         */
+        
+        //show the quad
+        GL11.glColor3f(0.3f, 0f, 1f);
+        GL11.glLineWidth(1.0f);
+        
+        GL11.glPushMatrix();
+        GL11.glTranslatef(position.x-(float)getWidth()/2f, position.y-(float)getHeight()/2f, 0);
+        
+        GL11.glBegin(GL11.GL_QUADS);
+	{
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, getHeight());
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(getWidth(), getHeight());
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(getWidth(), 0);
+        }
+        GL11.glEnd();
+        
+        GL11.glPopMatrix();
+        
+        /*
+        //dashed line
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT); 
+        GL11.glLineStipple(1, (short)0x1C47);
+        GL11.glEnable(GL11.GL_LINE_STIPPLE);
+        
+        //show the textures
+        //the original draw function accuratly shows the positions of textures
+        GL11.glColor3f(0.4f, 0.2f, 1f);
+        drawQuad(position, false);
+        
+        //remove dashed line
+        GL11.glPopAttrib();
+        * */
+        
+        GL11.glPolygonMode( GL11.GL_FRONT, GL11.GL_FILL );
+        
         
     }
 }

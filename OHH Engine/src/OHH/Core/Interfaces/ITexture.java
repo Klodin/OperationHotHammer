@@ -11,8 +11,9 @@ package OHH.Core.Interfaces;
 public interface ITexture {
     public final static int TILED               = 1;
     public final static int STRETCH             = 2;
-    public final static int MAINTAIN_ASPECT_MAX = 4;
-    public final static int MAINTAIN_ASPECT_MIN = 8;
+    public final static int CENTERED            = 4;
+    public final static int MAINTAIN_ASPECT_MAX = 8;
+    public final static int MAINTAIN_ASPECT_MIN = 16;
     
     public void bind();
     

@@ -10,7 +10,7 @@ import OHH.Core.Util.Debugging.Debugging;
 import OHH.Core.Util.Settings;
 import OHH.Display.Camera;
 import OHH.Display.GameWindow;
-import OHH.Display.Hud;
+import OHH.Display.HUD.Hud;
 import OHH.Display.Sprite.Animation.AnimatedSprite;
 import OHH.Display.Sprite.Animation.TextureScrollBehaviour;
 import OHH.Display.Sprite.Scenery;
@@ -52,6 +52,18 @@ class SimIndie {
 
         Debugging.INSTANCE.beginGroup("Initializing (Scene '" + scene.getName() + "')");
 
+        /*
+            s = new Sprite("SimIndie/Assets/dirt2.jpg", ITexture.TILED);
+            e = new SimpleCreature(250, 250, 50, 400, 400, 400/2); 
+            e.attach(s);
+            scene.addEntity(e);
+            
+            s = new Sprite("SimIndie/Assets/Sprites/Witch/standing_1.png", ITexture.CENTERED);
+            e = new SimpleCreature(250, 250, 51, 400, 400, 400/2); 
+            e.attach(s);
+            scene.addEntity(e);
+            */
+        
             Debugging.INSTANCE.showMessage("Creating Player Entity");
             as = new AnimatedSprite();
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 1200f);
@@ -60,7 +72,7 @@ class SimIndie {
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250,250, 30, 30, 30/2); 
+            e = new SimpleCreature(250, 250, 51, 30, 30, 30/2); 
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
@@ -72,10 +84,10 @@ class SimIndie {
             scene.addBackground(new Scenery(s, IScenery.MOVE_WITH_CAMERA));   
 
             Debugging.INSTANCE.showMessage("Setting Foreground");
-            as = new AnimatedSprite(new TextureScrollBehaviour(-1.5f, -1.2f));
-            as.addSprite(new Sprite("SimIndie/Assets/cloudsbg.png", ITexture.TILED), 1000f);
-            scene.addForeground(new Scenery(as, IScenery.MOVE_WITH_CAMERA, 2.1f));  
-
+            s = new Sprite("SimIndie/Assets/cloudsbg.png", ITexture.TILED, new TextureScrollBehaviour(-1.5f, -1.2f));
+            scene.addForeground(new Scenery(s, IScenery.MOVE_WITH_CAMERA, 2.1f));  
+        
+        
         Debugging.INSTANCE.finishGroup();
         
         if(!Debugging.INSTANCE.hasError()) {
@@ -98,7 +110,7 @@ class SimIndie {
             long time;
             int fps = 0;
             
-            Hud.INSTANCE.set("FPS", "0");
+            Hud.INSTANCE.show("FPS", "0");
             
             while(Game.INSTANCE.isRunning()) {
                 time = getTime();
@@ -110,7 +122,7 @@ class SimIndie {
                     fps = (int)(frameCount / ((time - prevFpsTime) / 1000L));
                     frameCount = 0;
                     prevFpsTime = time;
-                    Hud.INSTANCE.set("FPS", String.valueOf(fps));
+                    Hud.INSTANCE.show("FPS", String.valueOf(fps));
                 }                
 
                 //resolve any key presses
@@ -191,6 +203,11 @@ class SimIndie {
                     case Keyboard.KEY_DOWN:
                         KEY_DOWN = true;
                         break;
+                                         
+                    case Keyboard.KEY_F1:
+                        GameWindow.INSTANCE.toggleDebugging();
+                        break;
+                        
                 }
             }else{
                 //key up
