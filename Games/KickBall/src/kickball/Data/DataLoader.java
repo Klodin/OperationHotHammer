@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package OHH.Core.Data;
+package kickball.Data;
 
 
 public class DataLoader {

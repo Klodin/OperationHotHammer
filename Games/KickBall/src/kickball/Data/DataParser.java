@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OHH.Core.Data;
+package kickball.Data;
 import OHH.Core.GameObjects.Entity;
 import java.io.*;
 import java.util.Scanner;

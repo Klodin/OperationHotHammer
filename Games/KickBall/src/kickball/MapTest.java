@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package OHH.Core.Data;
+package kickball;
 
 import OHH.Core.Util.Settings;
+import kickball.Data.MapParser;
+import kickball.Data.MapParser;
 
 /**
  *
