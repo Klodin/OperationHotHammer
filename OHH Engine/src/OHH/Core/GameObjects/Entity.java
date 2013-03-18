@@ -1,12 +1,13 @@
 package OHH.Core.GameObjects;
 
+import OHH.Core.GameObjects.Boundary.Circle;
 import OHH.Core.Util.Debugging.Debugging;
 import OHH.Core.GameObjects.Boundary.IBoundaryShape;
 import OHH.Core.Interfaces.IDisplayable;
 import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.IPosition;
 import OHH.Core.Interfaces.ISprite;
-import org.lwjgl.opengl.GL11;
+import OHH.Core.Util.Partitioning.QTree;
 import org.lwjgl.util.vector.Vector3f;
 
 public abstract class Entity implements IDisplayable, IEntity, IPosition {
@@ -15,14 +16,15 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
    public static final float LAYER_MIN = 0;
    public static final float LAYER_MAX = 200;
    private ISprite sprite = null;
-   public final IBoundaryShape collider;
+   public final IBoundaryShape displayBoundary;
+   public final IBoundaryShape collisionBoundary;
    
    private int width;
    private int height;
    
    public final Vector3f position;
-   private static int drawnCount = 0;
-   private static int updateCount = 0;
+   protected static int drawnCount = 0;
+   protected static int updateCount = 0;
    
    public static int getDrawnCount(){
        return drawnCount;
@@ -37,16 +39,12 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
        updateCount = 0;
    }
    
-   public Entity(Vector3f p, int width, int height, IBoundaryShape colliderShape) {       
-      collider = colliderShape;
-      position = p;
+   public Entity(Vector3f position, int width, int height, IBoundaryShape displayBoundary, IBoundaryShape collisionBoundary) {       
+      this.displayBoundary = displayBoundary;
+      this.collisionBoundary = collisionBoundary;
+      this.position = position;
       this.width = width;
       this.height = height;
-   }
-   
-   public Entity(Vector3f p) {
-       collider = null;
-       position = p;
    }
    
    public void update(float delta){
@@ -84,10 +82,10 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
        }
               
        sprite = s;
-       if(this.collider.getShape() == IBoundaryShape.CIRCLE) {
-           sprite.setWidth(width);
-           sprite.setHeight(height);   
-       }
+       //if(this.display.getShape() == IBoundaryShape.CIRCLE) {
+       sprite.setWidth(width);
+       sprite.setHeight(height);   
+       //}
    }
    
    @Override
@@ -130,5 +128,20 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
         position.z = z;
     }
    
-   
+    abstract public void handleCollision(Entity target);
+    
+    public boolean collidesWidth(Entity target){
+        
+        boolean ret = false;
+        
+        if(collisionBoundary.getShape() == IBoundaryShape.CIRCLE && target.collisionBoundary.getShape() == IBoundaryShape.CIRCLE) {
+            float dif = (float)Math.sqrt((target.getX() - getX()) * (target.getX() - getX()) + (target.getY() - getY()) * (target.getY() - getY()));
+            ret = dif < ((Circle)collisionBoundary).radius + ((Circle)target.collisionBoundary).radius;
+        }
+        
+        return ret;
+    }
+    
+    abstract public String getType();
+    
 }

@@ -72,7 +72,7 @@ class SimIndie {
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
             as.addSprite(new Sprite("SimIndie/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250, 250, 51, 30, 30, 30/2); 
+            e = new SimpleCreature(250, 250, 51, 30, 30, 30/2, 30/2); 
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             

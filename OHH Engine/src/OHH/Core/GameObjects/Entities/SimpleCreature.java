@@ -7,17 +7,15 @@ package OHH.Core.GameObjects.Entities;
 import OHH.Core.GameObjects.Boundary.Circle;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Util.Debugging.Debugging;
-import OHH.Core.Util.Settings;
 import org.lwjgl.util.vector.Vector3f;
-import java.util.Random;
 
 /**
  *
  * @author Kaitlyn
  */
 public class SimpleCreature extends Entity{
-    public SimpleCreature(float x, float y, float z, int width, int height, float radius) {
-        super(new Vector3f(x,y,z), width, height, new Circle(radius));
+    public SimpleCreature(float x, float y, float z, int width, int height, float displayBoundaryRadius, float collisionBoundaryRadius) {
+        super(new Vector3f(x,y,z), width, height, new Circle(displayBoundaryRadius), new Circle(collisionBoundaryRadius));
         Debugging.INSTANCE.showMessage("Create (Entity->SimpleCreature)");
     }
 
@@ -28,6 +26,25 @@ public class SimpleCreature extends Entity{
         if(getSprite() != null){
             getSprite().update(delta, this);
         }
+    }
+    
+    
+    @Override
+    public void handleCollision(Entity target) {
+        //no nothing :D
+        if(target.getType().equals("Terrain"))
+            handleCollision((Terrain)target);
+    }
+    
+    public void handleCollision(Terrain target) {
+        
+        target.showCollision();
+        
+    }
+    
+    @Override
+    public String getType() {
+        return "SimpleCreature";
     }
     
 }

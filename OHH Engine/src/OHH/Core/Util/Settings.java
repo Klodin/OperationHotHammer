@@ -18,6 +18,9 @@ public class Settings {
     public static final String ASSETS_DIR = System.getProperty("user.dir") + "\\src\\OperationHotHammer\\Assets\\";
     public static final float MOVEMENT_SPEED = 4.4f;
     
+    public static final float ENTITY_Z_GROUND = 50;
+    public static final float ENTITY_Z_CREATURES = 100;
+    
     public static final float CAMERA_EASE_TO_POSITION = 24f; //distance divided by: e.g. 1/24 per tick
     public static final float CAMERA_EASE_LOWER_LIMIT = 4.5f;
     public static final float CAMERA_EASE_UPPER_LIMIT = 8f;

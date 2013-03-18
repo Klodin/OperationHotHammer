@@ -3,6 +3,7 @@ package OHH.Display.Sprite.Animation;
 import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.ISprite;
 import OHH.Core.Interfaces.ITexture;
+import OHH.Core.Util.Color4f;
 import OHH.Core.Util.Settings;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector3f;
@@ -85,6 +86,13 @@ public class AnimatedSprite implements ISprite {
     public void drawWireframe(Vector3f position) {
         if(animationFrames.size()>0)
             getSprite().drawWireframe(position);
+    }
+    
+        
+    @Override
+    public void drawFilled(Vector3f position, Color4f colour) {
+        if(animationFrames.size()>0)
+            getSprite().drawFilled(position, colour);
     }
     
     public AnimationFrame getAnimationFrame(int index){

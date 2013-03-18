@@ -301,4 +301,39 @@ public class Sprite implements ISprite {
         
         
     }
+    
+    @Override
+    public void drawFilled(Vector3f position, Color4f colour){
+
+        //clear any texture bindings
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        
+        /*
+         * I draw the quads here instead of using the draw function since
+         * the draw function does a lot of adjustments for texture.
+         * This is the set quad dimensions shown visually.
+         */
+        
+        //show the quad
+        colour.bind();
+        
+        GL11.glPushMatrix();
+        GL11.glTranslatef(position.x-(float)getWidth()/2f, position.y-(float)getHeight()/2f, 0);
+        
+        GL11.glBegin(GL11.GL_QUADS);
+	{
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, getHeight());
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(getWidth(), getHeight());
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(getWidth(), 0);
+        }
+        GL11.glEnd();
+        
+        GL11.glPopMatrix();
+
+    }
 }

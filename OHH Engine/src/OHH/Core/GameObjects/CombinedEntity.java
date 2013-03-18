@@ -12,6 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
  *
  * @author Kaitlyn
  */
+/*
 public class CombinedEntity extends AdvancedEntity {
 
 
@@ -40,3 +41,4 @@ public class CombinedEntity extends AdvancedEntity {
         }
     }
 }
+* */

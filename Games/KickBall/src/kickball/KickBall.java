@@ -46,7 +46,7 @@ public class KickBall {
         Hud.INSTANCE.initialize("KickBall/Assets/Fonts/DisposableDroidBB.ttf");
         
         //Generate some content
-        Scene scene = new Scene("Testing Scene", 500, 500);
+        Scene scene = new Scene("Testing Scene", 1600, 1600);
         
         Entity e;
         AnimatedSprite as;
@@ -56,13 +56,13 @@ public class KickBall {
 
             Debugging.INSTANCE.showMessage("Creating Player Entity");
             as = new AnimatedSprite();
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 1200f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 800f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 2400f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250, 250, 51, 30, 30, 15);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 1200f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 800f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 2400f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
+            e = new SimpleCreature(scene.getWidth()/2, scene.getHeight()/2, Settings.ENTITY_Z_CREATURES, 46, 102, 15, 15);
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             

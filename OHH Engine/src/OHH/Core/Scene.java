@@ -1,6 +1,8 @@
 
 package OHH.Core;
 
+import OHH.Core.GameObjects.Boundary.Circle;
+import OHH.Core.GameObjects.Boundary.IBoundaryShape;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Interfaces.IScenery;
 import OHH.Core.Interfaces.IPosition;
@@ -10,6 +12,7 @@ import OHH.Core.Util.DepthSortedList;
 import OHH.Core.Util.EntityArrayList;
 import OHH.Core.Util.EntityList;
 import OHH.Core.Util.Partitioning.QTree;
+import OHH.Core.Util.Settings;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -122,7 +125,19 @@ public class Scene implements IPosition {
         
         for(Entity o : objects) {
             o.update(delta);
-            quadTree.insertObject(o);
+            quadTree.insertObject(o, o.displayBoundary);
+        }
+        
+        for(Entity o : objects) {
+            if(o.getZ() == Settings.ENTITY_Z_CREATURES && o.collisionBoundary.getShape() == IBoundaryShape.CIRCLE) {
+                entitiesToDisplay.clear();
+                quadTree.retrieveObjects(entitiesToDisplay, o.getX(), o.getY(), (int)((Circle)o.collisionBoundary).radius, (int)((Circle)o.collisionBoundary).radius);    
+                for(Entity e : entitiesToDisplay)
+                    if(o.collidesWidth(e)) {
+                        o.handleCollision(e);
+                        e.handleCollision(o);
+                    }
+            }
         }
         
         for(IScenery background : backgrounds)
