@@ -67,7 +67,7 @@ public class Terrain extends Entity{
        if(showWireframe && !isCollidingWithPlayer)
            getSprite().drawWireframe(pos);
        
-       if(isCollidingWithPlayer)
+       if(!showWireframe && isCollidingWithPlayer)
            getSprite().drawFilled(pos, filledColour);
     }
 }
