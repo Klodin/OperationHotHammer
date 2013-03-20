@@ -1,4 +1,4 @@
-setSize 10 10
+setSize 8 10
 setBedrock
 drawLine 5 10 5 8
 drawLine 5 10 3 10

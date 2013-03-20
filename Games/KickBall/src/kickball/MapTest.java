@@ -19,22 +19,26 @@ public class MapTest {
         while (nextLine != null){
             String commandLine[] = nextLine.split(" ");
             String command = commandLine[0];
-            String arguments[] = Arrays.copyOfRange(commandLine, 1, commandLine.length - 1);
+            String arguments[] = new String[0];
+            if (commandLine.length > 1){
+                 arguments = Arrays.copyOfRange(commandLine, 1, commandLine.length);
+            }
+            
             switch(command){
                 case "setSize":
                     if (arguments.length < 2){
-                        System.out.println("Insufficient arguments");
+                        System.out.println("Insufficient arguments for command: " + command);
                     } else {
                         System.out.println("Let's make a " + arguments[0] + " x " + arguments[1] + " grid!");
                     }
                     break;
                 case "drawLine":
                     if (arguments.length < 4){
-                        System.out.println("Insufficient arguments");
+                        System.out.println("Insufficient arguments for command: " + command);
                     } else {
-                        if (arguments[0] == arguments[2]){
+                        if (arguments[0].equals(arguments[2])){
                             System.out.println("Let's draw a Horizontal line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[0] + ", " + arguments[1] + ")");
-                        } else if (arguments[1] == arguments[3]){
+                        } else if (arguments[1].equals(arguments[3])){
                             System.out.println("Let's draw a Vertical line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[0] + ", " + arguments[1] + ")");
                         } else {
                             System.out.println("Silly user, that's not a line!");
@@ -45,6 +49,7 @@ public class MapTest {
                     System.out.println("Unrecognized Command: " + command);
                     break;
             }
+            nextLine = reader.get();
         }
     }
 }
