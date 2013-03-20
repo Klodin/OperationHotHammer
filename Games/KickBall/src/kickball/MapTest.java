@@ -37,9 +37,9 @@ public class MapTest {
                         System.out.println("Insufficient arguments for command: " + command);
                     } else {
                         if (arguments[0].equals(arguments[2])){
-                            System.out.println("Let's draw a Horizontal line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[0] + ", " + arguments[1] + ")");
+                            System.out.println("Let's draw a Horizontal line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ")");
                         } else if (arguments[1].equals(arguments[3])){
-                            System.out.println("Let's draw a Vertical line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[0] + ", " + arguments[1] + ")");
+                            System.out.println("Let's draw a Vertical line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ")");
                         } else {
                             System.out.println("Silly user, that's not a line!");
                         }
