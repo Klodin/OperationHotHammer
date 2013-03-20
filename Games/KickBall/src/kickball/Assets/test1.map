@@ -1,5 +1,6 @@
-setSize
-10
-10
+setSize 10 10
 setBedrock
-grass
+drawLine 5 10 5 8
+drawLine 5 10 3 10
+drawLine 5 10 7 8
+
