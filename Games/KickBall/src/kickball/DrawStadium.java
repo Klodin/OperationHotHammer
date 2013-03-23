@@ -72,9 +72,9 @@ public class DrawStadium{
                     if (arguments.length < 5){
                         System.out.println("Insufficient arguments for command: " + command);
                     } else {
-                        floor = arguments[5];
+                        floor = arguments[4];
                         if (arguments[0].equals(arguments[2])){
-                            System.out.println("Let's draw a Vertical line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ")");
+                            System.out.println("Let's draw a Vertical line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ") with " + arguments[4]);
                             if(str2Int(arguments[1]) < str2Int(arguments[3])){
                                 for (int i = str2Int(arguments[1]), j = str2Int(arguments[0]), k = str2Int(arguments[3]); i < k; i++){
                                     this.stadiumGrid[j][i] = path + "Terrain/"+ floor;    
@@ -85,9 +85,9 @@ public class DrawStadium{
                                   this.stadiumGrid[j][i] = path + "Terrain/"+ floor;
                               }  
                             }
-                    }
+                        }
                       else if (arguments[1].equals(arguments[3])){
-                            System.out.println("Let's draw a Horizontal line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ")");
+                            System.out.println("Let's draw a Horizontal line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ") with " + arguments[4]);
                             if(str2Int(arguments[0]) < str2Int(arguments[2])){
                                 for (int i = str2Int(arguments[0]), j = str2Int(arguments[1]), k = str2Int(arguments[2]); i < k; i++){
                                     this.stadiumGrid[i][j] = path + "Terrain/"+ floor;    
@@ -98,7 +98,7 @@ public class DrawStadium{
                                   this.stadiumGrid[i][j] = path + "Terrain/"+ floor;
                               }  
                             }  
-                      }
+                        } 
                          else {
                             System.out.println("Silly user, that's not a line!");
                         }
