@@ -38,8 +38,18 @@ public class DrawStadium{
         TextReader reader = new TextReader(directory);
         String nextLine;
         nextLine = reader.get();
-        String floor = "Dirt1.png";
-      
+        String floor = "grass.png";
+        
+        /*
+        for (int i = 0; i < this.stadiumGrid.length; i++){
+            for (int j = 0; j < this.stadiumGrid[i].length; j++){
+                this.stadiumGrid[i][j] = path + "Terrain/Water1.png";
+            }
+        }
+        * Draws a default map 
+        * 
+        */
+        
         while (nextLine != null){
             
             String commandLine[] = nextLine.split(" ");
@@ -48,6 +58,7 @@ public class DrawStadium{
             if (commandLine.length > 1){
                  arguments = Arrays.copyOfRange(commandLine, 1, commandLine.length);
             }
+            
              switch(command){
                 case "setSize":
                     if (arguments.length < 2){
@@ -58,20 +69,23 @@ public class DrawStadium{
                     }
                     break;
                 case "drawLine":
-                    if (arguments.length < 4){
+                    if (arguments.length < 5){
                         System.out.println("Insufficient arguments for command: " + command);
-                    } else if (arguments[0].equals(arguments[2])){
+                    } else {
+                        floor = arguments[5];
+                        if (arguments[0].equals(arguments[2])){
                             System.out.println("Let's draw a Vertical line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ")");
                             if(str2Int(arguments[1]) < str2Int(arguments[3])){
                                 for (int i = str2Int(arguments[1]), j = str2Int(arguments[0]), k = str2Int(arguments[3]); i < k; i++){
                                     this.stadiumGrid[j][i] = path + "Terrain/"+ floor;    
                                 } 
                               } 
-                    } else if(str2Int(arguments[1]) > str2Int(arguments[3])){
-                              for (int i = str2Int(arguments[3]), j = str2Int(arguments[0]), k = str2Int(arguments[1]); i < k; i++){
+                            else if(str2Int(arguments[1]) > str2Int(arguments[3])){
+                                for (int i = str2Int(arguments[3]), j = str2Int(arguments[0]), k = str2Int(arguments[1]); i < k; i++){
                                   this.stadiumGrid[j][i] = path + "Terrain/"+ floor;
                               }  
                             }
+                    }
                       else if (arguments[1].equals(arguments[3])){
                             System.out.println("Let's draw a Horizontal line from (" + arguments[0] + ", " + arguments[1] + ") to ("  + arguments[2] + ", " + arguments[3] + ")");
                             if(str2Int(arguments[0]) < str2Int(arguments[2])){
@@ -79,14 +93,16 @@ public class DrawStadium{
                                     this.stadiumGrid[i][j] = path + "Terrain/"+ floor;    
                                 }
                             }
-                      }else if(str2Int(arguments[0]) > str2Int(arguments[2])){
+                            else if(str2Int(arguments[0]) > str2Int(arguments[2])){
                               for (int i = str2Int(arguments[2]), j = str2Int(arguments[1]), k = str2Int(arguments[0]); i < k; i++){
                                   this.stadiumGrid[i][j] = path + "Terrain/"+ floor;
                               }  
                             }  
+                      }
                          else {
                             System.out.println("Silly user, that's not a line!");
                         }
+                    }
                     break;
                 default:
                     System.out.println("Unrecognized Command: " + command);
