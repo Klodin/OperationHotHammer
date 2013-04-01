@@ -1,6 +1,16 @@
 setSize 8 10
 setBedrock
-drawLine 5 10 5 8
-drawLine 5 10 3 10
-drawLine 5 10 7 8
-
+drawLine 0 0 8 0 grass.png
+drawLine 0 1 8 1 grass.png
+drawLine 0 2 8 2 Dirt1.png
+drawLine 0 3 8 3 Dirt1.png
+drawLine 8 4 0 4 Dirt1.png
+drawLine 8 5 0 5 Dirt1.png
+drawLine 0 6 0 10 Water1.png
+drawLine 1 6 1 10 Water1.png
+drawLine 2 6 2 10 Water1.png
+drawLine 3 6 3 10 Swamp1.png
+drawLine 4 6 4 10 Swamp1.png
+drawLine 5 6 5 10 Swamp1.png
+drawLine 6 10 6 6 Water2.jpg
+drawLine 7 10 7 6 Water2.jpg
