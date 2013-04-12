@@ -17,6 +17,7 @@ import org.lwjgl.util.vector.Vector3f;
  * @author Kaitlyn
  */
 public class Terrain extends Entity{
+    public String label = "";
     private boolean isCollidingWithPlayer;
     private static Color4f filledColour = new Color4f(2f, 1.0f, 0.4f, 0.2f);
     
@@ -48,8 +49,9 @@ public class Terrain extends Entity{
         return "Terrain";
     }
     
-    public void showCollision(){
+    public String showCollision(){
         isCollidingWithPlayer = true;
+        return label;
     }
     
     @Override
