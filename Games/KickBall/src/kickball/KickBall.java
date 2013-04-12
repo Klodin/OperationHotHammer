@@ -79,10 +79,13 @@ public class KickBall {
             
             for (int i = 0; i < stadium.length; i++){
                 for (int j = 0; j < stadium[i].length; j++){
-                    Sprite pic = new Sprite(stadium[i][j], ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                    Entity tile = new Terrain(i*gridSize, j*gridSize, gridSize, gridSize, radius);
-                    tile.attach(pic);
-                    scene.addEntity(tile);
+                    if (stadium[i][j] != null){
+                        Sprite pic = new Sprite(stadium[i][j], ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
+                        Terrain tile = new Terrain(i*gridSize, j*gridSize, gridSize, gridSize, radius);
+                        tile.attach(pic);
+                        tile.label = stadium[i][j];
+                        scene.addEntity(tile);
+                    }
                 }
             }
 
@@ -166,7 +169,6 @@ public class KickBall {
     }
     
     public void handleUserInputs(float delta){
-
         if (Display.isCloseRequested())
         {
             // The display window is being closed
