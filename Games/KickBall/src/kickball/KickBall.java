@@ -6,7 +6,6 @@ package kickball;
 
 import OHH.Core.Game;
 import OHH.Core.GameObjects.Entities.SimpleCreature;
-import OHH.Core.GameObjects.Entities.Terrain;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Interfaces.IScenery;
 import OHH.Core.Interfaces.ITexture;
@@ -74,18 +73,10 @@ public class KickBall {
             int gridSize = 32;
             //MapParser M = new MapParser("land.map");
             DrawStadium d = new DrawStadium();
-            String stadium[][] = d.stadiumGrid;
-            float radius = (float)Math.sqrt((float)gridSize*(float)gridSize + (float)gridSize*(float)gridSize) / 2;
             
-            for (int i = 0; i < stadium.length; i++){
-                for (int j = 0; j < stadium[i].length; j++){
-                    if (stadium[i][j] != null){
-                        Sprite pic = new Sprite(stadium[i][j], ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                        Terrain tile = new Terrain(i*gridSize, j*gridSize, gridSize, gridSize, radius);
-                        tile.attach(pic);
-                        tile.label = stadium[i][j];
-                        scene.addEntity(tile);
-                    }
+            for (int i = 0; i < d.stadiumGrid.length; i++){
+                for (int j = 0; j < d.stadiumGrid[i].length; j++){
+                    scene.addEntity(d.stadiumGrid[i][j]);
                 }
             }
 

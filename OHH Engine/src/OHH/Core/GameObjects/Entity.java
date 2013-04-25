@@ -19,8 +19,8 @@ public abstract class Entity implements IDisplayable, IEntity, IPosition {
    public final IBoundaryShape displayBoundary;
    public final IBoundaryShape collisionBoundary;
    
-   private int width;
-   private int height;
+   protected int width;
+   protected int height;
    
    public final Vector3f position;
    protected static int drawnCount = 0;

@@ -20,10 +20,26 @@ public class Terrain extends Entity{
     public String label = "";
     private boolean isCollidingWithPlayer;
     private static Color4f filledColour = new Color4f(2f, 1.0f, 0.4f, 0.2f);
+    private static final int GRIDSIZE = 32;
+    private static final float RADIUS = (float)Math.sqrt((float)GRIDSIZE*(float)GRIDSIZE) / 2;
     
-    public Terrain(float x, float y, int width, int height, float radius) {
-        super(new Vector3f(x,y,Settings.ENTITY_Z_GROUND), width, height, new Circle(radius), new Circle(radius));
+    public Terrain(float x, float y) {
+        super(new Vector3f(x*GRIDSIZE,y*GRIDSIZE,Settings.ENTITY_Z_GROUND), GRIDSIZE, GRIDSIZE, new Circle(RADIUS), new Circle(RADIUS));
         Debugging.INSTANCE.showMessage("Create (Entity->Terrain)");
+    }
+    
+    public Terrain() {
+        super(new Vector3f(0,0,Settings.ENTITY_Z_GROUND), 0, 0, new Circle(0), new Circle(0));
+        Debugging.INSTANCE.showMessage("Create (Entity->Terrain)");
+    }
+    
+    public void setXY(float x, float y){
+        ((Circle) this.displayBoundary).radius = RADIUS;
+        ((Circle) this.collisionBoundary).radius = RADIUS;
+        this.position.x = x*GRIDSIZE;
+        this.position.y = y*GRIDSIZE;
+        this.width = GRIDSIZE;
+        this.height = GRIDSIZE;
     }
     
     @Override

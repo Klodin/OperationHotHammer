@@ -28,10 +28,17 @@ public class TextReader {
     }
     
     public String get(){
-        if (scan.hasNext()){
-            return scan.nextLine();
-        } else {
-            return null;
+        String getItem = null;
+        try {
+            if (scan.hasNext()){
+                getItem = scan.nextLine();
+            } else {
+                this.scan.close();
+                this.in.close();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
+        return getItem;
     }
 }
