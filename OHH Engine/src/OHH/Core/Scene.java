@@ -18,8 +18,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Scene implements IPosition {
 
-
-    
     private final EntityList objects = new EntityArrayList();
     private final EntityList entitiesToDisplay = new DepthSortedList();
     private final String name;
@@ -49,13 +47,17 @@ public class Scene implements IPosition {
         Game.INSTANCE.loadScene(this);
     }
     
-    public void addPlayer(Entity e) {
-        objects.add(e);
+    public void addPlayer(Entity e, float x, float y, float z) {
+        addEntity(e,x,y,z);
         Game.INSTANCE.setPlayer(e);
     }
     
-    public void addEntity(Entity e) {
+    public void addEntity(Entity e, float x, float y, float z) {
         objects.add(e);
+        e.setX(x);
+        e.setY(y);
+        e.setZ(z);
+        e.setScene(this);
     }
     
     public void addBackground(IScenery s) {
@@ -66,47 +68,44 @@ public class Scene implements IPosition {
         foregrounds.add(s);
     }
     
-    public Vector3f getPosition() {
+    //////////////////////////////
+    //Implementing IPosition
+    
+    @Override
+    public final float getX() {
+        return getPosition().x;
+    }
+
+    @Override
+    public final float getY() {
+        return getPosition().y;
+    }
+    
+    @Override
+    public final float getZ() {
+        return getPosition().z;
+    }
+
+    @Override
+    public final Vector3f getPosition() {
         return position;
     }
     
-    public void setX(float x) {
-        position.x = x;
+    @Override
+    public final void setX(float x) {
+        getPosition().x = x;
     }
 
-    public void setY(float y) {
-        position.y = y;
+    @Override
+    public final void setY(float y) {
+        getPosition().y = y;
     }
     
-    public void setZ(float z) {
-        position.z = z;
+    @Override
+    public final void setZ(float z) {
+        getPosition().z = z;
     }
-    
-    public float getZ() {
-        return position.z;
-    }
-    
-    public float getX() {
-        return position.x;
-    }
-
-    public float getY() {
-        return position.y;
-    }
-    
-    /*
-    public void changeX(float amt) {
-        position.x+=amt;
-    }
-    
-    public void changeY(float amt) {
-        position.y+=amt;
-    }
-    
-    public void changeZ(float amt) {
-        position.z+=amt;
-    }
-    * */
+    //////////////////////////////
     
     public float getWidth() {
         return width;
@@ -125,18 +124,19 @@ public class Scene implements IPosition {
         
         for(Entity o : objects) {
             o.update(delta);
-            quadTree.insertObject(o, o.displayBoundary);
+            quadTree.insertObject(o, o.getSprite().getBoundary());
         }
         
         for(Entity o : objects) {
-            if(o.getZ() == Settings.ENTITY_Z_CREATURES && o.collisionBoundary.getShape() == IBoundaryShape.CIRCLE) {
+            if(o.getZ() == Settings.ENTITY_Z_CREATURES && o.getBoundary().getShape() == IBoundaryShape.CIRCLE) {
                 entitiesToDisplay.clear();
-                quadTree.retrieveObjects(entitiesToDisplay, o.getX(), o.getY(), (int)((Circle)o.collisionBoundary).radius, (int)((Circle)o.collisionBoundary).radius);    
-                for(Entity e : entitiesToDisplay)
-                    if(o.collidesWidth(e)) {
+                quadTree.retrieveObjects(entitiesToDisplay, o.getX(), o.getY(), (int)((Circle)o.getBoundary()).radius, (int)((Circle)o.getBoundary()).radius);    
+                for(Entity e : entitiesToDisplay) {
+                    if(o.isCollidingWith(e)) {
                         o.handleCollision(e);
                         e.handleCollision(o);
                     }
+                }
             }
         }
         

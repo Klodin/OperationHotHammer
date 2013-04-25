@@ -1,6 +1,7 @@
 
 package OHH.Core.Interfaces;
 
+import OHH.Core.GameObjects.Boundary.IBoundaryShape;
 import OHH.Core.Util.Color4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -13,7 +14,9 @@ public interface ISprite {
     public void setHeight(int h);
     public int getWidth();
     public int getHeight();
+    public ISprite resize(int w, int h);
     public ITexture getTexture();
+    public IBoundaryShape getBoundary();
     public boolean isTiled();
     public boolean isStretched();
     public boolean isCentered();

@@ -14,37 +14,29 @@ import org.lwjgl.util.vector.Vector3f;
  * @author Kaitlyn
  */
 public class SimpleCreature extends Entity{
-    public SimpleCreature(float x, float y, float z, int width, int height, float displayBoundaryRadius, float collisionBoundaryRadius) {
-        super(new Vector3f(x,y,z), width, height, new Circle(displayBoundaryRadius), new Circle(collisionBoundaryRadius));
+    public SimpleCreature(float collisionBoundaryRadius) {
+        super(new Circle(collisionBoundaryRadius));
         Debugging.INSTANCE.showMessage("Create (Entity->SimpleCreature)");
     }
 
     
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    protected void event_update(float delta) {
         if(getSprite() != null){
             getSprite().update(delta, this);
         }
     }
-    
-    
+
     @Override
-    public void handleCollision(Entity target) {
-        //no nothing :D
-        if(target.getType().equals("Terrain"))
-            handleCollision((Terrain)target);
+    protected void event_collision(Entity otherEntity) {
+        //nothing
     }
-    
-    public void handleCollision(Terrain target) {
-        
-        target.showCollision();
-        
-    }
-    
+
     @Override
     public String getType() {
         return "SimpleCreature";
     }
+
+    
     
 }

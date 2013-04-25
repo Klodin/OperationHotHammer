@@ -92,7 +92,7 @@ public enum GameWindow{
         
         // update the displayed values in out hud, mostly for debugging
         //Hud.INSTANCE.set("Entities", String.valueOf(Entity.getUpdateCount()));
-        Hud.INSTANCE.showDebugging("Sprites Drawn", String.valueOf(Sprite.getDrawnCount()));
+        //Hud.INSTANCE.showDebugging("Sprites Drawn", String.valueOf(Sprite.getDrawnCount()));
         
         // if the window was resized lets ensure all the rendering stuff is configured to the new dimensions
         if(Display.wasResized() && !fullscreen) {
@@ -103,9 +103,6 @@ public enum GameWindow{
         // update hud to show the current dimensions!
         //Hud.INSTANCE.set("Dimensions", String.valueOf(Display.getWidth()) + "x" + String.valueOf(Display.getHeight()));
         
-        //Reset counters back to 0, these are mostly just generated for displaying in the hud
-        Sprite.clearCounts();
-        Entity.clearCounts();
     }
     
     /**
