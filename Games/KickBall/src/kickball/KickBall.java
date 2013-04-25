@@ -130,7 +130,7 @@ public class KickBall {
                 //resolve any key presses
                 handleUserInputs(1);//delta);
 
-                
+                //Hud.INSTANCE.show("DERP", "42");
                 if(quitRequested) {
                     GameWindow.INSTANCE.shutdown();
                     Game.INSTANCE.shutdown();
