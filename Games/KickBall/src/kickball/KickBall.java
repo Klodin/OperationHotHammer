@@ -6,7 +6,6 @@ package kickball;
 
 import OHH.Core.Game;
 import OHH.Core.GameObjects.Entities.SimpleCreature;
-import OHH.Core.GameObjects.Entities.Terrain;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Interfaces.IScenery;
 import OHH.Core.Interfaces.ITexture;
@@ -46,7 +45,7 @@ public class KickBall {
         Hud.INSTANCE.initialize("KickBall/Assets/Fonts/DisposableDroidBB.ttf");
         
         //Generate some content
-        Scene scene = new Scene("Testing Scene", 500, 500);
+        Scene scene = new Scene("Testing Scene", 1600, 1600);
         
         Entity e;
         AnimatedSprite as;
@@ -56,13 +55,13 @@ public class KickBall {
 
             Debugging.INSTANCE.showMessage("Creating Player Entity");
             as = new AnimatedSprite();
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 1200f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 800f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 2400f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
-            as.addSprite(new Sprite("KickBall/Assets/Sprites/Witch/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
-            e = new SimpleCreature(250, 250, 51, 30, 30, 15);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 1200f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 800f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 2400f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 400f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_1.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 300f);
+            as.addSprite(new Sprite("KickBall/Assets/Sprites/Hoshiko/standing_2.png", ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN), 200f);
+            e = new SimpleCreature(scene.getWidth()/2, scene.getHeight()/2, Settings.ENTITY_Z_CREATURES, 46, 102, 15, 15);
             e.attach(as);
             scene.addPlayer(e); // This is likely not the ideal location for this but eh
             
@@ -74,15 +73,10 @@ public class KickBall {
             int gridSize = 32;
             //MapParser M = new MapParser("land.map");
             DrawStadium d = new DrawStadium();
-            String stadium[][] = d.stadiumGrid;
-            float radius = (float)Math.sqrt((float)gridSize*(float)gridSize + (float)gridSize*(float)gridSize) / 2;
             
-            for (int i = 0; i < stadium.length; i++){
-                for (int j = 0; j < stadium[i].length; j++){
-                    Sprite pic = new Sprite(stadium[i][j], ITexture.STRETCH | ITexture.MAINTAIN_ASPECT_MIN);
-                    Entity tile = new Terrain(i*gridSize, j*gridSize, gridSize, gridSize, radius);
-                    tile.attach(pic);
-                    scene.addEntity(tile);
+            for (int i = 0; i < d.stadiumGrid.length; i++){
+                for (int j = 0; j < d.stadiumGrid[i].length; j++){
+                    scene.addEntity(d.stadiumGrid[i][j]);
                 }
             }
 
@@ -130,7 +124,7 @@ public class KickBall {
                 //resolve any key presses
                 handleUserInputs(1);//delta);
 
-                
+                //Hud.INSTANCE.show("DERP", "42");
                 if(quitRequested) {
                     GameWindow.INSTANCE.shutdown();
                     Game.INSTANCE.shutdown();
@@ -166,7 +160,6 @@ public class KickBall {
     }
     
     public void handleUserInputs(float delta){
-
         if (Display.isCloseRequested())
         {
             // The display window is being closed

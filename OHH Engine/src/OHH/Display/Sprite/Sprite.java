@@ -1,5 +1,7 @@
 package OHH.Display.Sprite;
 
+import OHH.Core.GameObjects.Boundary.Circle;
+import OHH.Core.GameObjects.Boundary.IBoundaryShape;
 import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.ISprite;
 import OHH.Core.Interfaces.ITexture;
@@ -14,6 +16,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Sprite implements ISprite {
     
+    private final Circle displayBoundary = new Circle(0);
+    
     private Texture texture;
     private int drawStyle;
     
@@ -22,25 +26,9 @@ public class Sprite implements ISprite {
     private int actualWidth = 0;
     private int actualHeight = 0;
     
-    private static int drawnCount = 0;
-    private static int updateCount = 0;
-    
     private SpriteBehaviour runnable = null;
     
     private Color4f color = new Color4f(1f, 1f, 1f, 1f);
-    
-    public static int getDrawnCount(){
-        return drawnCount;
-    }
-    
-    public static int getUpdateCount(){
-        return updateCount;
-    }
-    
-    public static void clearCounts(){
-        drawnCount = 0;
-        updateCount = 0;
-    }
     
     public Sprite(String resource) {
         init(resource, ITexture.TILED, null);
@@ -49,8 +37,7 @@ public class Sprite implements ISprite {
     public Sprite(String resource, int drawStyle) {
         init(resource, drawStyle, null);
     }
-    
-        
+       
     public Sprite(String resource, SpriteBehaviour runnable) {
         init(resource, ITexture.TILED, runnable);
     }
@@ -69,34 +56,62 @@ public class Sprite implements ISprite {
         }catch(IOException e){
             Debugging.INSTANCE.showWarning("A problem occured when loading a texture! (" + resource + ")");            
         }
-        texture = temp;
+        this.texture = temp;
         
         if(texture != null) {
-            this.adjustedWidth = this.actualWidth = texture.getWidth();
-            this.adjustedHeight = this.actualHeight = texture.getHeight();
-        }   
+            adjustedWidth = actualWidth = texture.getWidth();
+            adjustedHeight = actualHeight = texture.getHeight();
+            updateDisplayBoundary();
+        }
     }
     
     @Override
     public void setWidth(int w) {
-        this.adjustedWidth = this.actualWidth = w;
+        if(w == actualWidth)
+            return;
+        
+        adjustedWidth = actualWidth = w;
         
         if(isMaintainingAspectMin() || isMaintainingAspectMax()) {
-            float scale = Math.min((float)this.actualWidth/(float)texture.getOriginalWidth(), (float)this.actualHeight/(float)texture.getOriginalHeight());
-            this.adjustedWidth = (int)((float)texture.getOriginalWidth() * scale);
-            this.adjustedHeight = (int)((float)texture.getOriginalHeight() * scale);
+            float scale = Math.min((float)actualWidth/(float)texture.getOriginalWidth(), (float)actualHeight/(float)texture.getOriginalHeight());
+            adjustedWidth = (int)((float)texture.getOriginalWidth() * scale);
+            adjustedHeight = (int)((float)texture.getOriginalHeight() * scale);
         }
+        
+        updateDisplayBoundary();
     }
     
     @Override
     public void setHeight(int h) {
-        this.adjustedHeight = this.actualHeight = h;
+        if(h == actualHeight)
+            return;
+        
+        adjustedHeight = actualHeight = h;
         
         if(isMaintainingAspectMin() || isMaintainingAspectMax()) {
-            float scale = Math.min((float)this.actualWidth/(float)texture.getOriginalWidth(), (float)this.actualHeight/(float)texture.getOriginalHeight());
-            this.adjustedWidth = (int)((float)texture.getOriginalWidth() * scale);
-            this.adjustedHeight = (int)((float)texture.getOriginalHeight() * scale);
+            float scale = Math.min((float)actualWidth/(float)texture.getOriginalWidth(), (float)actualHeight/(float)texture.getOriginalHeight());
+            adjustedWidth = (int)((float)texture.getOriginalWidth() * scale);
+            adjustedHeight = (int)((float)texture.getOriginalHeight() * scale);
         }
+        
+        updateDisplayBoundary();
+    }
+    
+    @Override
+    public Sprite resize(int w, int h){
+        setWidth(w);
+        setHeight(h);
+        return this;
+    }
+    
+    private void updateDisplayBoundary(){
+        int max = Math.max(adjustedWidth, adjustedHeight);
+        displayBoundary.radius = (float)Math.sqrt(max*max*2)/2f;
+    }
+    
+    @Override
+    public IBoundaryShape getBoundary(){
+        return displayBoundary;
     }
     
     @Override
@@ -115,9 +130,7 @@ public class Sprite implements ISprite {
     }
     
     @Override
-    public void update(float delta, IEntity e) {
-        updateCount++;
-        
+    public void update(float delta, IEntity e) {        
         //run it
         if(runnable != null){
             runnable.run(delta, this);
@@ -155,9 +168,6 @@ public class Sprite implements ISprite {
     }
     
     public void drawQuad(Vector3f position, boolean bindTexture) {
-
-        drawnCount++;
-        
         // store the current model matrix
 	GL11.glPushMatrix();
 		
@@ -166,10 +176,11 @@ public class Sprite implements ISprite {
         if(bindTexture) color.bind();
     
 	// translate to the right location and prepare to draw
-        if(isTiled())
+        if(isTiled()) {
             GL11.glTranslatef(position.x-getWidth()/2, position.y-getHeight()/2, 0);	
-        else 
-            GL11.glTranslatef(position.x-this.adjustedWidth/2, position.y-this.adjustedHeight/2, 0);		
+        } else { 
+            GL11.glTranslatef(position.x-adjustedWidth/2, position.y-adjustedHeight/2, 0);		
+        }
 
 	// draw a quad textured to match the sprite
     	GL11.glBegin(GL11.GL_QUADS);
@@ -300,5 +311,40 @@ public class Sprite implements ISprite {
         GL11.glPolygonMode( GL11.GL_FRONT, GL11.GL_FILL );
         
         
+    }
+    
+    @Override
+    public void drawFilled(Vector3f position, Color4f colour){
+
+        //clear any texture bindings
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        
+        /*
+         * I draw the quads here instead of using the draw function since
+         * the draw function does a lot of adjustments for texture.
+         * This is the set quad dimensions shown visually.
+         */
+        
+        //show the quad
+        colour.bind();
+        
+        GL11.glPushMatrix();
+        GL11.glTranslatef(position.x-(float)getWidth()/2f, position.y-(float)getHeight()/2f, 0);
+        
+        GL11.glBegin(GL11.GL_QUADS);
+	{
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, getHeight());
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(getWidth(), getHeight());
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(getWidth(), 0);
+        }
+        GL11.glEnd();
+        
+        GL11.glPopMatrix();
+
     }
 }

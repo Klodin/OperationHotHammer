@@ -7,27 +7,36 @@ package OHH.Core.GameObjects.Entities;
 import OHH.Core.GameObjects.Boundary.Circle;
 import OHH.Core.GameObjects.Entity;
 import OHH.Core.Util.Debugging.Debugging;
-import OHH.Core.Util.Settings;
 import org.lwjgl.util.vector.Vector3f;
-import java.util.Random;
 
 /**
  *
  * @author Kaitlyn
  */
 public class SimpleCreature extends Entity{
-    public SimpleCreature(float x, float y, float z, int width, int height, float radius) {
-        super(new Vector3f(x,y,z), width, height, new Circle(radius));
+    public SimpleCreature(float collisionBoundaryRadius) {
+        super(new Circle(collisionBoundaryRadius));
         Debugging.INSTANCE.showMessage("Create (Entity->SimpleCreature)");
     }
 
     
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    protected void event_update(float delta) {
         if(getSprite() != null){
             getSprite().update(delta, this);
         }
     }
+
+    @Override
+    protected void event_collision(Entity otherEntity) {
+        //nothing
+    }
+
+    @Override
+    public String getType() {
+        return "SimpleCreature";
+    }
+
+    
     
 }

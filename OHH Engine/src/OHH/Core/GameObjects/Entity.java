@@ -1,134 +1,160 @@
 package OHH.Core.GameObjects;
 
+import OHH.Core.GameObjects.Boundary.Circle;
 import OHH.Core.Util.Debugging.Debugging;
 import OHH.Core.GameObjects.Boundary.IBoundaryShape;
-import OHH.Core.Interfaces.IDisplayable;
 import OHH.Core.Interfaces.IEntity;
 import OHH.Core.Interfaces.IPosition;
 import OHH.Core.Interfaces.ISprite;
-import org.lwjgl.opengl.GL11;
+import OHH.Core.Scene;
 import org.lwjgl.util.vector.Vector3f;
 
-public abstract class Entity implements IDisplayable, IEntity, IPosition {
-
-   public final static int LAYER_MIDDLE = 100;
-   public static final float LAYER_MIN = 0;
-   public static final float LAYER_MAX = 200;
-   private ISprite sprite = null;
-   public final IBoundaryShape collider;
-   
-   private int width;
-   private int height;
-   
-   public final Vector3f position;
-   private static int drawnCount = 0;
-   private static int updateCount = 0;
-   
-   public static int getDrawnCount(){
-       return drawnCount;
-   }
+public abstract class Entity implements IEntity, IPosition {
     
-   public static int getUpdateCount(){
-       return updateCount;
-   }
+    private ISprite sprite = null;
+    private IBoundaryShape collisionBoundary = null;
+    private boolean isCollidable = false;
+    private HorizontalState hState = HorizontalState.Still;
+    private VerticalState vState = VerticalState.Still;
+    private Scene currentScene = null;
+    private Vector3f position = new Vector3f();
    
-   public static void clearCounts(){
-       drawnCount = 0;
-       updateCount = 0;
-   }
+    public Entity() { 
+        //empty constructor
+    }
    
-   public Entity(Vector3f p, int width, int height, IBoundaryShape colliderShape) {       
-      collider = colliderShape;
-      position = p;
-      this.width = width;
-      this.height = height;
-   }
+    public Entity(IBoundaryShape collisionBoundary) { 
+        addCollisionBoundary(collisionBoundary);
+    }
    
-   public Entity(Vector3f p) {
-       collider = null;
-       position = p;
-   }
+    public final void addCollisionBoundary(IBoundaryShape collisionBoundary) {
+        this.isCollidable = true;
+        this.collisionBoundary = collisionBoundary;
+    }
    
-   public void update(float delta){
-       updateCount++;
-   }
+    abstract protected void event_update(float delta);
+    public final void update(float delta){
+        event_update(delta);
+    }
    
-   public ISprite getSprite(){
-       return sprite;
-   }
+    public final ISprite getSprite(){
+        return sprite;
+    }
+    
+    public final Scene getScene(){
+        return currentScene;
+    }
    
-   @Override
-   public void draw(int resWidth, int resHeight, Vector3f cameraPosition) {
-       draw(resWidth, resHeight, cameraPosition, false);  
-   }
+    public final void setScene(Scene s) {
+        currentScene = s;
+    }
+    
+    public void draw(int resWidth, int resHeight, Vector3f cameraPosition) {
+        draw(resWidth, resHeight, cameraPosition, false);  
+    }
    
-   @Override
-   public void draw(int resWidth, int resHeight, Vector3f cameraPosition, boolean showWireframe){
-       if(sprite == null) {
-           Debugging.INSTANCE.showWarning("Attempted to draw an entity when no sprite has been attached!");
-           return;
-       }
-       drawnCount++;
-       Vector3f pos = new Vector3f(position.x-(cameraPosition.x-resWidth/2), position.y-(cameraPosition.y-resHeight/2), position.z);
+    
+    public void draw(int resWidth, int resHeight, Vector3f cameraPosition, boolean showWireframe){
+        if(sprite == null) {
+            Debugging.INSTANCE.showWarning("Attempted to draw an entity when no sprite has been attached!");
+            return; //exit
+        }
+       
+        //adjust the position in relation to the camera
+        Vector3f pos = new Vector3f(getPosition());
+        pos.x -= cameraPosition.x - resWidth / 2;
+        pos.y -= cameraPosition.y - resHeight / 2;
 
-       if(!showWireframe)
-           sprite.draw(pos);
-       else
-           sprite.drawWireframe(pos);    
-   }
+        if(!showWireframe) {
+            sprite.draw(pos);
+        } else {
+            sprite.drawWireframe(pos);    
+        }
+    }
    
-   @Override
-   public void attach(ISprite s) {
-       if(sprite != null) {
-           Debugging.INSTANCE.showWarning("Attached a sprite to an entity which already had a sprite!");
-       }
+    
+    public final void attach(ISprite s) {
+        if(sprite != null) {
+            Debugging.INSTANCE.showWarning("Attached a sprite to an entity which already had a sprite!");
+        }
               
-       sprite = s;
-       if(this.collider.getShape() == IBoundaryShape.CIRCLE) {
-           sprite.setWidth(width);
-           sprite.setHeight(height);   
-       }
-   }
+        sprite = s;
+    }
    
-   @Override
-   public String getState(){
-       return ""; //TODO: actual states
-   }
+    public final HorizontalState getHState(){
+        return hState;
+    }
+    
+    public final VerticalState getVState(){
+        return vState;
+    }
+    
+    public final IBoundaryShape getBoundary(){
+        return collisionBoundary;
+    }
 
+    //////////////////////////////
+    //Implementing IPosition
+    
     @Override
-    public float getX() {
-        return position.x;
+    public final float getX() {
+        return getPosition().x;
     }
 
     @Override
-    public float getY() {
-        return position.y;
+    public final float getY() {
+        return getPosition().y;
     }
     
     @Override
-    public float getZ() {
-        return position.z;
+    public final float getZ() {
+        return getPosition().z;
     }
 
     @Override
-    public Vector3f getPosition() {
+    public final Vector3f getPosition() {
         return position;
     }
     
     @Override
-    public void setX(float x) {
-        position.x = x;
+    public final void setX(float x) {
+        getPosition().x = x;
     }
 
     @Override
-    public void setY(float y) {
-        position.y = y;
+    public final void setY(float y) {
+        getPosition().y = y;
     }
     
     @Override
-    public void setZ(float z) {
-        position.z = z;
+    public final void setZ(float z) {
+        getPosition().z = z;
     }
+    //////////////////////////////
+    
    
-   
+    abstract protected void event_collision(Entity otherEntity);
+    
+    public final void handleCollision(Entity otherEntity){
+        event_collision(otherEntity);
+    }
+    
+    public final boolean isCollidingWith(Entity target){
+        
+        if(!isCollidable) {
+            return false;
+        }
+        
+        boolean ret = false;
+        
+        if(collisionBoundary.getShape() == IBoundaryShape.CIRCLE && target.collisionBoundary.getShape() == IBoundaryShape.CIRCLE) {
+            float dif = (float)Math.sqrt((target.getX() - getX()) * (target.getX() - getX()) + (target.getY() - getY()) * (target.getY() - getY()));
+            ret = dif < ((Circle)collisionBoundary).radius + ((Circle)target.collisionBoundary).radius;
+        }
+        
+        return ret;
+    }
+    
+    abstract public String getType();
+    
 }

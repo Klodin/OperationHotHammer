@@ -1,7 +1,7 @@
 
 package OHH.Core;
 
-import OHH.Core.Interfaces.IEntity;
+import OHH.Core.Interfaces.IPosition;
 import OHH.Core.Util.Debugging.Debugging;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -16,7 +16,7 @@ public enum Game{
     int resHeight = 0;
     float drawRadius = 0;
     
-    private IEntity player;
+    private IPosition player;
     
     public void initialize() {
         Debugging.INSTANCE.showMessage("Initializing (Game)");
@@ -33,11 +33,11 @@ public enum Game{
         return scene;
     }
     
-    public void setPlayer(IEntity e){
+    public void setPlayer(IPosition e){
         player = e;
     }
     
-    public IEntity getPlayer(){
+    public IPosition getPlayer(){
         return player;
     }
     
@@ -70,15 +70,15 @@ public enum Game{
     
     
     public void changePosition(Vector3f amt) {
-        if(player != null) {
-            player.setX(player.getX()+amt.x);
-            player.setY(player.getY()+amt.y);
-            player.setZ(player.getZ()+amt.z);
-        } else if(scene != null) {
-            scene.setX(scene.getX()+amt.x);
-            scene.setY(scene.getY()+amt.y);
-            scene.setZ(scene.getZ()+amt.z);
+        IPosition target = player;
+        
+        if(target == null) {
+            target = scene;
         }
+ 
+        target.setX(target.getX()+amt.x);
+        target.setY(target.getY()+amt.y);
+        target.setZ(target.getZ()+amt.z);
     }
     
     public void update(float delta) {

@@ -21,7 +21,7 @@ public class DepthSortedList extends EntityList {
         list = new TreeList<>(new Comparator<Entity>(){
             @Override
             public int compare(Entity o1, Entity o2){
-                return o1.position.z > o2.position.z? 1 : -1;
+                return o1.getPosition().z > o2.getPosition().z? 1 : -1;
             }
             
             @Override

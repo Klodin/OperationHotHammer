@@ -17,7 +17,7 @@ public class QTreeNode {
     public QTreeNode(float centerX, float centerY, float halfW, int stopDepth) {
         this.currDepth = stopDepth;
         this.halfWidth = halfW;
-      
+        
         // set Vector to current x-y-z values
         this.center = new Vector3f(centerX, centerY, 0.0f);
       
@@ -57,16 +57,18 @@ public class QTreeNode {
             case IBoundaryShape.CIRCLE:
               
                 // get the raw arrays, makes it easier to run these in a loop
-                final float[] objPos    = {((Circle)collider).center.x,((Circle)collider).center.y,((Circle)collider).center.z};
-                final float[] nodePos   = {center.x,center.y,center.z};
+                final float[] objPos    = {obj.getX(), obj.getY(), obj.getZ()};
+                final float[] nodePos   = {center.x, center.y, center.z};
 
                 for (int i = 0; i < 2; i++) {
                    // compute the delta, nodePos Vector index - objPos Vector
                    delta = nodePos[i] - objPos[i];
 
                    // if the absolute of delta is less than or equal to radius object straddling, break
+                   //System.out.println(Math.abs(delta) + " | " + ((Circle)collider).radius);
                    if (Math.abs(delta) <= ((Circle)collider).radius) {
                       straddle = true;
+                      //System.out.println("BREAK!");
                       break;
                    }
 
@@ -78,85 +80,37 @@ public class QTreeNode {
 
                 if (!straddle && currDepth > 0) {
                    // not straddling, insert to child at index
+                   //System.out.println("straddle");
                    nodes[index].insertObject(obj, collider);
                 }
                 else {
                    // straddling, insert to this node
                    objects.add(obj);
+                   //System.out.println("added");
                 }
             
                 break;
         }
     }
-   
-    public void retrieveObjects(EntityList objList, float centerX, float centerY, float halfW){
-       
-        final Vector3f nodePos = new Vector3f(centerX,centerY,0);
-        Vector3f subNodePos = new Vector3f();
-        Vector3f deltaV3f = new Vector3f();
-        float delta;
-        float radius;
-       
-        for(Entity object : objects){
-            if(object.collider.getShape() == IBoundaryShape.CIRCLE) {
-                subNodePos.x = object.position.x;
-                subNodePos.y = object.position.y;
-                radius = ((Circle)object.collider).radius;
-                deltaV3f.x = nodePos.x - subNodePos.x;
-                deltaV3f.y = nodePos.y - subNodePos.y;
-                delta = deltaV3f.x*deltaV3f.x + deltaV3f.y*deltaV3f.y;
-                if(delta <= (radius + halfW)*(radius + halfW)){
-                    objList.add(object);
-                        
-                }
-            }
-        }
-       
-        if(nodes != null) {
-            for(int n = 0; n < 4; n++) {
-                subNodePos.x = nodes[n].center.x;
-                subNodePos.y = nodes[n].center.y;
-                deltaV3f.x = nodePos.x - subNodePos.x;
-                deltaV3f.y = nodePos.y - subNodePos.y;
-                delta = deltaV3f.x*deltaV3f.x + deltaV3f.y*deltaV3f.y;
-                if (delta <= (nodes[n].halfWidth + halfW)*(nodes[n].halfWidth + halfW)) {
-                    nodes[n].retrieveObjects(objList, centerX, centerY, halfW);     
-                }
-            }
-        }
-    }
     
     public void retrieveObjects(EntityList objList, float centerX, float centerY, float halfW, float halfH){
-       
-        Vector3f subNodePos = new Vector3f();
         float xx, yy;
-        float delta;
-        float radius;
+        float distanceBetween, outerDiagonal, innerDiagonal;
        
         for(Entity object : objects){
-            if(object.collider.getShape() == IBoundaryShape.CIRCLE) {
-                radius = ((Circle)object.collider).radius;
-                
-                if(object.position.x+radius < centerX - halfW || object.position.x-radius > centerX + halfW)
-                    continue;
-                if(object.position.y-radius > centerY + halfH || object.position.y+radius < centerY - halfH)
-                    continue;
-
-                objList.add(object);
-            }
+            objList.add(object);
         }
        
-        float diagonal = (float)Math.sqrt(halfW*halfW + halfH*halfH);
+        outerDiagonal = halfW*halfW + halfH*halfH;
         
         if(nodes != null) {
             for(int n = 0; n < 4; n++) {
-                subNodePos.x = nodes[n].center.x;
-                subNodePos.y = nodes[n].center.y;
-                xx = centerX - subNodePos.x;
-                yy = centerY - subNodePos.y;
-                delta = xx*xx + yy*yy;
+                xx = nodes[n].center.x - centerX;
+                yy = nodes[n].center.y - centerY;
+                distanceBetween = xx*xx + yy*yy;
+                innerDiagonal = nodes[n].halfWidth*nodes[n].halfWidth + nodes[n].halfWidth*nodes[n].halfWidth;
                 
-                if (delta <= (nodes[n].halfWidth + diagonal)*(nodes[n].halfWidth + diagonal)) {
+                if (Math.sqrt(distanceBetween) - Math.sqrt(outerDiagonal) <= Math.sqrt(innerDiagonal)) {
                     nodes[n].retrieveObjects(objList, centerX, centerY, halfW, halfH);     
                 }
             }
